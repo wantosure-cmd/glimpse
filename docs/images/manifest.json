@@ -22,6 +22,16 @@
       "file": "settings.png",
       "native_capture": "design-settings-2.png",
       "sha256": "a7cbd45f56599d7fa77b1fc07177ea9879545b9deb110b985821b24162232970"
+    },
+    {
+      "file": "subfolders.png",
+      "native_capture": "p2-list.png",
+      "sha256": "af66fd049e4e28d6cc0a1015f7ebb57631a917f4ea386b36876ae9108517b905"
+    },
+    {
+      "file": "folder-browser.png",
+      "native_capture": "design-sidebar.png",
+      "sha256": "a60cb0844fc3f3cb5043be2bb55f868dd6dea191e8f46867fab338b49125fe2c"
     }
   ]
 }

@@ -1,0 +1,8119 @@
+{
+  "locale": "zh-CN",
+  "schema_version": 1,
+  "strategy": "Compile-time static Rust literals. IDs remain stable when text/translations change. User paths, protocol identifiers, icons, diagnostics fixtures and third-party raw errors are not translations.",
+  "messages": {
+    "msg_518d809683ad": {
+      "text": "动图 超过 256MiB 文件预算",
+      "source": "GIF 超过 256MiB 文件预算",
+      "references": [
+        {
+          "file": "src/animation.rs",
+          "original_line": 201
+        }
+      ],
+      "original_literals": [
+        "\"GIF 超过 256MiB 文件预算\""
+      ],
+      "format_template": false
+    },
+    "msg_c06f6ada4aed": {
+      "text": "动图 文件已变化，请刷新",
+      "source": "GIF 文件已变化，请刷新",
+      "references": [
+        {
+          "file": "src/animation.rs",
+          "original_line": 204
+        },
+        {
+          "file": "src/animation.rs",
+          "original_line": 303
+        }
+      ],
+      "original_literals": [
+        "\"GIF 文件已变化，请刷新\""
+      ],
+      "format_template": false
+    },
+    "msg_2282f7536066": {
+      "text": "动图 没有可播放的帧",
+      "source": "GIF 没有可播放的帧",
+      "references": [
+        {
+          "file": "src/animation.rs",
+          "original_line": 331
+        }
+      ],
+      "original_literals": [
+        "\"GIF 没有可播放的帧\""
+      ],
+      "format_template": false
+    },
+    "msg_a9f14f579a80": {
+      "text": "动图 超过 8192 边长或 8388608 像素的动画预算",
+      "source": "GIF 超过 8192 边长或 8388608 像素的动画预算",
+      "references": [
+        {
+          "file": "src/animation.rs",
+          "original_line": 347
+        }
+      ],
+      "original_literals": [
+        "\"GIF 超过 8192 边长或 8388608 像素的动画预算\""
+      ],
+      "format_template": false
+    },
+    "msg_31b9beb79f2d": {
+      "text": "安装路径必须是绝对路径",
+      "source": "安装路径必须是绝对路径",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 59
+        }
+      ],
+      "original_literals": [
+        "\"安装路径必须是绝对路径\""
+      ],
+      "format_template": false
+    },
+    "msg_aaf8b25c5414": {
+      "text": "安装路径不能包含相对层级",
+      "source": "安装路径不能包含相对层级",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 65
+        }
+      ],
+      "original_literals": [
+        "\"安装路径不能包含相对层级\""
+      ],
+      "format_template": false
+    },
+    "msg_69f740621c23": {
+      "text": "拒绝链接或重解析路径：{}",
+      "source": "拒绝链接或重解析路径：{}",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 70
+        }
+      ],
+      "original_literals": [
+        "\"拒绝链接或重解析路径：{}\""
+      ],
+      "format_template": true
+    },
+    "msg_7eccd5b6a756": {
+      "text": "安装清单标识或大小无效",
+      "source": "安装清单标识或大小无效",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 82
+        }
+      ],
+      "original_literals": [
+        "\"安装清单标识或大小无效\""
+      ],
+      "format_template": false
+    },
+    "msg_e2c5c9bc4478": {
+      "text": "安装清单含非法路径、重复文件或偏移",
+      "source": "安装清单含非法路径、重复文件或偏移",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 93
+        }
+      ],
+      "original_literals": [
+        "\"安装清单含非法路径、重复文件或偏移\""
+      ],
+      "format_template": false
+    },
+    "msg_fe1d75aabde1": {
+      "text": "安装清单溢出",
+      "source": "安装清单溢出",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 95
+        }
+      ],
+      "original_literals": [
+        "\"安装清单溢出\""
+      ],
+      "format_template": false
+    },
+    "msg_2b117f8f0d0b": {
+      "text": "安装包长度与清单不符",
+      "source": "安装包长度与清单不符",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 98
+        }
+      ],
+      "original_literals": [
+        "\"安装包长度与清单不符\""
+      ],
+      "format_template": false
+    },
+    "msg_a67ec7210f65": {
+      "text": "安装包缺少载荷",
+      "source": "安装包缺少载荷",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 106
+        }
+      ],
+      "original_literals": [
+        "\"安装包缺少载荷\""
+      ],
+      "format_template": false
+    },
+    "msg_d2b92c353e5e": {
+      "text": "安装包尾标识无效",
+      "source": "安装包尾标识无效",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 112
+        }
+      ],
+      "original_literals": [
+        "\"安装包尾标识无效\""
+      ],
+      "format_template": false
+    },
+    "msg_dd426b049600": {
+      "text": "安装包清单过大",
+      "source": "安装包清单过大",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 117
+        }
+      ],
+      "original_literals": [
+        "\"安装包清单过大\""
+      ],
+      "format_template": false
+    },
+    "msg_e37c51351f93": {
+      "text": "安装程序长度错误",
+      "source": "安装程序长度错误",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 125
+        }
+      ],
+      "original_literals": [
+        "\"安装程序长度错误\""
+      ],
+      "format_template": false
+    },
+    "msg_94f409cf1fdd": {
+      "text": "卸载注册项类型无效",
+      "source": "卸载注册项类型无效",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 176
+        }
+      ],
+      "original_literals": [
+        "\"卸载注册项类型无效\""
+      ],
+      "format_template": false
+    },
+    "msg_71c59bbfe015": {
+      "text": "已有本地测试版安装记录，请先卸载旧版本",
+      "source": "已有本地测试版安装记录，请先卸载旧版本",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 202
+        }
+      ],
+      "original_literals": [
+        "\"已有本地测试版安装记录，请先卸载旧版本\""
+      ],
+      "format_template": false
+    },
+    "msg_eb5ddfceb467": {
+      "text": "掠影 Glimpse（本地测试版）",
+      "source": "大屏媒体浏览器（本地测试版）",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 218
+        }
+      ],
+      "original_literals": [
+        "\"大屏媒体浏览器（本地测试版）\""
+      ],
+      "format_template": false
+    },
+    "msg_d292eee4451c": {
+      "text": "安装目录非空，请先卸载旧版或选择新的空目录；未覆盖其中任何文件",
+      "source": "安装目录非空，请先卸载旧版或选择新的空目录；未覆盖其中任何文件",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 258
+        }
+      ],
+      "original_literals": [
+        "\"安装目录非空，请先卸载旧版或选择新的空目录；未覆盖其中任何文件\""
+      ],
+      "format_template": false
+    },
+    "msg_b4b0cd771e17": {
+      "text": "卸载程序数据不完整",
+      "source": "卸载程序数据不完整",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 282
+        }
+      ],
+      "original_literals": [
+        "\"卸载程序数据不完整\""
+      ],
+      "format_template": false
+    },
+    "msg_171320732419": {
+      "text": "目标父路径无效",
+      "source": "目标父路径无效",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 289
+        }
+      ],
+      "original_literals": [
+        "\"目标父路径无效\""
+      ],
+      "format_template": false
+    },
+    "msg_12ac46630d1c": {
+      "text": "安装包文件校验失败：{}",
+      "source": "安装包文件校验失败：{}",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 311
+        }
+      ],
+      "original_literals": [
+        "\"安装包文件校验失败：{}\""
+      ],
+      "format_template": true
+    },
+    "msg_94dbf0c6b2ce": {
+      "text": "安装清单过大",
+      "source": "安装清单过大",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 333
+        }
+      ],
+      "original_literals": [
+        "\"安装清单过大\""
+      ],
+      "format_template": false
+    },
+    "msg_7c447c337aea": {
+      "text": "安装文件被替换为目录，拒绝卸载",
+      "source": "安装文件被替换为目录，拒绝卸载",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 346
+        }
+      ],
+      "original_literals": [
+        "\"安装文件被替换为目录，拒绝卸载\""
+      ],
+      "format_template": false
+    },
+    "msg_3d9ecb53e93e": {
+      "text": "请关闭程序后重试：{e}",
+      "source": "请关闭程序后重试：{e}",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 362
+        }
+      ],
+      "original_literals": [
+        "\"请关闭程序后重试：{e}\""
+      ],
+      "format_template": true
+    },
+    "msg_be1eccaf8619": {
+      "text": "移除失败 {}：{e}",
+      "source": "移除失败 {}：{e}",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 373
+        }
+      ],
+      "original_literals": [
+        "\"移除失败 {}：{e}\""
+      ],
+      "format_template": true
+    },
+    "msg_e1d7690cc9c0": {
+      "text": "保留已修改的文件：{}",
+      "source": "保留已修改的文件：{}",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 391
+        }
+      ],
+      "original_literals": [
+        "\"保留已修改的文件：{}\""
+      ],
+      "format_template": true
+    },
+    "msg_0571bfb0a16a": {
+      "text": "掠影 Glimpse · 本地测试版",
+      "source": "大屏媒体浏览器 · 本地测试版",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 397
+        }
+      ],
+      "original_literals": [
+        "\"大屏媒体浏览器 · 本地测试版\""
+      ],
+      "format_template": false
+    },
+    "msg_3d08510963d4": {
+      "text": "缺少卸载等待进程",
+      "source": "缺少卸载等待进程",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 417
+        }
+      ],
+      "original_literals": [
+        "\"缺少卸载等待进程\""
+      ],
+      "format_template": false
+    },
+    "msg_9c2975ca359d": {
+      "text": "卸载程序未退出，未移除文件",
+      "source": "卸载程序未退出，未移除文件",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 424
+        }
+      ],
+      "original_literals": [
+        "\"卸载程序未退出，未移除文件\""
+      ],
+      "format_template": false
+    },
+    "msg_22f394232b53": {
+      "text": "卸载路径无效",
+      "source": "卸载路径无效",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 439
+        }
+      ],
+      "original_literals": [
+        "\"卸载路径无效\""
+      ],
+      "format_template": false
+    },
+    "msg_db0276bc25d9": {
+      "text": "卸载本地测试版？媒体文件、用户设置和缓存会保留。",
+      "source": "卸载本地测试版？媒体文件、用户设置和缓存会保留。",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 440
+        }
+      ],
+      "original_literals": [
+        "\"卸载本地测试版？媒体文件、用户设置和缓存会保留。\""
+      ],
+      "format_template": false
+    },
+    "msg_bd1a7b3c6e92": {
+      "text": "将离线安装至：{}\n\n应用许可证尚未确定，仅供本地测试。已有版本须先卸载；不会覆盖非空目录。",
+      "source": "将离线安装至：{}\n\n应用许可证尚未确定，仅供本地测试。已有版本须先卸载；不会覆盖非空目录。",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 482
+        }
+      ],
+      "original_literals": [
+        "\"将离线安装至：{}\\n\\n应用许可证尚未确定，仅供本地测试。已有版本须先卸载；不会覆盖非空目录。\""
+      ],
+      "format_template": true
+    },
+    "msg_0db5bc6c9681": {
+      "text": "是否添加当前用户的资源管理器右键菜单？",
+      "source": "是否添加当前用户的资源管理器右键菜单？",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 489
+        }
+      ],
+      "original_literals": [
+        "\"是否添加当前用户的资源管理器右键菜单？\""
+      ],
+      "format_template": false
+    },
+    "msg_81793ece95dd": {
+      "text": "掠影 Glimpse",
+      "source": "大屏媒体浏览器",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 493
+        },
+        {
+          "file": "src/main.rs",
+          "original_line": 128
+        }
+      ],
+      "original_literals": [
+        "\"大屏媒体浏览器\""
+      ],
+      "format_template": false
+    },
+    "msg_2704a42e22dc": {
+      "text": "操作完成。用户媒体、设置和缓存均保留。安装后请运行安装目录中的 media-browser.exe。",
+      "source": "操作完成。用户媒体、设置和缓存均保留。安装后请运行安装目录中的 media-browser.exe。",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 493
+        }
+      ],
+      "original_literals": [
+        "\"操作完成。用户媒体、设置和缓存均保留。安装后请运行安装目录中的 media-browser.exe。\""
+      ],
+      "format_template": false
+    },
+    "msg_f2d8cdd0672a": {
+      "text": "本地测试版安装/卸载失败",
+      "source": "本地测试版安装/卸载失败",
+      "references": [
+        {
+          "file": "src/bin/media-browser-setup.rs",
+          "original_line": 499
+        }
+      ],
+      "original_literals": [
+        "\"本地测试版安装/卸载失败\""
+      ],
+      "format_template": false
+    },
+    "msg_65ed9776572d": {
+      "text": "播放下一个视频",
+      "source": "播放下一个视频",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 80
+        }
+      ],
+      "original_literals": [
+        "\"播放下一个视频\""
+      ],
+      "format_template": false
+    },
+    "msg_4026b79d595e": {
+      "text": "重播当前视频",
+      "source": "重播当前视频",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 81
+        }
+      ],
+      "original_literals": [
+        "\"重播当前视频\""
+      ],
+      "format_template": false
+    },
+    "msg_7d7a771f65a6": {
+      "text": "停在结尾",
+      "source": "停在结尾",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 82
+        }
+      ],
+      "original_literals": [
+        "\"停在结尾\""
+      ],
+      "format_template": false
+    },
+    "msg_9ff32fab7ec0": {
+      "text": "选择文件夹，开始浏览图片和视频",
+      "source": "选择文件夹，开始浏览图片和视频",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 397
+        }
+      ],
+      "original_literals": [
+        "\"选择文件夹，开始浏览图片和视频\""
+      ],
+      "format_template": false
+    },
+    "msg_06defd29f465": {
+      "text": "正在扫描目录…",
+      "source": "正在扫描目录…",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 498
+        }
+      ],
+      "original_literals": [
+        "\"正在扫描目录…\""
+      ],
+      "format_template": false
+    },
+    "msg_d854355c8e4d": {
+      "text": "正在核对文件变化…",
+      "source": "正在核对文件变化…",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 528
+        }
+      ],
+      "original_literals": [
+        "\"正在核对文件变化…\""
+      ],
+      "format_template": false
+    },
+    "msg_0c77305892a3": {
+      "text": "部分目录无法读取 · {} 个错误",
+      "source": "部分目录无法读取 · {} 个错误",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 601
+        }
+      ],
+      "original_literals": [
+        "\"部分目录无法读取 · {} 个错误\""
+      ],
+      "format_template": true
+    },
+    "msg_a2d7df3e4edd": {
+      "text": "扫描完成 · {} 个媒体 · {}ms",
+      "source": "扫描完成 · {} 个媒体 · {}ms",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 604
+        }
+      ],
+      "original_literals": [
+        "\"扫描完成 · {} 个媒体 · {}ms\""
+      ],
+      "format_template": true
+    },
+    "msg_2095eb0c19dd": {
+      "text": "扫描中 · 暂存 {} 个媒体",
+      "source": "扫描中 · 暂存 {} 个媒体",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 609
+        }
+      ],
+      "original_literals": [
+        "\"扫描中 · 暂存 {} 个媒体\""
+      ],
+      "format_template": true
+    },
+    "msg_13e5048c59b9": {
+      "text": "正在加载视频或恢复位置…",
+      "source": "正在加载视频或恢复位置…",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 944
+        }
+      ],
+      "original_literals": [
+        "\"正在加载视频或恢复位置…\""
+      ],
+      "format_template": false
+    },
+    "msg_7c7802d8adae": {
+      "text": "文件夹",
+      "source": "文件夹",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 981
+        }
+      ],
+      "original_literals": [
+        "\"文件夹\""
+      ],
+      "format_template": false
+    },
+    "msg_d4b3f49cd2e4": {
+      "text": "固定",
+      "source": "固定",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 982
+        }
+      ],
+      "original_literals": [
+        "\"固定\""
+      ],
+      "format_template": false
+    },
+    "msg_e2882bdbe7bc": {
+      "text": "选择目录后显示子目录与媒体数量",
+      "source": "选择目录后显示子目录与媒体数量",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 985
+        }
+      ],
+      "original_literals": [
+        "\"选择目录后显示子目录与媒体数量\""
+      ],
+      "format_template": false
+    },
+    "msg_e9057736933d": {
+      "text": "本层：{} 张图片、{} 个视频\n含子目录：{} 张图片、{} 个视频{}",
+      "source": "本层：{} 张图片、{} 个视频\n含子目录：{} 张图片、{} 个视频{}",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1035
+        }
+      ],
+      "original_literals": [
+        "\"本层：{} 张图片、{} 个视频\\n含子目录：{} 张图片、{} 个视频{}\""
+      ],
+      "format_template": true
+    },
+    "msg_106c3b0aa0c1": {
+      "text": "（缓存）",
+      "source": "（缓存）",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1041
+        }
+      ],
+      "original_literals": [
+        "\"（缓存）\""
+      ],
+      "format_template": false
+    },
+    "msg_f4e2807ad27b": {
+      "text": "（扫描中或不完整）",
+      "source": "（扫描中或不完整）",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1043
+        }
+      ],
+      "original_literals": [
+        "\"（扫描中或不完整）\""
+      ],
+      "format_template": false
+    },
+    "msg_f4fc0425d3b1": {
+      "text": "{} 图片 · {} 视频{}",
+      "source": "{} 图片 · {} 视频{}",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1051
+        }
+      ],
+      "original_literals": [
+        "\"{} 图片 · {} 视频{}\""
+      ],
+      "format_template": true
+    },
+    "msg_a6c349f4193f": {
+      "text": " · 缓存",
+      "source": " · 缓存",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1055
+        }
+      ],
+      "original_literals": [
+        "\" · 缓存\""
+      ],
+      "format_template": false
+    },
+    "msg_f95fa2573ef0": {
+      "text": " · 扫描中",
+      "source": " · 扫描中",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1057
+        }
+      ],
+      "original_literals": [
+        "\" · 扫描中\""
+      ],
+      "format_template": false
+    },
+    "msg_5f9bb617ff06": {
+      "text": "正在准备媒体布局…",
+      "source": "正在准备媒体布局…",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1084
+        }
+      ],
+      "original_literals": [
+        "\"正在准备媒体布局…\""
+      ],
+      "format_template": false
+    },
+    "msg_1d3a0176f221": {
+      "text": "打开一个文件夹",
+      "source": "打开一个文件夹",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1086
+        }
+      ],
+      "original_literals": [
+        "\"打开一个文件夹\""
+      ],
+      "format_template": false
+    },
+    "msg_b7622205cdd2": {
+      "text": "图片和视频会按实际文件夹分组展示",
+      "source": "图片和视频会按实际文件夹分组展示",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1088
+        }
+      ],
+      "original_literals": [
+        "\"图片和视频会按实际文件夹分组展示\""
+      ],
+      "format_template": false
+    },
+    "msg_4e7cadb76761": {
+      "text": "{} {}     {} 图片 · {} 视频",
+      "source": "{} {}     {} 图片 · {} 视频",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1121
+        }
+      ],
+      "original_literals": [
+        "\"{} {}     {} 图片 · {} 视频\""
+      ],
+      "format_template": true
+    },
+    "msg_fb1eccfe14ea": {
+      "text": "进入目录",
+      "source": "进入目录",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1153
+        }
+      ],
+      "original_literals": [
+        "\"进入目录\""
+      ],
+      "format_template": false
+    },
+    "msg_7d0d5850515d": {
+      "text": "打开目录",
+      "source": "打开目录",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1159
+        }
+      ],
+      "original_literals": [
+        "\"打开目录\""
+      ],
+      "format_template": false
+    },
+    "msg_1fe9e120a450": {
+      "text": "无法解码",
+      "source": "无法解码",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1237
+        }
+      ],
+      "original_literals": [
+        "\"无法解码\""
+      ],
+      "format_template": false
+    },
+    "msg_4927a53bcc88": {
+      "text": "加载中…",
+      "source": "加载中…",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1246
+        },
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 370
+        }
+      ],
+      "original_literals": [
+        "\"加载中…\""
+      ],
+      "format_template": false
+    },
+    "msg_981ed5de50ac": {
+      "text": "无法播放",
+      "source": "无法播放",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1284
+        }
+      ],
+      "original_literals": [
+        "\"无法播放\""
+      ],
+      "format_template": false
+    },
+    "msg_c20f7618d330": {
+      "text": "视频",
+      "source": "视频",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1295
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 159
+        },
+        {
+          "file": "src/layout.rs",
+          "original_line": 102
+        },
+        {
+          "file": "src/prototype.rs",
+          "original_line": 278
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 164
+        }
+      ],
+      "original_literals": [
+        "\"视频\""
+      ],
+      "format_template": false
+    },
+    "msg_3cfb151cccd6": {
+      "text": "显示 {} 图片 · {} 视频",
+      "source": "显示 {} 图片 · {} 视频",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1599
+        }
+      ],
+      "original_literals": [
+        "\"显示 {} 图片 · {} 视频\""
+      ],
+      "format_template": true
+    },
+    "msg_55e264f79959": {
+      "text": "{} 项预览失败",
+      "source": "{} 项预览失败",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1606
+        }
+      ],
+      "original_literals": [
+        "\"{} 项预览失败\""
+      ],
+      "format_template": true
+    },
+    "msg_21e9b02cc82e": {
+      "text": "正在回收文件，请稍候",
+      "source": "正在回收文件，请稍候",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 42
+        }
+      ],
+      "original_literals": [
+        "\"正在回收文件，请稍候\""
+      ],
+      "format_template": false
+    },
+    "msg_1206f03da8b6": {
+      "text": "{} · 目标 {}",
+      "source": "{} · 目标 {}",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 110
+        }
+      ],
+      "original_literals": [
+        "\"{} · 目标 {}\""
+      ],
+      "format_template": true
+    },
+    "msg_49726f09c812": {
+      "text": "定位",
+      "source": "定位",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 112
+        }
+      ],
+      "original_literals": [
+        "\"定位\""
+      ],
+      "format_template": false
+    },
+    "msg_fe4d09f0da6a": {
+      "text": "视频加载超时，请检查挂载盘连接后重试",
+      "source": "视频加载超时，请检查挂载盘连接后重试",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 148
+        }
+      ],
+      "original_literals": [
+        "\"视频加载超时，请检查挂载盘连接后重试\""
+      ],
+      "format_template": false
+    },
+    "msg_d116b1d83be8": {
+      "text": "快进未在 5 秒内确认，请重试",
+      "source": "快进未在 5 秒内确认，请重试",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 194
+        }
+      ],
+      "original_literals": [
+        "\"快进未在 5 秒内确认，请重试\""
+      ],
+      "format_template": false
+    },
+    "msg_572cf45ba436": {
+      "text": "返回",
+      "source": "返回",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 43
+        }
+      ],
+      "original_literals": [
+        "\"返回\""
+      ],
+      "format_template": false
+    },
+    "msg_d4d9f385464d": {
+      "text": "旋转 90° 保存",
+      "source": "旋转 90° 保存",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 48
+        }
+      ],
+      "original_literals": [
+        "\"旋转 90° 保存\""
+      ],
+      "format_template": false
+    },
+    "msg_53c9aca4b68c": {
+      "text": "适应",
+      "source": "适应",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 54
+        }
+      ],
+      "original_literals": [
+        "\"适应\""
+      ],
+      "format_template": false
+    },
+    "msg_4836a49a67cd": {
+      "text": "正在解码图片…",
+      "source": "正在解码图片…",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 194
+        }
+      ],
+      "original_literals": [
+        "\"正在解码图片…\""
+      ],
+      "format_template": false
+    },
+    "msg_b8784c8dd563": {
+      "text": "重试",
+      "source": "重试",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 238
+        }
+      ],
+      "original_literals": [
+        "\"重试\""
+      ],
+      "format_template": false
+    },
+    "msg_c3396195e91c": {
+      "text": "播放",
+      "source": "播放",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 247
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 478
+        },
+        {
+          "file": "src/prototype.rs",
+          "original_line": 303
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 262
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 270
+        }
+      ],
+      "original_literals": [
+        "\"播放\""
+      ],
+      "format_template": false
+    },
+    "msg_8d12fc0d4eb2": {
+      "text": "暂停",
+      "source": "暂停",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 249
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 480
+        },
+        {
+          "file": "src/prototype.rs",
+          "original_line": 303
+        },
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 278
+        }
+      ],
+      "original_literals": [
+        "\"暂停\""
+      ],
+      "format_template": false
+    },
+    "msg_8d01732e7477": {
+      "text": "取消静音",
+      "source": "取消静音",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 264
+        }
+      ],
+      "original_literals": [
+        "\"取消静音\""
+      ],
+      "format_template": false
+    },
+    "msg_7db2e189ecb0": {
+      "text": "静音",
+      "source": "静音",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 264
+        },
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 532
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 621
+        }
+      ],
+      "original_literals": [
+        "\"静音\""
+      ],
+      "format_template": false
+    },
+    "msg_8bf8b9780d34": {
+      "text": "音量",
+      "source": "音量",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 273
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 622
+        }
+      ],
+      "original_literals": [
+        "\"音量\""
+      ],
+      "format_template": false
+    },
+    "msg_5745c2638d37": {
+      "text": "全屏 F11",
+      "source": "全屏 F11",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 279
+        }
+      ],
+      "original_literals": [
+        "\"全屏 F11\""
+      ],
+      "format_template": false
+    },
+    "msg_bcf200709dbc": {
+      "text": "上一张",
+      "source": "上一张",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 365
+        },
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 494
+        },
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 185
+        }
+      ],
+      "original_literals": [
+        "\"上一张\""
+      ],
+      "format_template": false
+    },
+    "msg_dcd4eb027369": {
+      "text": "下一张",
+      "source": "下一张",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 365
+        },
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 494
+        },
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 184
+        }
+      ],
+      "original_literals": [
+        "\"下一张\""
+      ],
+      "format_template": false
+    },
+    "msg_b825ccc758e9": {
+      "text": "无法预览",
+      "source": "无法预览",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 432
+        }
+      ],
+      "original_literals": [
+        "\"无法预览\""
+      ],
+      "format_template": false
+    },
+    "msg_e9d5ca6c1406": {
+      "text": "返回列表",
+      "source": "返回列表",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 507
+        }
+      ],
+      "original_literals": [
+        "\"返回列表\""
+      ],
+      "format_template": false
+    },
+    "msg_f8d01c881e34": {
+      "text": "适应窗口",
+      "source": "适应窗口",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 512
+        }
+      ],
+      "original_literals": [
+        "\"适应窗口\""
+      ],
+      "format_template": false
+    },
+    "msg_2ace8916ffa1": {
+      "text": "按原尺寸查看 · 1:1",
+      "source": "按原尺寸查看 · 1:1",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 517
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 320
+        }
+      ],
+      "original_literals": [
+        "\"按原尺寸查看 · 1:1\""
+      ],
+      "format_template": false
+    },
+    "msg_bf663a9d7f0c": {
+      "text": "顺时针旋转 90° 并保存",
+      "source": "顺时针旋转 90° 并保存",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 522
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 312
+        }
+      ],
+      "original_literals": [
+        "\"顺时针旋转 90° 并保存\""
+      ],
+      "format_template": false
+    },
+    "msg_391cbaf3d139": {
+      "text": "逆时针旋转 90° 并保存",
+      "source": "逆时针旋转 90° 并保存",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 523
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 316
+        }
+      ],
+      "original_literals": [
+        "\"逆时针旋转 90° 并保存\""
+      ],
+      "format_template": false
+    },
+    "msg_d10a1eff9182": {
+      "text": "开启声音",
+      "source": "开启声音",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 532
+        }
+      ],
+      "original_literals": [
+        "\"开启声音\""
+      ],
+      "format_template": false
+    },
+    "msg_f03e2b5312a8": {
+      "text": "播放 / 暂停",
+      "source": "播放 / 暂停",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 544
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 669
+        }
+      ],
+      "original_literals": [
+        "\"播放 / 暂停\""
+      ],
+      "format_template": false
+    },
+    "msg_3cf0d9e7fb39": {
+      "text": "从头播放",
+      "source": "从头播放",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 550
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 328
+        }
+      ],
+      "original_literals": [
+        "\"从头播放\""
+      ],
+      "format_template": false
+    },
+    "msg_fb57dd24c4e5": {
+      "text": "播放结束后",
+      "source": "播放结束后",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 560
+        }
+      ],
+      "original_literals": [
+        "\"播放结束后\""
+      ],
+      "format_template": false
+    },
+    "msg_3e11925eb6cf": {
+      "text": "复制文件路径",
+      "source": "复制文件路径",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 571
+        }
+      ],
+      "original_literals": [
+        "\"复制文件路径\""
+      ],
+      "format_template": false
+    },
+    "msg_9e3fc11213b9": {
+      "text": "在资源管理器中显示",
+      "source": "在资源管理器中显示",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 575
+        }
+      ],
+      "original_literals": [
+        "\"在资源管理器中显示\""
+      ],
+      "format_template": false
+    },
+    "msg_5954acf17787": {
+      "text": "移入回收站",
+      "source": "移入回收站 · Delete",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 582
+        }
+      ],
+      "original_literals": [
+        "\"移入回收站 · Delete\""
+      ],
+      "format_template": false
+    },
+    "msg_a51617f0545e": {
+      "text": "大小：{:.2} MB",
+      "source": "大小：{:.2} MB",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 590
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 429
+        }
+      ],
+      "original_literals": [
+        "\"大小：{:.2} MB\""
+      ],
+      "format_template": true
+    },
+    "msg_2f2763d91d85": {
+      "text": "分辨率：{w} × {h}",
+      "source": "分辨率：{w} × {h}",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 594
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 433
+        }
+      ],
+      "original_literals": [
+        "\"分辨率：{w} × {h}\""
+      ],
+      "format_template": true
+    },
+    "msg_9bab400616ec": {
+      "text": "已播放到最后一个视频",
+      "source": "已播放到最后一个视频",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 657
+        }
+      ],
+      "original_literals": [
+        "\"已播放到最后一个视频\""
+      ],
+      "format_template": false
+    },
+    "msg_4596ce92e46f": {
+      "text": "请先选择照片",
+      "source": "请先选择照片",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 32
+        }
+      ],
+      "original_literals": [
+        "\"请先选择照片\""
+      ],
+      "format_template": false
+    },
+    "msg_e6ed3f80b441": {
+      "text": "正在旋转并保存 {} 张照片…",
+      "source": "正在旋转并保存 {} 张照片…",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 37
+        }
+      ],
+      "original_literals": [
+        "\"正在旋转并保存 {} 张照片…\""
+      ],
+      "format_template": true
+    },
+    "msg_40abd2b80769": {
+      "text": "等待图片读取结束超时，未写入照片。请稍后重试。",
+      "source": "等待图片读取结束超时，未写入照片。请稍后重试。",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 58
+        }
+      ],
+      "original_literals": [
+        "\"等待图片读取结束超时，未写入照片。请稍后重试。\""
+      ],
+      "format_template": false
+    },
+    "msg_d58d9a685f38": {
+      "text": "旋转工作线程意外退出，请检查文件",
+      "source": "旋转工作线程意外退出，请检查文件",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 115
+        }
+      ],
+      "original_literals": [
+        "\"旋转工作线程意外退出，请检查文件\""
+      ],
+      "format_template": false
+    },
+    "msg_68a72e763584": {
+      "text": "已旋转并自动保存 {} 张照片，失败 {} 张。",
+      "source": "已旋转并自动保存 {} 张照片，失败 {} 张。",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 127
+        }
+      ],
+      "original_literals": [
+        "\"已旋转并自动保存 {} 张照片，失败 {} 张。\""
+      ],
+      "format_template": true
+    },
+    "msg_af57dc5d309d": {
+      "text": "正在保存照片旋转",
+      "source": "正在保存照片旋转",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 150
+        }
+      ],
+      "original_literals": [
+        "\"正在保存照片旋转\""
+      ],
+      "format_template": false
+    },
+    "msg_e69ce0833e43": {
+      "text": "旋转结果",
+      "source": "旋转结果",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 157
+        }
+      ],
+      "original_literals": [
+        "\"旋转结果\""
+      ],
+      "format_template": false
+    },
+    "msg_fac2a67ad878": {
+      "text": "确定",
+      "source": "确定",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 163
+        }
+      ],
+      "original_literals": [
+        "\"确定\""
+      ],
+      "format_template": false
+    },
+    "msg_df3d58c7d84b": {
+      "text": "设置",
+      "source": "设置",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 171
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 154
+        }
+      ],
+      "original_literals": [
+        "\"设置\""
+      ],
+      "format_template": false
+    },
+    "msg_3f6955c11f68": {
+      "text": "视频详情 · 播放结束后",
+      "source": "视频详情 · 播放结束后",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 172
+        }
+      ],
+      "original_literals": [
+        "\"视频详情 · 播放结束后\""
+      ],
+      "format_template": false
+    },
+    "msg_c8194c7e1681": {
+      "text": "详情页切换快捷键",
+      "source": "详情页切换快捷键",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 181
+        }
+      ],
+      "original_literals": [
+        "\"详情页切换快捷键\""
+      ],
+      "format_template": false
+    },
+    "msg_adb1bae1cbba": {
+      "text": "上一张与下一张不能使用相同按键",
+      "source": "上一张与下一张不能使用相同按键",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 197
+        }
+      ],
+      "original_literals": [
+        "\"上一张与下一张不能使用相同按键\""
+      ],
+      "format_template": false
+    },
+    "msg_39a6b384f95e": {
+      "text": "恢复默认：下一张 0 / 上一张 1",
+      "source": "恢复默认：下一张 0 / 上一张 1",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 199
+        }
+      ],
+      "original_literals": [
+        "\"恢复默认：下一张 0 / 上一张 1\""
+      ],
+      "format_template": false
+    },
+    "msg_7e6509335c0d": {
+      "text": "小键盘需要开启 Num Lock；仅在本软件详情页生效。",
+      "source": "小键盘需要开启 Num Lock；仅在本软件详情页生效。",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 202
+        }
+      ],
+      "original_literals": [
+        "\"小键盘需要开启 Num Lock；仅在本软件详情页生效。\""
+      ],
+      "format_template": false
+    },
+    "msg_b5ca0a921d9a": {
+      "text": "输入文字、操作菜单时不切换；原有左右箭头仍可使用。",
+      "source": "输入文字、操作菜单时不切换；原有左右箭头仍可使用。",
+      "references": [
+        {
+          "file": "src/browser_rotate.rs",
+          "original_line": 203
+        }
+      ],
+      "original_literals": [
+        "\"输入文字、操作菜单时不切换；原有左右箭头仍可使用。\""
+      ],
+      "format_template": false
+    },
+    "msg_5da40cfb0e14": {
+      "text": "未执行回收：{message}",
+      "source": "未执行回收：{message}",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 97
+        }
+      ],
+      "original_literals": [
+        "\"未执行回收：{message}\""
+      ],
+      "format_template": true
+    },
+    "msg_dc144acad285": {
+      "text": "等待文件释放超时（缩略图 {thumbs_released}、GIF {gif_released}、播放器 {player_released}），请重试",
+      "source": "等待文件释放超时（缩略图 {thumbs_released}、GIF {gif_released}、播放器 {player_released}），请重试",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 135
+        }
+      ],
+      "original_literals": [
+        "\"等待文件释放超时（缩略图 {thumbs_released}、GIF {gif_released}、播放器 {player_released}），请重试\""
+      ],
+      "format_template": true
+    },
+    "msg_cf69915ef404": {
+      "text": "已移入回收站 {} 项，失败 {} 项；可在系统回收站恢复",
+      "source": "已移入回收站 {} 项，失败 {} 项；可在系统回收站恢复",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 179
+        }
+      ],
+      "original_literals": [
+        "\"已移入回收站 {} 项，失败 {} 项；可在系统回收站恢复\""
+      ],
+      "format_template": true
+    },
+    "msg_8761dfbbab6a": {
+      "text": "正在移入回收站",
+      "source": "正在移入回收站",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 225
+        }
+      ],
+      "original_literals": [
+        "\"正在移入回收站\""
+      ],
+      "format_template": false
+    },
+    "msg_f1a3d5eceef2": {
+      "text": "正在释放媒体文件",
+      "source": "正在释放媒体文件",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 227
+        }
+      ],
+      "original_literals": [
+        "\"正在释放媒体文件\""
+      ],
+      "format_template": false
+    },
+    "msg_992665840148": {
+      "text": "已处理 {} / {} 项",
+      "source": "已处理 {} / {} 项",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 232
+        }
+      ],
+      "original_literals": [
+        "\"已处理 {} / {} 项\""
+      ],
+      "format_template": true
+    },
+    "msg_6ae8b8b2306a": {
+      "text": "部分文件未能移入回收站",
+      "source": "部分文件未能移入回收站",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 241
+        }
+      ],
+      "original_literals": [
+        "\"部分文件未能移入回收站\""
+      ],
+      "format_template": false
+    },
+    "msg_0820bea66fea": {
+      "text": "失败文件保留在原处。可关闭占用程序或刷新目录后重试。",
+      "source": "失败文件保留在原处。可关闭占用程序或刷新目录后重试。",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 245
+        }
+      ],
+      "original_literals": [
+        "\"失败文件保留在原处。可关闭占用程序或刷新目录后重试。\""
+      ],
+      "format_template": false
+    },
+    "msg_d771576fc05c": {
+      "text": "媒体库",
+      "source": "媒体库",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 69
+        }
+      ],
+      "original_literals": [
+        "\"媒体库\""
+      ],
+      "format_template": false
+    },
+    "msg_52daa71ebc31": {
+      "text": "目录",
+      "source": "目录",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 72
+        }
+      ],
+      "original_literals": [
+        "\"目录\""
+      ],
+      "format_template": false
+    },
+    "msg_c1b55ee36c0a": {
+      "text": "显示或隐藏文件夹",
+      "source": "显示或隐藏文件夹",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 73
+        }
+      ],
+      "original_literals": [
+        "\"显示或隐藏文件夹\""
+      ],
+      "format_template": false
+    },
+    "msg_2d1d8c1e3895": {
+      "text": "后退",
+      "source": "后退",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 80
+        }
+      ],
+      "original_literals": [
+        "\"后退\""
+      ],
+      "format_template": false
+    },
+    "msg_d681c6e2947a": {
+      "text": "前进",
+      "source": "前进",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 87
+        }
+      ],
+      "original_literals": [
+        "\"前进\""
+      ],
+      "format_template": false
+    },
+    "msg_8e7847be62b6": {
+      "text": "上一级",
+      "source": "上一级",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 92
+        }
+      ],
+      "original_literals": [
+        "\"上一级\""
+      ],
+      "format_template": false
+    },
+    "msg_8b255a828990": {
+      "text": "输入文件夹路径，按 Enter 打开",
+      "source": "输入文件夹路径，按 Enter 打开",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 107
+        }
+      ],
+      "original_literals": [
+        "\"输入文件夹路径，按 Enter 打开\""
+      ],
+      "format_template": false
+    },
+    "msg_636cdcfb9de1": {
+      "text": "选择一个文件夹开始浏览",
+      "source": "选择一个文件夹开始浏览",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 119
+        }
+      ],
+      "original_literals": [
+        "\"选择一个文件夹开始浏览\""
+      ],
+      "format_template": false
+    },
+    "msg_fcf8b4bff0df": {
+      "text": "打开文件夹",
+      "source": "打开文件夹",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 138
+        },
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 59
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 151
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 133
+        }
+      ],
+      "original_literals": [
+        "\"打开文件夹\""
+      ],
+      "format_template": false
+    },
+    "msg_aee887434131": {
+      "text": "刷新",
+      "source": "刷新",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 149
+        }
+      ],
+      "original_literals": [
+        "\"刷新\""
+      ],
+      "format_template": false
+    },
+    "msg_2ee2a6e9a382": {
+      "text": "全部媒体",
+      "source": "全部媒体",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 157
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 162
+        }
+      ],
+      "original_literals": [
+        "\"全部媒体\""
+      ],
+      "format_template": false
+    },
+    "msg_d24c10d37db0": {
+      "text": "图片",
+      "source": "图片",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 158
+        },
+        {
+          "file": "src/layout.rs",
+          "original_line": 101
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 163
+        }
+      ],
+      "original_literals": [
+        "\"图片\""
+      ],
+      "format_template": false
+    },
+    "msg_a6e48adc26d6": {
+      "text": "文件名",
+      "source": "文件名",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 167
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 172
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 172
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 177
+        }
+      ],
+      "original_literals": [
+        "\"文件名\""
+      ],
+      "format_template": false
+    },
+    "msg_257bbcc44c83": {
+      "text": "修改时间",
+      "source": "修改时间",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 168
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 176
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 173
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 181
+        }
+      ],
+      "original_literals": [
+        "\"修改时间\""
+      ],
+      "format_template": false
+    },
+    "msg_b9bf6916437a": {
+      "text": "文件大小",
+      "source": "文件大小",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 169
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 181
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 174
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 186
+        }
+      ],
+      "original_literals": [
+        "\"文件大小\""
+      ],
+      "format_template": false
+    },
+    "msg_bd1f577b21a6": {
+      "text": "降序 ↓",
+      "source": "降序 ↓",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 186
+        }
+      ],
+      "original_literals": [
+        "\"降序 ↓\""
+      ],
+      "format_template": false
+    },
+    "msg_7ad8a345c976": {
+      "text": "升序 ↑",
+      "source": "升序 ↑",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 188
+        }
+      ],
+      "original_literals": [
+        "\"升序 ↑\""
+      ],
+      "format_template": false
+    },
+    "msg_4bd9567589ed": {
+      "text": "按类型分组",
+      "source": "按类型分组",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 194
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 199
+        }
+      ],
+      "original_literals": [
+        "\"按类型分组\""
+      ],
+      "format_template": false
+    },
+    "msg_6f11c128d43c": {
+      "text": "预览大小",
+      "source": "预览大小",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 196
+        }
+      ],
+      "original_literals": [
+        "\"预览大小\""
+      ],
+      "format_template": false
+    },
+    "msg_67ca58821606": {
+      "text": "多选 / 全选",
+      "source": "多选 / 全选",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 211
+        }
+      ],
+      "original_literals": [
+        "\"多选 / 全选\""
+      ],
+      "format_template": false
+    },
+    "msg_74966e20df2e": {
+      "text": "取消选择",
+      "source": "取消选择",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 213
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 223
+        }
+      ],
+      "original_literals": [
+        "\"取消选择\""
+      ],
+      "format_template": false
+    },
+    "msg_bdaf2ae772e6": {
+      "text": "挂载盘 · 按需读取",
+      "source": "挂载盘 · 按需读取",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 229
+        }
+      ],
+      "original_literals": [
+        "\"挂载盘 · 按需读取\""
+      ],
+      "format_template": false
+    },
+    "msg_312c96620010": {
+      "text": "旋转照片",
+      "source": "旋转照片",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 233
+        }
+      ],
+      "original_literals": [
+        "\"旋转照片\""
+      ],
+      "format_template": false
+    },
+    "msg_12f7e288c337": {
+      "text": "顺时针 90°，无损写回原文件；不支持的格式会提示",
+      "source": "顺时针 90°，无损写回原文件；不支持的格式会提示",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 234
+        }
+      ],
+      "original_literals": [
+        "\"顺时针 90°，无损写回原文件；不支持的格式会提示\""
+      ],
+      "format_template": false
+    },
+    "msg_1c63eccd9001": {
+      "text": "已选 {} 项",
+      "source": "已选 {} 项",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 241
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 235
+        }
+      ],
+      "original_literals": [
+        "\"已选 {} 项\""
+      ],
+      "format_template": true
+    },
+    "msg_5f90fbb83585": {
+      "text": "打开详情",
+      "source": "打开详情",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 302
+        }
+      ],
+      "original_literals": [
+        "\"打开详情\""
+      ],
+      "format_template": false
+    },
+    "msg_78524b56a1ad": {
+      "text": "开启视频声音",
+      "source": "开启视频声音",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 345
+        }
+      ],
+      "original_literals": [
+        "\"开启视频声音\""
+      ],
+      "format_template": false
+    },
+    "msg_7dfb22e765ee": {
+      "text": "静音视频",
+      "source": "静音视频",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 347
+        }
+      ],
+      "original_literals": [
+        "\"静音视频\""
+      ],
+      "format_template": false
+    },
+    "msg_753dbc75f545": {
+      "text": "取消选中此项",
+      "source": "取消选中此项",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 364
+        }
+      ],
+      "original_literals": [
+        "\"取消选中此项\""
+      ],
+      "format_template": false
+    },
+    "msg_09418a2c64cb": {
+      "text": "选中此项",
+      "source": "选中此项",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 366
+        }
+      ],
+      "original_literals": [
+        "\"选中此项\""
+      ],
+      "format_template": false
+    },
+    "msg_5bb55ae730fc": {
+      "text": "选择同一文件夹内的媒体",
+      "source": "选择同一文件夹内的媒体",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 373
+        }
+      ],
+      "original_literals": [
+        "\"选择同一文件夹内的媒体\""
+      ],
+      "format_template": false
+    },
+    "msg_40755a95fb42": {
+      "text": "全选当前结果 · Ctrl+A",
+      "source": "全选当前结果 · Ctrl+A",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 389
+        }
+      ],
+      "original_literals": [
+        "\"全选当前结果 · Ctrl+A\""
+      ],
+      "format_template": false
+    },
+    "msg_73de815eb68f": {
+      "text": "复制所选文件 · {} 项",
+      "source": "复制所选路径 · {} 项",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 395
+        }
+      ],
+      "original_literals": [
+        "\"复制所选路径 · {} 项\""
+      ],
+      "format_template": true
+    },
+    "msg_21e4ce11b88b": {
+      "text": "在资源管理器中显示此项",
+      "source": "在资源管理器中显示此项",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 402
+        }
+      ],
+      "original_literals": [
+        "\"在资源管理器中显示此项\""
+      ],
+      "format_template": false
+    },
+    "msg_ac5a945b9b63": {
+      "text": "复制此文件路径",
+      "source": "复制此文件路径",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 408
+        }
+      ],
+      "original_literals": [
+        "\"复制此文件路径\""
+      ],
+      "format_template": false
+    },
+    "msg_b5f2bf828fc9": {
+      "text": "将当前媒体移入回收站",
+      "source": "将当前媒体移入回收站 · Delete",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 416
+        }
+      ],
+      "original_literals": [
+        "\"将当前媒体移入回收站 · Delete\""
+      ],
+      "format_template": false
+    },
+    "msg_b2f499639394": {
+      "text": "将所选 {} 项移入回收站",
+      "source": "将所选 {} 项移入回收站 · Delete",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 418
+        }
+      ],
+      "original_literals": [
+        "\"将所选 {} 项移入回收站 · Delete\""
+      ],
+      "format_template": true
+    },
+    "msg_bc74d94581c0": {
+      "text": "媒体信息",
+      "source": "媒体信息",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 427
+        }
+      ],
+      "original_literals": [
+        "\"媒体信息\""
+      ],
+      "format_template": false
+    },
+    "msg_054f7df5a21d": {
+      "text": "时长：{}",
+      "source": "时长：{}",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 436
+        }
+      ],
+      "original_literals": [
+        "\"时长：{}\""
+      ],
+      "format_template": true
+    },
+    "msg_f9e2ebfa3cbb": {
+      "text": "声音关",
+      "source": "声音关",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 499
+        }
+      ],
+      "original_literals": [
+        "\"声音关\""
+      ],
+      "format_template": false
+    },
+    "msg_3d85e020e1e3": {
+      "text": "声音开",
+      "source": "声音开",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 499
+        }
+      ],
+      "original_literals": [
+        "\"声音开\""
+      ],
+      "format_template": false
+    },
+    "msg_fee9acef3c93": {
+      "text": "目录路径超过 IPC 消息预算",
+      "source": "目录路径超过 IPC 消息预算",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 40
+        }
+      ],
+      "original_literals": [
+        "\"目录路径超过 IPC 消息预算\""
+      ],
+      "format_template": false
+    },
+    "msg_43376f5a02a5": {
+      "text": "非法 IPC 版本或长度",
+      "source": "非法 IPC 版本或长度",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 49
+        }
+      ],
+      "original_literals": [
+        "\"非法 IPC 版本或长度\""
+      ],
+      "format_template": false
+    },
+    "msg_de6f7d2a0f88": {
+      "text": "非法 IPC 路径长度",
+      "source": "非法 IPC 路径长度",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 53
+        }
+      ],
+      "original_literals": [
+        "\"非法 IPC 路径长度\""
+      ],
+      "format_template": false
+    },
+    "msg_87461f335055": {
+      "text": "IPC 路径含空字符",
+      "source": "IPC 路径含空字符",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 59
+        }
+      ],
+      "original_literals": [
+        "\"IPC 路径含空字符\""
+      ],
+      "format_template": false
+    },
+    "msg_a1da108b966c": {
+      "text": "无法打开目录：{e}",
+      "source": "无法打开目录：{e}",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 66
+        }
+      ],
+      "original_literals": [
+        "\"无法打开目录：{e}\""
+      ],
+      "format_template": true
+    },
+    "msg_ee22fbc1a9f6": {
+      "text": "只能转交文件夹路径",
+      "source": "只能转交文件夹路径",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 68
+        }
+      ],
+      "original_literals": [
+        "\"只能转交文件夹路径\""
+      ],
+      "format_template": false
+    },
+    "msg_a7ef7d2aa9db": {
+      "text": "用户令牌大小异常",
+      "source": "用户令牌大小异常",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 105
+        }
+      ],
+      "original_literals": [
+        "\"用户令牌大小异常\""
+      ],
+      "format_template": false
+    },
+    "msg_477c0dedf9b3": {
+      "text": "IPC 已停止",
+      "source": "IPC 已停止",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 155
+        }
+      ],
+      "original_literals": [
+        "\"IPC 已停止\""
+      ],
+      "format_template": false
+    },
+    "msg_e06c6e3bb1bb": {
+      "text": "IPC 等待超时",
+      "source": "IPC 等待超时",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 157
+        }
+      ],
+      "original_literals": [
+        "\"IPC 等待超时\""
+      ],
+      "format_template": false
+    },
+    "msg_0e1cf0e8af37": {
+      "text": "IPC 写入不完整",
+      "source": "IPC 写入不完整",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 186
+        }
+      ],
+      "original_literals": [
+        "\"IPC 写入不完整\""
+      ],
+      "format_template": false
+    },
+    "msg_dad54dd16204": {
+      "text": "实例作用域无效",
+      "source": "实例作用域无效",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 244
+        }
+      ],
+      "original_literals": [
+        "\"实例作用域无效\""
+      ],
+      "format_template": false
+    },
+    "msg_497cf72c68a5": {
+      "text": "IPC 只接受绝对目录",
+      "source": "IPC 只接受绝对目录",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 310
+        }
+      ],
+      "original_literals": [
+        "\"IPC 只接受绝对目录\""
+      ],
+      "format_template": false
+    },
+    "msg_8760f5645048": {
+      "text": "现有窗口 IPC 未就绪：{e}",
+      "source": "现有窗口 IPC 未就绪：{e}",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 396
+        }
+      ],
+      "original_literals": [
+        "\"现有窗口 IPC 未就绪：{e}\""
+      ],
+      "format_template": true
+    },
+    "msg_36911f4caaf6": {
+      "text": "现有窗口请求队列已满，请稍后重试",
+      "source": "现有窗口请求队列已满，请稍后重试",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 419
+        }
+      ],
+      "original_literals": [
+        "\"现有窗口请求队列已满，请稍后重试\""
+      ],
+      "format_template": false
+    },
+    "msg_bc3eb8a3aac6": {
+      "text": "现有窗口拒绝了目录请求",
+      "source": "现有窗口拒绝了目录请求",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 421
+        }
+      ],
+      "original_literals": [
+        "\"现有窗口拒绝了目录请求\""
+      ],
+      "format_template": false
+    },
+    "msg_dfe37f1a98a9": {
+      "text": "请选择文件夹，不能把文件作为浏览根目录",
+      "source": "请选择文件夹，不能把文件作为浏览根目录",
+      "references": [
+        {
+          "file": "src/library.rs",
+          "original_line": 219
+        }
+      ],
+      "original_literals": [
+        "\"请选择文件夹，不能把文件作为浏览根目录\""
+      ],
+      "format_template": false
+    },
+    "msg_b08bb9abfedb": {
+      "text": "当前目录无法读取：{error}",
+      "source": "当前目录无法读取：{error}",
+      "references": [
+        {
+          "file": "src/library.rs",
+          "original_line": 225
+        }
+      ],
+      "original_literals": [
+        "\"当前目录无法读取：{error}\""
+      ],
+      "format_template": true
+    },
+    "msg_c749be3bdb7f": {
+      "text": "程序数据目录不能作为媒体根目录",
+      "source": "程序数据目录不能作为媒体根目录",
+      "references": [
+        {
+          "file": "src/library.rs",
+          "original_line": 232
+        }
+      ],
+      "original_literals": [
+        "\"程序数据目录不能作为媒体根目录\""
+      ],
+      "format_template": false
+    },
+    "msg_056033f28f91": {
+      "text": "程序数据目录不能作为目录树根目录",
+      "source": "程序数据目录不能作为目录树根目录",
+      "references": [
+        {
+          "file": "src/library.rs",
+          "original_line": 238
+        }
+      ],
+      "original_literals": [
+        "\"程序数据目录不能作为目录树根目录\""
+      ],
+      "format_template": false
+    },
+    "msg_8a4eb8b2005a": {
+      "text": "掠影 Glimpse · P0 技术验证",
+      "source": "大屏媒体浏览器 · P0 技术验证",
+      "references": [
+        {
+          "file": "src/main.rs",
+          "original_line": 126
+        }
+      ],
+      "original_literals": [
+        "\"大屏媒体浏览器 · P0 技术验证\""
+      ],
+      "format_template": false
+    },
+    "msg_6155b88621d2": {
+      "text": "掠影 Glimpse P0",
+      "source": "大屏媒体浏览器 P0",
+      "references": [
+        {
+          "file": "src/main.rs",
+          "original_line": 141
+        }
+      ],
+      "original_literals": [
+        "\"大屏媒体浏览器 P0\""
+      ],
+      "format_template": false
+    },
+    "msg_42ee741d9565": {
+      "text": "无效的照片方向标签",
+      "source": "无效的照片方向标签",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 27
+        }
+      ],
+      "original_literals": [
+        "\"无效的照片方向标签\""
+      ],
+      "format_template": false
+    },
+    "msg_42497205d344": {
+      "text": "方向元数据截断",
+      "source": "方向元数据截断",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 30
+        },
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 38
+        }
+      ],
+      "original_literals": [
+        "\"方向元数据截断\""
+      ],
+      "format_template": false
+    },
+    "msg_8b51506b04a1": {
+      "text": "不支持的 TIFF 字节序",
+      "source": "不支持的 TIFF 字节序",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 59
+        }
+      ],
+      "original_literals": [
+        "\"不支持的 TIFF 字节序\""
+      ],
+      "format_template": false
+    },
+    "msg_eb562dad0107": {
+      "text": "暂不支持 BigTIFF 旋转",
+      "source": "暂不支持 BigTIFF 旋转",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 62
+        }
+      ],
+      "original_literals": [
+        "\"暂不支持 BigTIFF 旋转\""
+      ],
+      "format_template": false
+    },
+    "msg_9d97b824dda8": {
+      "text": "IFD 太大",
+      "source": "IFD 太大",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 66
+        }
+      ],
+      "original_literals": [
+        "\"IFD 太大\""
+      ],
+      "format_template": false
+    },
+    "msg_1dc76671f5a2": {
+      "text": "多页 TIFF 暂不支持自动保存旋转",
+      "source": "多页 TIFF 暂不支持自动保存旋转",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 69
+        }
+      ],
+      "original_literals": [
+        "\"多页 TIFF 暂不支持自动保存旋转\""
+      ],
+      "format_template": false
+    },
+    "msg_d2f807ecb760": {
+      "text": "照片方向字段无效",
+      "source": "照片方向字段无效",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 79
+        }
+      ],
+      "original_literals": [
+        "\"照片方向字段无效\""
+      ],
+      "format_template": false
+    },
+    "msg_eb1236676fc1": {
+      "text": "方向字段数量超限",
+      "source": "方向字段数量超限",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 89
+        }
+      ],
+      "original_literals": [
+        "\"方向字段数量超限\""
+      ],
+      "format_template": false
+    },
+    "msg_0a7fefdd06a2": {
+      "text": "TIFF 超过偏移预算",
+      "source": "TIFF 超过偏移预算",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 104
+        }
+      ],
+      "original_literals": [
+        "\"TIFF 超过偏移预算\""
+      ],
+      "format_template": false
+    },
+    "msg_3ea94fce15a5": {
+      "text": "不是合法 JPEG",
+      "source": "不是合法 JPEG",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 122
+        }
+      ],
+      "original_literals": [
+        "\"不是合法 JPEG\""
+      ],
+      "format_template": false
+    },
+    "msg_3134b8d4c7c3": {
+      "text": "JPEG 标记损坏",
+      "source": "JPEG 标记损坏",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 130
+        }
+      ],
+      "original_literals": [
+        "\"JPEG 标记损坏\""
+      ],
+      "format_template": false
+    },
+    "msg_537ab60fcc47": {
+      "text": "JPEG 截断",
+      "source": "JPEG 截断",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 135
+        }
+      ],
+      "original_literals": [
+        "\"JPEG 截断\""
+      ],
+      "format_template": false
+    },
+    "msg_0713d9733bb3": {
+      "text": "JPEG 段截断",
+      "source": "JPEG 段截断",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 146
+        }
+      ],
+      "original_literals": [
+        "\"JPEG 段截断\""
+      ],
+      "format_template": false
+    },
+    "msg_14cc2d8f7485": {
+      "text": "多个 EXIF 段，拒绝不确定的旋转",
+      "source": "多个 EXIF 段，拒绝不确定的旋转",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 150
+        }
+      ],
+      "original_literals": [
+        "\"多个 EXIF 段，拒绝不确定的旋转\""
+      ],
+      "format_template": false
+    },
+    "msg_d281ee2dadfa": {
+      "text": "JPEG 缺少压缩图像段，拒绝写入",
+      "source": "JPEG 缺少压缩图像段，拒绝写入",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 157
+        }
+      ],
+      "original_literals": [
+        "\"JPEG 缺少压缩图像段，拒绝写入\""
+      ],
+      "format_template": false
+    },
+    "msg_2a810e78038b": {
+      "text": "EXIF 已满，无法无损添加方向",
+      "source": "EXIF 已满，无法无损添加方向",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 161
+        }
+      ],
+      "original_literals": [
+        "\"EXIF 已满，无法无损添加方向\""
+      ],
+      "format_template": false
+    },
+    "msg_44f1ff9e8d85": {
+      "text": "不是合法 PNG",
+      "source": "不是合法 PNG",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 183
+        }
+      ],
+      "original_literals": [
+        "\"不是合法 PNG\""
+      ],
+      "format_template": false
+    },
+    "msg_4229c39b5799": {
+      "text": "PNG 段溢出",
+      "source": "PNG 段溢出",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 191
+        }
+      ],
+      "original_literals": [
+        "\"PNG 段溢出\""
+      ],
+      "format_template": false
+    },
+    "msg_96fbebbf53ca": {
+      "text": "PNG 段截断",
+      "source": "PNG 段截断",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 192
+        }
+      ],
+      "original_literals": [
+        "\"PNG 段截断\""
+      ],
+      "format_template": false
+    },
+    "msg_19cb8e295608": {
+      "text": "PNG 校验失败",
+      "source": "PNG 校验失败",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 194
+        }
+      ],
+      "original_literals": [
+        "\"PNG 校验失败\""
+      ],
+      "format_template": false
+    },
+    "msg_a4a61b4f6a71": {
+      "text": "动画 PNG 暂不支持自动旋转保存",
+      "source": "动画 PNG 暂不支持自动旋转保存",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 197
+        }
+      ],
+      "original_literals": [
+        "\"动画 PNG 暂不支持自动旋转保存\""
+      ],
+      "format_template": false
+    },
+    "msg_42fd489c90c4": {
+      "text": "重复 PNG EXIF",
+      "source": "重复 PNG EXIF",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 200
+        }
+      ],
+      "original_literals": [
+        "\"重复 PNG EXIF\""
+      ],
+      "format_template": false
+    },
+    "msg_e951e20e3390": {
+      "text": "PNG 缺少 IEND",
+      "source": "PNG 缺少 IEND",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 211
+        }
+      ],
+      "original_literals": [
+        "\"PNG 缺少 IEND\""
+      ],
+      "format_template": false
+    },
+    "msg_297b8199d214": {
+      "text": "PNG 缺少 IDAT",
+      "source": "PNG 缺少 IDAT",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 232
+        }
+      ],
+      "original_literals": [
+        "\"PNG 缺少 IDAT\""
+      ],
+      "format_template": false
+    },
+    "msg_04105d199354": {
+      "text": "不是合法 WebP",
+      "source": "不是合法 WebP",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 241
+        }
+      ],
+      "original_literals": [
+        "\"不是合法 WebP\""
+      ],
+      "format_template": false
+    },
+    "msg_93bbcc5ec589": {
+      "text": "WebP 溢出",
+      "source": "WebP 溢出",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 250
+        }
+      ],
+      "original_literals": [
+        "\"WebP 溢出\""
+      ],
+      "format_template": false
+    },
+    "msg_be268c2c97c7": {
+      "text": "WebP 截断",
+      "source": "WebP 截断",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 251
+        }
+      ],
+      "original_literals": [
+        "\"WebP 截断\""
+      ],
+      "format_template": false
+    },
+    "msg_ab3aecd86267": {
+      "text": "动画 WebP 暂不支持自动旋转保存",
+      "source": "动画 WebP 暂不支持自动旋转保存",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 253
+        }
+      ],
+      "original_literals": [
+        "\"动画 WebP 暂不支持自动旋转保存\""
+      ],
+      "format_template": false
+    },
+    "msg_81c34f7814e8": {
+      "text": "WebP 扩展标记无效或为动画",
+      "source": "WebP 扩展标记无效或为动画",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 256
+        }
+      ],
+      "original_literals": [
+        "\"WebP 扩展标记无效或为动画\""
+      ],
+      "format_template": false
+    },
+    "msg_ab7758c89180": {
+      "text": "重复 WebP EXIF",
+      "source": "重复 WebP EXIF",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 262
+        }
+      ],
+      "original_literals": [
+        "\"重复 WebP EXIF\""
+      ],
+      "format_template": false
+    },
+    "msg_5ba57344056d": {
+      "text": "WebP 缺少可识别的图像尺寸",
+      "source": "WebP 缺少可识别的图像尺寸",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 290
+        }
+      ],
+      "original_literals": [
+        "\"WebP 缺少可识别的图像尺寸\""
+      ],
+      "format_template": false
+    },
+    "msg_cd83cf9e5412": {
+      "text": "WebP 尺寸为零",
+      "source": "WebP 尺寸为零",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 292
+        }
+      ],
+      "original_literals": [
+        "\"WebP 尺寸为零\""
+      ],
+      "format_template": false
+    },
+    "msg_35e3c6d83d21": {
+      "text": "WebP 过大",
+      "source": "WebP 过大",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 316
+        }
+      ],
+      "original_literals": [
+        "\"WebP 过大\""
+      ],
+      "format_template": false
+    },
+    "msg_75b64763f77e": {
+      "text": "此格式暂不能可靠写回旋转（支持 JPEG/静态 PNG/静态 WebP/单页 TIFF）；原文件未修改",
+      "source": "此格式暂不能可靠写回旋转（支持 JPEG/静态 PNG/静态 WebP/单页 TIFF）；原文件未修改",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 332
+        }
+      ],
+      "original_literals": [
+        "\"此格式暂不能可靠写回旋转（支持 JPEG/静态 PNG/静态 WebP/单页 TIFF）；原文件未修改\""
+      ],
+      "format_template": false
+    },
+    "msg_604ad9acc1ac": {
+      "text": "此格式暂不能可靠写回旋转；原文件未修改",
+      "source": "此格式暂不能可靠写回旋转；原文件未修改",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 341
+        }
+      ],
+      "original_literals": [
+        "\"此格式暂不能可靠写回旋转；原文件未修改\""
+      ],
+      "format_template": false
+    },
+    "msg_8e71c19c083c": {
+      "text": "文件已被其他程序修改，请刷新后重试",
+      "source": "文件已被其他程序修改，请刷新后重试",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 345
+        }
+      ],
+      "original_literals": [
+        "\"文件已被其他程序修改，请刷新后重试\""
+      ],
+      "format_template": false
+    },
+    "msg_01e66d9a7617": {
+      "text": "文件超过 256MiB 的无损编辑预算",
+      "source": "文件超过 256MiB 的无损编辑预算",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 348
+        }
+      ],
+      "original_literals": [
+        "\"文件超过 256MiB 的无损编辑预算\""
+      ],
+      "format_template": false
+    },
+    "msg_e870ccd1db48": {
+      "text": "暂不编辑链接或重解析路径",
+      "source": "暂不编辑链接或重解析路径",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 356
+        }
+      ],
+      "original_literals": [
+        "\"暂不编辑链接或重解析路径\""
+      ],
+      "format_template": false
+    },
+    "msg_521691544690": {
+      "text": "暂不编辑链接路径",
+      "source": "暂不编辑链接路径",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 360
+        }
+      ],
+      "original_literals": [
+        "\"暂不编辑链接路径\""
+      ],
+      "format_template": false
+    },
+    "msg_0b91760bf1c4": {
+      "text": "读取时文件长度变化",
+      "source": "读取时文件长度变化",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 377
+        }
+      ],
+      "original_literals": [
+        "\"读取时文件长度变化\""
+      ],
+      "format_template": false
+    },
+    "msg_b6a54ae1312f": {
+      "text": "缺少父目录",
+      "source": "缺少父目录",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 380
+        }
+      ],
+      "original_literals": [
+        "\"缺少父目录\""
+      ],
+      "format_template": false
+    },
+    "msg_7fe71cc634f3": {
+      "text": "已有同名恢复备份，拒绝覆盖",
+      "source": "已有同名恢复备份，拒绝覆盖",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 389
+        }
+      ],
+      "original_literals": [
+        "\"已有同名恢复备份，拒绝覆盖\""
+      ],
+      "format_template": false
+    },
+    "msg_e915282d03a2": {
+      "text": "保存前文件发生变化，已取消",
+      "source": "保存前文件发生变化，已取消",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 402
+        }
+      ],
+      "original_literals": [
+        "\"保存前文件发生变化，已取消\""
+      ],
+      "format_template": false
+    },
+    "msg_6ba8d2646ada": {
+      "text": "检测到并发修改；旋转文件已写入，原始版本保留在 {}，请核对恢复",
+      "source": "检测到并发修改；旋转文件已写入，原始版本保留在 {}，请核对恢复",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 412
+        }
+      ],
+      "original_literals": [
+        "\"检测到并发修改；旋转文件已写入，原始版本保留在 {}，请核对恢复\""
+      ],
+      "format_template": true
+    },
+    "msg_d98a7f4041fb": {
+      "text": "旋转已保存，但旧文件备份保留于 {}：{e}",
+      "source": "旋转已保存，但旧文件备份保留于 {}：{e}",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 426
+        }
+      ],
+      "original_literals": [
+        "\"旋转已保存，但旧文件备份保留于 {}：{e}\""
+      ],
+      "format_template": true
+    },
+    "msg_f5533d81a313": {
+      "text": "文件系统未能安全替换原图：{}。如生成备份请保留 {}",
+      "source": "文件系统未能安全替换原图：{}。如生成备份请保留 {}",
+      "references": [
+        {
+          "file": "src/photo_rotate.rs",
+          "original_line": 467
+        }
+      ],
+      "original_literals": [
+        "\"文件系统未能安全替换原图：{}。如生成备份请保留 {}\""
+      ],
+      "format_template": true
+    },
+    "msg_ab0c6e1819ec": {
+      "text": "当前平台尚未实现文件夹打开",
+      "source": "当前平台尚未实现文件夹打开",
+      "references": [
+        {
+          "file": "src/platform.rs",
+          "original_line": 9
+        }
+      ],
+      "original_literals": [
+        "\"当前平台尚未实现文件夹打开\""
+      ],
+      "format_template": false
+    },
+    "msg_bbdc346833e1": {
+      "text": "当前平台尚未实现文件定位",
+      "source": "当前平台尚未实现文件定位",
+      "references": [
+        {
+          "file": "src/platform.rs",
+          "original_line": 41
+        }
+      ],
+      "original_literals": [
+        "\"当前平台尚未实现文件定位\""
+      ],
+      "format_template": false
+    },
+    "msg_9a32734e7e80": {
+      "text": "播放器卸载失败：{}",
+      "source": "播放器卸载失败：{}",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 439
+        }
+      ],
+      "original_literals": [
+        "\"播放器卸载失败：{}\""
+      ],
+      "format_template": true
+    },
+    "msg_bc469be028ec": {
+      "text": "播放器释放观察失败：{code}",
+      "source": "播放器释放观察失败：{code}",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 450
+        }
+      ],
+      "original_literals": [
+        "\"播放器释放观察失败：{code}\""
+      ],
+      "format_template": true
+    },
+    "msg_1254e6914ec0": {
+      "text": "mpv 载入命令失败：{}",
+      "source": "mpv 载入命令失败：{}",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 469
+        }
+      ],
+      "original_literals": [
+        "\"mpv 载入命令失败：{}\""
+      ],
+      "format_template": true
+    },
+    "msg_81e143ce1819": {
+      "text": "mpv 未返回播放条目 ID",
+      "source": "mpv 未返回播放条目 ID",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 475
+        }
+      ],
+      "original_literals": [
+        "\"mpv 未返回播放条目 ID\""
+      ],
+      "format_template": false
+    },
+    "msg_9415129a537b": {
+      "text": "视频解码失败：{message} ({})",
+      "source": "视频解码失败：{message} ({})",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 498
+        }
+      ],
+      "original_literals": [
+        "\"视频解码失败：{message} ({})\""
+      ],
+      "format_template": true
+    },
+    "msg_678f535336b7": {
+      "text": "视频时长未知，暂时不能快进",
+      "source": "视频时长未知，暂时不能快进",
+      "references": [
+        {
+          "file": "src/playback_control.rs",
+          "original_line": 58
+        }
+      ],
+      "original_literals": [
+        "\"视频时长未知，暂时不能快进\""
+      ],
+      "format_template": false
+    },
+    "msg_147b721c0afb": {
+      "text": "当前视频不可快进",
+      "source": "当前视频不可快进",
+      "references": [
+        {
+          "file": "src/playback_control.rs",
+          "original_line": 60
+        }
+      ],
+      "original_literals": [
+        "\"当前视频不可快进\""
+      ],
+      "format_template": false
+    },
+    "msg_6d265760d273": {
+      "text": "无效的快进目标",
+      "source": "无效的快进目标",
+      "references": [
+        {
+          "file": "src/playback_control.rs",
+          "original_line": 63
+        }
+      ],
+      "original_literals": [
+        "\"无效的快进目标\""
+      ],
+      "format_template": false
+    },
+    "msg_bc358517f3b8": {
+      "text": "准备就绪：打开真实 HEIC 和视频验证原生路径",
+      "source": "准备就绪：打开真实 HEIC 和视频验证原生路径",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 100
+        }
+      ],
+      "original_literals": [
+        "\"准备就绪：打开真实 HEIC 和视频验证原生路径\""
+      ],
+      "format_template": false
+    },
+    "msg_c1bf241a7e07": {
+      "text": "视频已加载：滚轮 ±30 秒，侧键 ±5 秒，单击切换详情",
+      "source": "视频已加载：滚轮 ±30 秒，侧键 ±5 秒，单击切换详情",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 132
+        }
+      ],
+      "original_literals": [
+        "\"视频已加载：滚轮 ±30 秒，侧键 ±5 秒，单击切换详情\""
+      ],
+      "format_template": false
+    },
+    "msg_24a7767a9251": {
+      "text": "后台解码 HEIC…",
+      "source": "后台解码 HEIC…",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 141
+        }
+      ],
+      "original_literals": [
+        "\"后台解码 HEIC…\""
+      ],
+      "format_template": false
+    },
+    "msg_8e1cbda762c9": {
+      "text": "跳转 {delta:+.0}s → {target:.1}s",
+      "source": "跳转 {delta:+.0}s → {target:.1}s",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 161
+        }
+      ],
+      "original_literals": [
+        "\"跳转 {delta:+.0}s → {target:.1}s\""
+      ],
+      "format_template": true
+    },
+    "msg_d78886106a03": {
+      "text": "HEIC 已解码 {}×{} · libheif {version}",
+      "source": "HEIC 已解码 {}×{} · libheif {version}",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 269
+        }
+      ],
+      "original_literals": [
+        "\"HEIC 已解码 {}×{} · libheif {version}\""
+      ],
+      "format_template": true
+    },
+    "msg_696f70feda43": {
+      "text": "掠影 Glimpse · P0 原生媒体验证",
+      "source": "大屏媒体浏览器 · P0 原生媒体验证",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 275
+        }
+      ],
+      "original_literals": [
+        "\"大屏媒体浏览器 · P0 原生媒体验证\""
+      ],
+      "format_template": false
+    },
+    "msg_e7dbf4664f29": {
+      "text": "本页用于验证 GPU 视频、HEIC 和输入；完整浏览界面在 P0 通过后开发。",
+      "source": "本页用于验证 GPU 视频、HEIC 和输入；完整浏览界面在 P0 通过后开发。",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 276
+        }
+      ],
+      "original_literals": [
+        "\"本页用于验证 GPU 视频、HEIC 和输入；完整浏览界面在 P0 通过后开发。\""
+      ],
+      "format_template": false
+    },
+    "msg_202ea26f0b99": {
+      "text": "加载视频",
+      "source": "加载视频",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 280
+        }
+      ],
+      "original_literals": [
+        "\"加载视频\""
+      ],
+      "format_template": false
+    },
+    "msg_0e794723614f": {
+      "text": "解码 HEIC",
+      "source": "解码 HEIC",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 287
+        }
+      ],
+      "original_literals": [
+        "\"解码 HEIC\""
+      ],
+      "format_template": false
+    },
+    "msg_e6910fbecb30": {
+      "text": "返回列表预览",
+      "source": "返回列表预览",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 294
+        }
+      ],
+      "original_literals": [
+        "\"返回列表预览\""
+      ],
+      "format_template": false
+    },
+    "msg_55cbb6002f98": {
+      "text": "进入有声详情",
+      "source": "进入有声详情",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 296
+        }
+      ],
+      "original_literals": [
+        "\"进入有声详情\""
+      ],
+      "format_template": false
+    },
+    "msg_5fc98360fb7d": {
+      "text": "{delta:+.0} 秒",
+      "source": "{delta:+.0} 秒",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 315
+        }
+      ],
+      "original_literals": [
+        "\"{delta:+.0} 秒\""
+      ],
+      "format_template": true
+    },
+    "msg_c95dc99afe57": {
+      "text": "截图",
+      "source": "截图",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 319
+        }
+      ],
+      "original_literals": [
+        "\"截图\""
+      ],
+      "format_template": false
+    },
+    "msg_7d6f32539855": {
+      "text": "GPU 视频 · UI 覆盖验证",
+      "source": "GPU 视频 · UI 覆盖验证",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 360
+        }
+      ],
+      "original_literals": [
+        "\"GPU 视频 · UI 覆盖验证\""
+      ],
+      "format_template": false
+    },
+    "msg_6b2eacd72d84": {
+      "text": "{time:.1} / {duration:.1} 秒 · {} · {}",
+      "source": "{time:.1} / {duration:.1} 秒 · {} · {}",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 398
+        }
+      ],
+      "original_literals": [
+        "\"{time:.1} / {duration:.1} 秒 · {} · {}\""
+      ],
+      "format_template": true
+    },
+    "msg_b88d784d44a0": {
+      "text": "注册项包含未知类型或过大值，拒绝覆盖",
+      "source": "注册项包含未知类型或过大值，拒绝覆盖",
+      "references": [
+        {
+          "file": "src/shell_menu.rs",
+          "original_line": 88
+        }
+      ],
+      "original_literals": [
+        "\"注册项包含未知类型或过大值，拒绝覆盖\""
+      ],
+      "format_template": false
+    },
+    "msg_a6c8d44312d2": {
+      "text": "注册的程序不是普通文件",
+      "source": "注册的程序不是普通文件",
+      "references": [
+        {
+          "file": "src/shell_menu.rs",
+          "original_line": 137
+        }
+      ],
+      "original_literals": [
+        "\"注册的程序不是普通文件\""
+      ],
+      "format_template": false
+    },
+    "msg_59241e82ee02": {
+      "text": "程序路径不能转换为 Unicode",
+      "source": "程序路径不能转换为 Unicode",
+      "references": [
+        {
+          "file": "src/shell_menu.rs",
+          "original_line": 139
+        }
+      ],
+      "original_literals": [
+        "\"程序路径不能转换为 Unicode\""
+      ],
+      "format_template": false
+    },
+    "msg_27f1f755b80d": {
+      "text": "非法程序路径",
+      "source": "非法程序路径",
+      "references": [
+        {
+          "file": "src/shell_menu.rs",
+          "original_line": 146
+        }
+      ],
+      "original_literals": [
+        "\"非法程序路径\""
+      ],
+      "format_template": false
+    },
+    "msg_54a39cce49c2": {
+      "text": "菜单验证作用域无效",
+      "source": "菜单验证作用域无效",
+      "references": [
+        {
+          "file": "src/shell_menu.rs",
+          "original_line": 160
+        }
+      ],
+      "original_literals": [
+        "\"菜单验证作用域无效\""
+      ],
+      "format_template": false
+    },
+    "msg_ea64aefa8c7e": {
+      "text": "已有非本程序注册项，未修改：{}",
+      "source": "已有非本程序注册项，未修改：{}",
+      "references": [
+        {
+          "file": "src/shell_menu.rs",
+          "original_line": 195
+        }
+      ],
+      "original_literals": [
+        "\"已有非本程序注册项，未修改：{}\""
+      ],
+      "format_template": true
+    },
+    "msg_7aab95bb682d": {
+      "text": "[验证] 用掠影 Glimpse 打开",
+      "source": "[验证] 用大屏媒体浏览器打开",
+      "references": [
+        {
+          "file": "src/shell_menu.rs",
+          "original_line": 252
+        }
+      ],
+      "original_literals": [
+        "\"[验证] 用大屏媒体浏览器打开\""
+      ],
+      "format_template": false
+    },
+    "msg_7a723bf1350b": {
+      "text": "用掠影 Glimpse 打开",
+      "source": "用大屏媒体浏览器打开",
+      "references": [
+        {
+          "file": "src/shell_menu.rs",
+          "original_line": 254
+        }
+      ],
+      "original_literals": [
+        "\"用大屏媒体浏览器打开\""
+      ],
+      "format_template": false
+    },
+    "msg_7199aff8544d": {
+      "text": "注册失败：{error}；回滚错误：{}",
+      "source": "注册失败：{error}；回滚错误：{}",
+      "references": [
+        {
+          "file": "src/shell_menu.rs",
+          "original_line": 271
+        }
+      ],
+      "original_literals": [
+        "\"注册失败：{error}；回滚错误：{}\""
+      ],
+      "format_template": true
+    },
+    "msg_f955177ad8b9": {
+      "text": "小键盘 0",
+      "source": "小键盘 0",
+      "references": [
+        {
+          "file": "src/shortcuts.rs",
+          "original_line": 40
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 248
+        }
+      ],
+      "original_literals": [
+        "\"小键盘 0\""
+      ],
+      "format_template": false
+    },
+    "msg_098508d17199": {
+      "text": "小键盘 1",
+      "source": "小键盘 1",
+      "references": [
+        {
+          "file": "src/shortcuts.rs",
+          "original_line": 41
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 256
+        }
+      ],
+      "original_literals": [
+        "\"小键盘 1\""
+      ],
+      "format_template": false
+    },
+    "msg_90fda0dd2002": {
+      "text": "小键盘 2",
+      "source": "小键盘 2",
+      "references": [
+        {
+          "file": "src/shortcuts.rs",
+          "original_line": 42
+        }
+      ],
+      "original_literals": [
+        "\"小键盘 2\""
+      ],
+      "format_template": false
+    },
+    "msg_194577418054": {
+      "text": "小键盘 3",
+      "source": "小键盘 3",
+      "references": [
+        {
+          "file": "src/shortcuts.rs",
+          "original_line": 43
+        }
+      ],
+      "original_literals": [
+        "\"小键盘 3\""
+      ],
+      "format_template": false
+    },
+    "msg_3ae46a79e5d7": {
+      "text": "小键盘 4",
+      "source": "小键盘 4",
+      "references": [
+        {
+          "file": "src/shortcuts.rs",
+          "original_line": 44
+        }
+      ],
+      "original_literals": [
+        "\"小键盘 4\""
+      ],
+      "format_template": false
+    },
+    "msg_2d1a354bd5a2": {
+      "text": "小键盘 5",
+      "source": "小键盘 5",
+      "references": [
+        {
+          "file": "src/shortcuts.rs",
+          "original_line": 45
+        }
+      ],
+      "original_literals": [
+        "\"小键盘 5\""
+      ],
+      "format_template": false
+    },
+    "msg_c3ddde21047a": {
+      "text": "小键盘 6",
+      "source": "小键盘 6",
+      "references": [
+        {
+          "file": "src/shortcuts.rs",
+          "original_line": 46
+        }
+      ],
+      "original_literals": [
+        "\"小键盘 6\""
+      ],
+      "format_template": false
+    },
+    "msg_264a21bf98c9": {
+      "text": "小键盘 7",
+      "source": "小键盘 7",
+      "references": [
+        {
+          "file": "src/shortcuts.rs",
+          "original_line": 47
+        }
+      ],
+      "original_literals": [
+        "\"小键盘 7\""
+      ],
+      "format_template": false
+    },
+    "msg_f1cb48b8c875": {
+      "text": "小键盘 8",
+      "source": "小键盘 8",
+      "references": [
+        {
+          "file": "src/shortcuts.rs",
+          "original_line": 48
+        }
+      ],
+      "original_literals": [
+        "\"小键盘 8\""
+      ],
+      "format_template": false
+    },
+    "msg_d762207e9c78": {
+      "text": "小键盘 9",
+      "source": "小键盘 9",
+      "references": [
+        {
+          "file": "src/shortcuts.rs",
+          "original_line": 49
+        }
+      ],
+      "original_literals": [
+        "\"小键盘 9\""
+      ],
+      "format_template": false
+    },
+    "msg_43aa5799789d": {
+      "text": "文件已变化，请刷新目录",
+      "source": "文件已变化，请刷新目录",
+      "references": [
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 229
+        },
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 239
+        },
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 268
+        }
+      ],
+      "original_literals": [
+        "\"文件已变化，请刷新目录\""
+      ],
+      "format_template": false
+    },
+    "msg_b7f97f5740db": {
+      "text": "JPEG 没有图像信息",
+      "source": "JPEG 没有图像信息",
+      "references": [
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 308
+        }
+      ],
+      "original_literals": [
+        "\"JPEG 没有图像信息\""
+      ],
+      "format_template": false
+    },
+    "msg_797d4fbe239f": {
+      "text": "图片超过解码预算",
+      "source": "图片超过解码预算",
+      "references": [
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 311
+        }
+      ],
+      "original_literals": [
+        "\"图片超过解码预算\""
+      ],
+      "format_template": false
+    },
+    "msg_769675404fe3": {
+      "text": "JPEG 像素长度错误",
+      "source": "JPEG 像素长度错误",
+      "references": [
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 329
+        },
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 333
+        }
+      ],
+      "original_literals": [
+        "\"JPEG 像素长度错误\""
+      ],
+      "format_template": false
+    },
+    "msg_fd7dc885475f": {
+      "text": "图片超过 6400 万像素的解码预算",
+      "source": "图片超过 6400 万像素的解码预算",
+      "references": [
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 394
+        }
+      ],
+      "original_literals": [
+        "\"图片超过 6400 万像素的解码预算\""
+      ],
+      "format_template": false
+    },
+    "msg_e49013abfcba": {
+      "text": "无法启动离线媒体工具: {e}",
+      "source": "无法启动离线媒体工具: {e}",
+      "references": [
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 431
+        }
+      ],
+      "original_literals": [
+        "\"无法启动离线媒体工具: {e}\""
+      ],
+      "format_template": true
+    },
+    "msg_e5072d217250": {
+      "text": "媒体工具失败: {}",
+      "source": "媒体工具失败: {}",
+      "references": [
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 441
+        }
+      ],
+      "original_literals": [
+        "\"媒体工具失败: {}\""
+      ],
+      "format_template": true
+    },
+    "msg_353ba9444dbd": {
+      "text": "媒体处理已取消或超时",
+      "source": "媒体处理已取消或超时",
+      "references": [
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 458
+        }
+      ],
+      "original_literals": [
+        "\"媒体处理已取消或超时\""
+      ],
+      "format_template": false
+    },
+    "msg_7fecc448a328": {
+      "text": "媒体信息超过限制",
+      "source": "媒体信息超过限制",
+      "references": [
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 489
+        }
+      ],
+      "original_literals": [
+        "\"媒体信息超过限制\""
+      ],
+      "format_template": false
+    },
+    "msg_0f8b140bb123": {
+      "text": "文件中没有视频轨道",
+      "source": "文件中没有视频轨道",
+      "references": [
+        {
+          "file": "src/thumbnails.rs",
+          "original_line": 495
+        }
+      ],
+      "original_literals": [
+        "\"文件中没有视频轨道\""
+      ],
+      "format_template": false
+    },
+    "msg_90d4ef342114": {
+      "text": "路径已改变或不在当前媒体根目录内，请刷新",
+      "source": "路径已改变或不在当前媒体根目录内，请刷新",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 24
+        }
+      ],
+      "original_literals": [
+        "\"路径已改变或不在当前媒体根目录内，请刷新\""
+      ],
+      "format_template": false
+    },
+    "msg_f6ec91622b21": {
+      "text": "仅允许回收普通媒体文件",
+      "source": "仅允许回收普通媒体文件",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 28
+        }
+      ],
+      "original_literals": [
+        "\"仅允许回收普通媒体文件\""
+      ],
+      "format_template": false
+    },
+    "msg_9ccdd7970528": {
+      "text": "不能回收链接或重解析点",
+      "source": "不能回收链接或重解析点",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 34
+        }
+      ],
+      "original_literals": [
+        "\"不能回收链接或重解析点\""
+      ],
+      "format_template": false
+    },
+    "msg_9a18ed96a023": {
+      "text": "文件已被替换或修改，请刷新后重试",
+      "source": "文件已被替换或修改，请刷新后重试",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 38
+        }
+      ],
+      "original_literals": [
+        "\"文件已被替换或修改，请刷新后重试\""
+      ],
+      "format_template": false
+    },
+    "msg_5ea8bf667ee1": {
+      "text": "当前平台尚未实现回收站；没有永久删除降级",
+      "source": "当前平台尚未实现回收站；没有永久删除降级",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 50
+        }
+      ],
+      "original_literals": [
+        "\"当前平台尚未实现回收站；没有永久删除降级\""
+      ],
+      "format_template": false
+    },
+    "msg_d0d339f95699": {
+      "text": "回收请求为空或包含重复项",
+      "source": "回收请求为空或包含重复项",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 143
+        }
+      ],
+      "original_literals": [
+        "\"回收请求为空或包含重复项\""
+      ],
+      "format_template": false
+    },
+    "msg_d45bac635acc": {
+      "text": "回收工作线程繁忙或已停止",
+      "source": "回收工作线程繁忙或已停止",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 147
+        }
+      ],
+      "original_literals": [
+        "\"回收工作线程繁忙或已停止\""
+      ],
+      "format_template": false
+    },
+    "msg_96529cbfc322": {
+      "text": "文件正被其他程序占用，请关闭占用程序后重试",
+      "source": "文件正被其他程序占用，请关闭占用程序后重试",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 198
+        }
+      ],
+      "original_literals": [
+        "\"文件正被其他程序占用，请关闭占用程序后重试\""
+      ],
+      "format_template": false
+    },
+    "msg_e8b482993477": {
+      "text": "没有回收该文件所需的权限，未执行永久删除",
+      "source": "没有回收该文件所需的权限，未执行永久删除",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 202
+        }
+      ],
+      "original_literals": [
+        "\"没有回收该文件所需的权限，未执行永久删除\""
+      ],
+      "format_template": false
+    },
+    "msg_ff443d52ba30": {
+      "text": "此文件或磁盘当前无法使用回收站，未执行永久删除",
+      "source": "此文件或磁盘当前无法使用回收站，未执行永久删除",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 207
+        }
+      ],
+      "original_literals": [
+        "\"此文件或磁盘当前无法使用回收站，未执行永久删除\""
+      ],
+      "format_template": false
+    },
+    "msg_07eeba75fdb2": {
+      "text": "系统回收失败（0x{:08X}）：{error}",
+      "source": "系统回收失败（0x{:08X}）：{error}",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 209
+        }
+      ],
+      "original_literals": [
+        "\"系统回收失败（0x{:08X}）：{error}\""
+      ],
+      "format_template": true
+    },
+    "msg_6749d6897e13": {
+      "text": "系统未选择回收操作，已阻止永久删除",
+      "source": "系统未选择回收操作，已阻止永久删除",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 250
+        }
+      ],
+      "original_literals": [
+        "\"系统未选择回收操作，已阻止永久删除\""
+      ],
+      "format_template": false
+    },
+    "msg_aed5785a3fb7": {
+      "text": "Shell 目标路径与已扫描文件不一致",
+      "source": "Shell 目标路径与已扫描文件不一致",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 256
+        }
+      ],
+      "original_literals": [
+        "\"Shell 目标路径与已扫描文件不一致\""
+      ],
+      "format_template": false
+    },
+    "msg_e558a4889ba7": {
+      "text": "缺少删除前核对",
+      "source": "缺少删除前核对",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 282
+        }
+      ],
+      "original_literals": [
+        "\"缺少删除前核对\""
+      ],
+      "format_template": false
+    },
+    "msg_1082fd85340c": {
+      "text": "Shell 未返回可恢复的回收项",
+      "source": "Shell 未返回可恢复的回收项",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 284
+        }
+      ],
+      "original_literals": [
+        "\"Shell 未返回可恢复的回收项\""
+      ],
+      "format_template": false
+    },
+    "msg_491fc4e329fc": {
+      "text": "共享目录不支持本地回收站，未删除文件",
+      "source": "共享目录不支持本地回收站，未删除文件",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 396
+        }
+      ],
+      "original_literals": [
+        "\"共享目录不支持本地回收站，未删除文件\""
+      ],
+      "format_template": false
+    },
+    "msg_e7dc95985655": {
+      "text": "回收操作已中止",
+      "source": "回收操作已中止",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 432
+        }
+      ],
+      "original_literals": [
+        "\"回收操作已中止\""
+      ],
+      "format_template": false
+    },
+    "msg_0df8b18d273a": {
+      "text": "系统未返回逐项回收结果",
+      "source": "系统未返回逐项回收结果",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 434
+        }
+      ],
+      "original_literals": [
+        "\"系统未返回逐项回收结果\""
+      ],
+      "format_template": false
+    },
+    "msg_9112e7066855": {
+      "text": "当前文件夹",
+      "source": "当前文件夹",
+      "references": [
+        {
+          "file": "src/view.rs",
+          "original_line": 139
+        }
+      ],
+      "original_literals": [
+        "\"当前文件夹\""
+      ],
+      "format_template": false
+    },
+    "msg_c7fcbcad7615": {
+      "text": "父目录监听不可用：{e}",
+      "source": "父目录监听不可用：{e}",
+      "references": [
+        {
+          "file": "src/watch.rs",
+          "original_line": 179
+        }
+      ],
+      "original_literals": [
+        "\"父目录监听不可用：{e}\""
+      ],
+      "format_template": true
+    },
+    "msg_3bfd72863ddb": {
+      "text": "目录监听不可用，请手动刷新：{e}",
+      "source": "目录监听不可用，请手动刷新：{e}",
+      "references": [
+        {
+          "file": "src/watch.rs",
+          "original_line": 184
+        }
+      ],
+      "original_literals": [
+        "\"目录监听不可用，请手动刷新：{e}\""
+      ],
+      "format_template": true
+    },
+    "msg_f569d1a45265": {
+      "text": "文件监听不可用，请手动刷新：{e}",
+      "source": "文件监听不可用，请手动刷新：{e}",
+      "references": [
+        {
+          "file": "src/watch.rs",
+          "original_line": 188
+        }
+      ],
+      "original_literals": [
+        "\"文件监听不可用，请手动刷新：{e}\""
+      ],
+      "format_template": true
+    },
+    "msg_7dfb57afc881": {
+      "text": "目录已移走或暂时不可用；可刷新或等待目录恢复",
+      "source": "目录已移走或暂时不可用；可刷新或等待目录恢复",
+      "references": [
+        {
+          "file": "src/watch.rs",
+          "original_line": 211
+        }
+      ],
+      "original_literals": [
+        "\"目录已移走或暂时不可用；可刷新或等待目录恢复\""
+      ],
+      "format_template": false
+    },
+    "msg_667c88b35495": {
+      "text": "目录重新监听失败：{e}",
+      "source": "目录重新监听失败：{e}",
+      "references": [
+        {
+          "file": "src/watch.rs",
+          "original_line": 218
+        }
+      ],
+      "original_literals": [
+        "\"目录重新监听失败：{e}\""
+      ],
+      "format_template": true
+    },
+    "msg_0d71e9d04ac2": {
+      "text": "GIF ICC: {error}",
+      "source": "GIF ICC: {error}",
+      "references": [
+        {
+          "file": "src/animation.rs",
+          "original_line": 316
+        }
+      ],
+      "original_literals": [
+        "\"GIF ICC: {error}\""
+      ],
+      "format_template": true
+    },
+    "msg_eecb8317e320": {
+      "text": "OpenGL required",
+      "source": "OpenGL required",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 369
+        },
+        {
+          "file": "src/prototype.rs",
+          "original_line": 96
+        }
+      ],
+      "original_literals": [
+        "\"OpenGL required\""
+      ]
+    },
+    "msg_3d37cdb74bd1": {
+      "text": "ICC profile exceeds 4MiB",
+      "source": "ICC profile exceeds 4MiB",
+      "references": [
+        {
+          "file": "src/color.rs",
+          "original_line": 4
+        }
+      ],
+      "original_literals": [
+        "\"ICC profile exceeds 4MiB\""
+      ]
+    },
+    "msg_4ef3edc9c3dc": {
+      "text": "Unsupported non-RGB ICC profile",
+      "source": "Unsupported non-RGB ICC profile",
+      "references": [
+        {
+          "file": "src/color.rs",
+          "original_line": 8
+        }
+      ],
+      "original_literals": [
+        "\"Unsupported non-RGB ICC profile\""
+      ]
+    },
+    "msg_241605ca0960": {
+      "text": "Invalid UTF-16 path blob",
+      "source": "Invalid UTF-16 path blob",
+      "references": [
+        {
+          "file": "src/domain.rs",
+          "original_line": 62
+        }
+      ],
+      "original_literals": [
+        "\"Invalid UTF-16 path blob\""
+      ]
+    },
+    "msg_c2005d8d96b2": {
+      "text": "libheif {}/{}: {msg}",
+      "source": "libheif {}/{}: {msg}",
+      "references": [
+        {
+          "file": "src/heif.rs",
+          "original_line": 27
+        }
+      ],
+      "original_literals": [
+        "\"libheif {}/{}: {msg}\""
+      ],
+      "format_template": true
+    },
+    "msg_095968eeacbd": {
+      "text": "HEIF file exceeds 512MiB limit",
+      "source": "HEIF file exceeds 512MiB limit",
+      "references": [
+        {
+          "file": "src/heif.rs",
+          "original_line": 54
+        },
+        {
+          "file": "src/heif.rs",
+          "original_line": 61
+        }
+      ],
+      "original_literals": [
+        "\"HEIF file exceeds 512MiB limit\""
+      ]
+    },
+    "msg_ff7f1d6e58be": {
+      "text": "HEIF context allocation failed",
+      "source": "HEIF context allocation failed",
+      "references": [
+        {
+          "file": "src/heif.rs",
+          "original_line": 118
+        },
+        {
+          "file": "src/heif.rs",
+          "original_line": 71
+        }
+      ],
+      "original_literals": [
+        "\"HEIF context allocation failed\""
+      ]
+    },
+    "msg_7429f31a8d69": {
+      "text": "HEIF dimensions exceed budget",
+      "source": "HEIF dimensions exceed budget",
+      "references": [
+        {
+          "file": "src/heif.rs",
+          "original_line": 130
+        }
+      ],
+      "original_literals": [
+        "\"HEIF dimensions exceed budget\""
+      ]
+    },
+    "msg_f85c27093806": {
+      "text": "Invalid HEIF plane",
+      "source": "Invalid HEIF plane",
+      "references": [
+        {
+          "file": "src/heif.rs",
+          "original_line": 136
+        }
+      ],
+      "original_literals": [
+        "\"Invalid HEIF plane\""
+      ]
+    },
+    "msg_adaf6c238f5a": {
+      "text": "Invalid HEIF buffer",
+      "source": "Invalid HEIF buffer",
+      "references": [
+        {
+          "file": "src/heif.rs",
+          "original_line": 147
+        }
+      ],
+      "original_literals": [
+        "\"Invalid HEIF buffer\""
+      ]
+    },
+    "msg_4f036fc3ae7a": {
+      "text": "HEIF color profile: {e}",
+      "source": "HEIF color profile: {e}",
+      "references": [
+        {
+          "file": "src/heif.rs",
+          "original_line": 164
+        }
+      ],
+      "original_literals": [
+        "\"HEIF color profile: {e}\""
+      ],
+      "format_template": true
+    },
+    "msg_7a61717abbc6": {
+      "text": "Index schema {version} is newer than supported version 1; preserve the database",
+      "source": "Index schema {version} is newer than supported version 1; preserve the database",
+      "references": [
+        {
+          "file": "src/index.rs",
+          "original_line": 44
+        }
+      ],
+      "original_literals": [
+        "\"Index schema {version} is newer than supported version 1; preserve the database\""
+      ],
+      "format_template": true
+    },
+    "msg_2d6bfee39ffb": {
+      "text": "No active root",
+      "source": "No active root",
+      "references": [
+        {
+          "file": "src/index.rs",
+          "original_line": 215
+        },
+        {
+          "file": "src/index.rs",
+          "original_line": 221
+        }
+      ],
+      "original_literals": [
+        "\"No active root\""
+      ]
+    },
+    "msg_422266baa549": {
+      "text": "View root is outside scanned tree",
+      "source": "View root is outside scanned tree",
+      "references": [
+        {
+          "file": "src/index.rs",
+          "original_line": 223
+        }
+      ],
+      "original_literals": [
+        "\"View root is outside scanned tree\""
+      ]
+    },
+    "msg_8e6fe7911f38": {
+      "text": "IPC connect: {error}",
+      "source": "IPC connect: {error}",
+      "references": [
+        {
+          "file": "src/instance.rs",
+          "original_line": 302
+        }
+      ],
+      "original_literals": [
+        "\"IPC connect: {error}\""
+      ],
+      "format_template": true
+    },
+    "msg_d74f0b618c8c": {
+      "text": "missing test scope",
+      "source": "missing test scope",
+      "references": [
+        {
+          "file": "src/main.rs",
+          "original_line": 41
+        }
+      ],
+      "original_literals": [
+        "\"missing test scope\""
+      ]
+    },
+    "msg_506ced736802": {
+      "text": "input path required",
+      "source": "input path required",
+      "references": [
+        {
+          "file": "src/main.rs",
+          "original_line": 65
+        }
+      ],
+      "original_literals": [
+        "\"input path required\""
+      ]
+    },
+    "msg_8688ff1ec18f": {
+      "text": "output PNG required",
+      "source": "output PNG required",
+      "references": [
+        {
+          "file": "src/main.rs",
+          "original_line": 68
+        }
+      ],
+      "original_literals": [
+        "\"output PNG required\""
+      ]
+    },
+    "msg_50792e78d2d9": {
+      "text": "video path required",
+      "source": "video path required",
+      "references": [
+        {
+          "file": "src/main.rs",
+          "original_line": 77
+        }
+      ],
+      "original_literals": [
+        "\"video path required\""
+      ]
+    },
+    "msg_649d18c0eaf7": {
+      "text": "executable path",
+      "source": "executable path",
+      "references": [
+        {
+          "file": "src/native.rs",
+          "original_line": 8
+        }
+      ],
+      "original_literals": [
+        "\"executable path\""
+      ]
+    },
+    "msg_4dc35d1072e9": {
+      "text": "mpv_create failed",
+      "source": "mpv_create failed",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 203
+        }
+      ],
+      "original_literals": [
+        "\"mpv_create failed\""
+      ]
+    },
+    "msg_1c58c859889a": {
+      "text": "mpv option {key}: {code}",
+      "source": "mpv option {key}: {code}",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 249
+        }
+      ],
+      "original_literals": [
+        "\"mpv option {key}: {code}\""
+      ],
+      "format_template": true
+    },
+    "msg_665e30cdc42e": {
+      "text": "mpv_initialize: {code}",
+      "source": "mpv_initialize: {code}",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 260
+        }
+      ],
+      "original_literals": [
+        "\"mpv_initialize: {code}\""
+      ],
+      "format_template": true
+    },
+    "msg_241f20389b16": {
+      "text": "mpv render context: {code}",
+      "source": "mpv render context: {code}",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 298
+        }
+      ],
+      "original_literals": [
+        "\"mpv render context: {code}\""
+      ],
+      "format_template": true
+    },
+    "msg_cc43b50c3426": {
+      "text": "mpv command {args:?}: {code}",
+      "source": "mpv command {args:?}: {code}",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 321
+        }
+      ],
+      "original_literals": [
+        "\"mpv command {args:?}: {code}\""
+      ],
+      "format_template": true
+    },
+    "msg_f6b9e2fa1138": {
+      "text": "Path is not Unicode",
+      "source": "Path is not Unicode",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 336
+        }
+      ],
+      "original_literals": [
+        "\"Path is not Unicode\""
+      ]
+    },
+    "msg_0445156ba326": {
+      "text": "mpv async command failed: {}",
+      "source": "mpv async command failed: {}",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 544
+        }
+      ],
+      "original_literals": [
+        "\"mpv async command failed: {}\""
+      ],
+      "format_template": true
+    },
+    "msg_72033e09bb7f": {
+      "text": "Incomplete video FBO",
+      "source": "Incomplete video FBO",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 726
+        }
+      ],
+      "original_literals": [
+        "\"Incomplete video FBO\""
+      ]
+    },
+    "msg_eccd7255100d": {
+      "text": "mpv_render: {code}",
+      "source": "mpv_render: {code}",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 772
+        }
+      ],
+      "original_literals": [
+        "\"mpv_render: {code}\""
+      ],
+      "format_template": true
+    },
+    "msg_bbbdf0080375": {
+      "text": "Timed out loading media",
+      "source": "Timed out loading media",
+      "references": [
+        {
+          "file": "src/prototype.rs",
+          "original_line": 18
+        }
+      ],
+      "original_literals": [
+        "\"Timed out loading media\""
+      ]
+    },
+    "msg_c51b65ed862f": {
+      "text": "--scan-report requires a directory",
+      "source": "--scan-report requires a directory",
+      "references": [
+        {
+          "file": "src/scan_report.rs",
+          "original_line": 12
+        }
+      ],
+      "original_literals": [
+        "\"--scan-report requires a directory\""
+      ]
+    },
+    "msg_71f9fdc46664": {
+      "text": "--db <index file> is required for scan diagnostics",
+      "source": "--db <index file> is required for scan diagnostics",
+      "references": [
+        {
+          "file": "src/scan_report.rs",
+          "original_line": 17
+        }
+      ],
+      "original_literals": [
+        "\"--db <index file> is required for scan diagnostics\""
+      ]
+    },
+    "msg_5328bccc5e62": {
+      "text": "Scan diagnostic timed out after 60s",
+      "source": "Scan diagnostic timed out after 60s",
+      "references": [
+        {
+          "file": "src/scan_report.rs",
+          "original_line": 26
+        }
+      ],
+      "original_literals": [
+        "\"Scan diagnostic timed out after 60s\""
+      ]
+    },
+    "msg_60033a3bf561": {
+      "text": "字幕",
+      "source": "字幕",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 20
+        },
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 48
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 54
+        }
+      ],
+      "original_literals": [
+        "\"字幕\""
+      ]
+    },
+    "msg_b675f8f8f2c3": {
+      "text": "视频已切换，请为当前视频重新选择字幕",
+      "source": "视频已切换，请为当前视频重新选择字幕",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 31
+        }
+      ],
+      "original_literals": [
+        "\"视频已切换，请为当前视频重新选择字幕\""
+      ]
+    },
+    "msg_998dfe2d3ab3": {
+      "text": "正在加载字幕…",
+      "source": "正在加载字幕…",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 34
+        }
+      ],
+      "original_literals": [
+        "\"正在加载字幕…\""
+      ]
+    },
+    "msg_1e511f900d9b": {
+      "text": "字幕已加载",
+      "source": "字幕已加载",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 42
+        }
+      ],
+      "original_literals": [
+        "\"字幕已加载\""
+      ]
+    },
+    "msg_5267612371d3": {
+      "text": "显示字幕",
+      "source": "显示字幕",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 50
+        }
+      ],
+      "original_literals": [
+        "\"显示字幕\""
+      ]
+    },
+    "msg_f847abeba3c5": {
+      "text": "加载字幕文件…",
+      "source": "加载字幕文件…",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 51
+        }
+      ],
+      "original_literals": [
+        "\"加载字幕文件…\""
+      ]
+    },
+    "msg_e3a898dcd336": {
+      "text": "自动加载同目录同名字幕（如：视频.srt）",
+      "source": "自动加载同目录同名字幕（如：视频.srt）",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 52
+        }
+      ],
+      "original_literals": [
+        "\"自动加载同目录同名字幕（如：视频.srt）\""
+      ]
+    },
+    "msg_4d357e8b2912": {
+      "text": "预设样式",
+      "source": "预设样式",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 55
+        }
+      ],
+      "original_literals": [
+        "\"预设样式\""
+      ]
+    },
+    "msg_c4871fbefafb": {
+      "text": "经典白字",
+      "source": "经典白字",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 57
+        }
+      ],
+      "original_literals": [
+        "\"经典白字\""
+      ]
+    },
+    "msg_93a322c085d8": {
+      "text": "暖金影院",
+      "source": "暖金影院",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 57
+        }
+      ],
+      "original_literals": [
+        "\"暖金影院\""
+      ]
+    },
+    "msg_05f761b248e1": {
+      "text": "柔和底框",
+      "source": "柔和底框",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 57
+        }
+      ],
+      "original_literals": [
+        "\"柔和底框\""
+      ]
+    },
+    "msg_f71561b5af0a": {
+      "text": "字号",
+      "source": "字号",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 61
+        }
+      ],
+      "original_literals": [
+        "\"字号\""
+      ]
+    },
+    "msg_64e74f353f40": {
+      "text": "位置：上 → 下",
+      "source": "位置：上 → 下",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 62
+        }
+      ],
+      "original_literals": [
+        "\"位置：上 → 下\""
+      ]
+    },
+    "msg_f21ef4aba5ab": {
+      "text": "文字颜色",
+      "source": "文字颜色",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 63
+        }
+      ],
+      "original_literals": [
+        "\"文字颜色\""
+      ]
+    },
+    "msg_a8f733d4a18d": {
+      "text": "黑色描边",
+      "source": "黑色描边",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 64
+        }
+      ],
+      "original_literals": [
+        "\"黑色描边\""
+      ]
+    },
+    "msg_8eae259e2d42": {
+      "text": "半透明黑色底框",
+      "source": "半透明黑色底框",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 65
+        }
+      ],
+      "original_literals": [
+        "\"半透明黑色底框\""
+      ]
+    },
+    "msg_71add4aee8d0": {
+      "text": "即时生效，退出时保存；样式适用于文本字幕",
+      "source": "即时生效，退出时保存；样式适用于文本字幕",
+      "references": [
+        {
+          "file": "src/browser_subtitles.rs",
+          "original_line": 66
+        }
+      ],
+      "original_literals": [
+        "\"即时生效，退出时保存；样式适用于文本字幕\""
+      ]
+    },
+    "msg_1d5f3dde3764": {
+      "text": "字幕加载失败（{}），请检查文件格式和编码",
+      "source": "字幕加载失败（{}），请检查文件格式和编码",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 445
+        }
+      ],
+      "original_literals": [
+        "\"字幕加载失败（{}），请检查文件格式和编码\""
+      ],
+      "format_template": true
+    },
+    "msg_2b6c18a3b086": {
+      "text": "请等待视频加载完成后再加载字幕",
+      "source": "请等待视频加载完成后再加载字幕",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 616
+        }
+      ],
+      "original_literals": [
+        "\"请等待视频加载完成后再加载字幕\""
+      ]
+    },
+    "msg_5459b4e5d44e": {
+      "text": "字幕路径不是有效的 Unicode",
+      "source": "字幕路径不是有效的 Unicode",
+      "references": [
+        {
+          "file": "src/playback.rs",
+          "original_line": 618
+        }
+      ],
+      "original_literals": [
+        "\"字幕路径不是有效的 Unicode\""
+      ]
+    },
+    "msg_f1c807b2b743": {
+      "text": "音量：{:.0}%",
+      "source": "音量：{:.0}%",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 282
+        }
+      ],
+      "original_literals": [
+        "\"音量：{:.0}%\""
+      ],
+      "format_template": true
+    },
+    "msg_47871f9198e2": {
+      "text": "{}   ·  {} 图片 / {} 视频",
+      "source": "{}   ·  {} 图片 / {} 视频",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 49
+        }
+      ],
+      "original_literals": [
+        "\"{}   ·  {} 图片 / {} 视频\""
+      ],
+      "format_template": true
+    },
+    "msg_d10ec81b9024": {
+      "text": "在资源管理器中打开",
+      "source": "在资源管理器中打开",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 60
+        }
+      ],
+      "original_literals": [
+        "\"在资源管理器中打开\""
+      ]
+    },
+    "msg_640ae0a58455": {
+      "text": "复制文件夹路径",
+      "source": "复制文件夹路径",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 63
+        }
+      ],
+      "original_literals": [
+        "\"复制文件夹路径\""
+      ]
+    },
+    "msg_0e17db06bb7a": {
+      "text": "定位到此文件夹",
+      "source": "定位到此文件夹",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 64
+        }
+      ],
+      "original_literals": [
+        "\"定位到此文件夹\""
+      ]
+    },
+    "msg_66950a93628f": {
+      "text": "选择 / 取消选择文件夹",
+      "source": "选择 / 取消选择文件夹",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 66
+        }
+      ],
+      "original_literals": [
+        "\"选择 / 取消选择文件夹\""
+      ]
+    },
+    "msg_b48c9b0467b4": {
+      "text": "删除包含全部子目录和非媒体文件；10 秒内可撤回。",
+      "source": "删除包含全部子目录和非媒体文件；10 秒内可撤回。",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 69
+        }
+      ],
+      "original_literals": [
+        "\"删除包含全部子目录和非媒体文件；10 秒内可撤回。\""
+      ]
+    },
+    "msg_7276352d766d": {
+      "text": "删除所选文件夹至回收站",
+      "source": "删除所选文件夹至回收站",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 70
+        }
+      ],
+      "original_literals": [
+        "\"删除所选文件夹至回收站\""
+      ]
+    },
+    "msg_09a714c3b257": {
+      "text": "文件夹检查失败，未删除",
+      "source": "文件夹检查失败，未删除",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 150
+        }
+      ],
+      "original_literals": [
+        "\"文件夹检查失败，未删除\""
+      ]
+    },
+    "msg_10c013c4d012": {
+      "text": "{count} 个文件夹将在 {seconds} 秒后送入回收站",
+      "source": "{count} 个文件夹将在 {seconds} 秒后送入回收站",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 168
+        }
+      ],
+      "original_literals": [
+        "\"{count} 个文件夹将在 {seconds} 秒后送入回收站\""
+      ],
+      "format_template": true
+    },
+    "msg_6b5819895525": {
+      "text": "撤回",
+      "source": "撤回",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 168
+        },
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 119
+        }
+      ],
+      "original_literals": [
+        "\"撤回\""
+      ]
+    },
+    "msg_a5ca50de174e": {
+      "text": "退出软件将取消尚未提交的删除。",
+      "source": "退出软件将取消尚未提交的删除。",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 169
+        }
+      ],
+      "original_literals": [
+        "\"退出软件将取消尚未提交的删除。\""
+      ]
+    },
+    "msg_b1f425e529ca": {
+      "text": "资源管理器右键：用本软件打开文件夹",
+      "source": "资源管理器右键：用本软件打开文件夹",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 178
+        }
+      ],
+      "original_literals": [
+        "\"资源管理器右键：用本软件打开文件夹\""
+      ]
+    },
+    "msg_a6e9599d0c14": {
+      "text": "仅修改当前用户菜单；Windows 11 可能位于“显示更多选项”。",
+      "source": "仅修改当前用户菜单；Windows 11 可能位于“显示更多选项”。",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 179
+        }
+      ],
+      "original_literals": [
+        "\"仅修改当前用户菜单；Windows 11 可能位于“显示更多选项”。\""
+      ]
+    },
+    "msg_c5894ceb2892": {
+      "text": "此磁盘无法使用回收站",
+      "source": "此磁盘无法使用回收站",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 354
+        }
+      ],
+      "original_literals": [
+        "\"此磁盘无法使用回收站\""
+      ]
+    },
+    "msg_698a707f0bf9": {
+      "text": "永久删除无法撤回，也不能从回收站恢复。",
+      "source": "永久删除无法撤回，也不能从回收站恢复。",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 355
+        }
+      ],
+      "original_literals": [
+        "\"永久删除无法撤回，也不能从回收站恢复。\""
+      ]
+    },
+    "msg_5c5183a3fbca": {
+      "text": "只有下面回收失败的目标会被永久删除。文件夹包含所有子目录和非媒体文件。",
+      "source": "只有下面回收失败的目标会被永久删除。文件夹包含所有子目录和非媒体文件。",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 356
+        }
+      ],
+      "original_literals": [
+        "\"只有下面回收失败的目标会被永久删除。文件夹包含所有子目录和非媒体文件。\""
+      ]
+    },
+    "msg_2797f4c5429e": {
+      "text": "我已核对以上路径，确认永久删除且不保留回收站副本",
+      "source": "我已核对以上路径，确认永久删除且不保留回收站副本",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 360
+        }
+      ],
+      "original_literals": [
+        "\"我已核对以上路径，确认永久删除且不保留回收站副本\""
+      ]
+    },
+    "msg_d66fd8752973": {
+      "text": "取消，保留文件",
+      "source": "取消，保留文件",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 362
+        }
+      ],
+      "original_literals": [
+        "\"取消，保留文件\""
+      ]
+    },
+    "msg_276139281d64": {
+      "text": "永久删除（不可恢复）",
+      "source": "永久删除（不可恢复）",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 363
+        }
+      ],
+      "original_literals": [
+        "\"永久删除（不可恢复）\""
+      ]
+    },
+    "msg_943944c69e04": {
+      "text": "目标或父目录包含链接，已取消删除",
+      "source": "目标或父目录包含链接，已取消删除",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 97
+        }
+      ],
+      "original_literals": [
+        "\"目标或父目录包含链接，已取消删除\""
+      ]
+    },
+    "msg_5833456154d1": {
+      "text": "目标或父目录包含联接点，已取消删除",
+      "source": "目标或父目录包含联接点，已取消删除",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 100
+        }
+      ],
+      "original_literals": [
+        "\"目标或父目录包含联接点，已取消删除\""
+      ]
+    },
+    "msg_8ca4a972ae98": {
+      "text": "目标类型发生变化，已取消删除",
+      "source": "目标类型发生变化，已取消删除",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 105
+        }
+      ],
+      "original_literals": [
+        "\"目标类型发生变化，已取消删除\""
+      ]
+    },
+    "msg_d87ad132b6cc": {
+      "text": "永久删除已完成 {} 个目标，失败 {} 个目标；已删除内容不能恢复",
+      "source": "已永久删除 {} 项，失败 {} 项；永久删除不能恢复",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 227
+        }
+      ],
+      "original_literals": [
+        "\"已永久删除 {} 项，失败 {} 项；永久删除不能恢复\""
+      ],
+      "format_template": true
+    },
+    "msg_b66ddfe77c44": {
+      "text": "正在永久删除（已确认）",
+      "source": "正在永久删除（已确认）",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 289
+        }
+      ],
+      "original_literals": [
+        "\"正在永久删除（已确认）\""
+      ]
+    },
+    "msg_df12b53af38c": {
+      "text": "永久删除未能全部完成。目录内可能已有内容被删除，无法撤回；请核对实际目录后再处理剩余项。",
+      "source": "永久删除未能全部完成。目录内可能已有内容被删除，无法撤回；请核对实际目录后再处理剩余项。",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 361
+        },
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 363
+        }
+      ],
+      "original_literals": [
+        "\"永久删除未能全部完成。目录内可能已有内容被删除，无法撤回；请核对实际目录后再处理剩余项。\""
+      ]
+    },
+    "msg_dbdbed2f733d": {
+      "text": "永久删除开始后若中途失败，已经删除的子内容不会恢复。",
+      "source": "永久删除开始后若中途失败，已经删除的子内容不会恢复。",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 412
+        }
+      ],
+      "original_literals": [
+        "\"永久删除开始后若中途失败，已经删除的子内容不会恢复。\""
+      ]
+    },
+    "msg_57f9dea197b2": {
+      "text": "永久删除未全部完成，目录内部分内容可能已删除，无法撤回。请核对实际目录。原因：{}",
+      "source": "永久删除未全部完成，目录内部分内容可能已删除，无法撤回。请核对实际目录。原因：{}",
+      "references": [
+        {
+          "file": "src/trash.rs",
+          "original_line": 145
+        }
+      ],
+      "original_literals": [
+        "\"永久删除未全部完成，目录内部分内容可能已删除，无法撤回。请核对实际目录。原因：{}\""
+      ],
+      "format_template": true
+    },
+    "msg_db51a0bbe2f5": {
+      "text": "部分目标未能完成永久删除，请查看各项原因。已经成功删除的目标不能恢复。",
+      "source": "部分目标未能完成永久删除，请查看各项原因。已经成功删除的目标不能恢复。",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 365
+        }
+      ],
+      "original_literals": [
+        "\"部分目标未能完成永久删除，请查看各项原因。已经成功删除的目标不能恢复。\""
+      ]
+    },
+    "msg_f287ca7c5511": {
+      "text": "部分目标未能完成永久删除",
+      "source": "部分目标未能完成永久删除",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 357
+        }
+      ],
+      "original_literals": [
+        "\"部分目标未能完成永久删除\""
+      ]
+    },
+    "msg_b964638e2a8f": {
+      "text": "{} 文件夹",
+      "source": "{} 文件夹",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1212
+        }
+      ],
+      "original_literals": [
+        "\"{} 文件夹\""
+      ],
+      "format_template": true
+    },
+    "msg_a4ebb6277770": {
+      "text": "正在读取尺寸…",
+      "source": "正在读取尺寸…",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1303
+        }
+      ],
+      "original_literals": [
+        "\"正在读取尺寸…\""
+      ]
+    },
+    "msg_032ad5fbb9db": {
+      "text": "{} 图片 / {} 视频 / {} 文件夹",
+      "source": "{} 图片 / {} 视频 / {} 文件夹",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 108
+        }
+      ],
+      "original_literals": [
+        "\"{} 图片 / {} 视频 / {} 文件夹\""
+      ],
+      "format_template": true
+    },
+    "msg_1bd55f256f49": {
+      "text": "目录导航",
+      "source": "目录导航",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 91
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 554
+        },
+        {
+          "file": "src/browser.rs",
+          "original_line": 1167
+        }
+      ],
+      "original_literals": [
+        "\"目录导航\""
+      ]
+    },
+    "msg_ca034d13c48a": {
+      "text": "返回目录",
+      "source": "返回目录",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 96
+        }
+      ],
+      "original_literals": [
+        "\"返回目录\""
+      ]
+    },
+    "msg_18eabe1c6777": {
+      "text": "前进目录",
+      "source": "前进目录",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 101
+        }
+      ],
+      "original_literals": [
+        "\"前进目录\""
+      ]
+    },
+    "msg_963f3b5d1c4f": {
+      "text": "上级目录",
+      "source": "上级目录",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 105
+        }
+      ],
+      "original_literals": [
+        "\"上级目录\""
+      ]
+    },
+    "msg_5ca8c9fcb6ec": {
+      "text": "输入文件夹路径",
+      "source": "输入文件夹路径",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 121
+        }
+      ],
+      "original_literals": [
+        "\"输入文件夹路径\""
+      ]
+    },
+    "msg_4c19b190fb39": {
+      "text": "选择一个文件夹，开始浏览",
+      "source": "选择一个文件夹，开始浏览",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 132
+        }
+      ],
+      "original_literals": [
+        "\"选择一个文件夹，开始浏览\""
+      ]
+    },
+    "msg_50ecb467a360": {
+      "text": "命令面板  Ctrl+K",
+      "source": "命令面板  Ctrl+K",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 145
+        }
+      ],
+      "original_literals": [
+        "\"命令面板  Ctrl+K\""
+      ]
+    },
+    "msg_ae93d47bc513": {
+      "text": "刷新目录",
+      "source": "刷新目录",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 148
+        }
+      ],
+      "original_literals": [
+        "\"刷新目录\""
+      ]
+    },
+    "msg_4b77c3546823": {
+      "text": "降序",
+      "source": "降序",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 191
+        }
+      ],
+      "original_literals": [
+        "\"降序\""
+      ]
+    },
+    "msg_ca715c0d8d83": {
+      "text": "升序",
+      "source": "升序",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 193
+        }
+      ],
+      "original_literals": [
+        "\"升序\""
+      ]
+    },
+    "msg_a623478771b1": {
+      "text": "缩略图",
+      "source": "缩略图",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 201
+        }
+      ],
+      "original_literals": [
+        "\"缩略图\""
+      ]
+    },
+    "msg_3a5040b68abf": {
+      "text": "全选",
+      "source": "全选",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 221
+        }
+      ],
+      "original_literals": [
+        "\"全选\""
+      ]
+    },
+    "msg_9bd6e93b350e": {
+      "text": "顺时针旋转选中图片",
+      "source": "顺时针旋转选中图片",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 238
+        }
+      ],
+      "original_literals": [
+        "\"顺时针旋转选中图片\""
+      ]
+    },
+    "msg_40fae00b7c6d": {
+      "text": "常规",
+      "source": "常规",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 51
+        }
+      ],
+      "original_literals": [
+        "\"常规\""
+      ]
+    },
+    "msg_86a63f23a076": {
+      "text": "外观",
+      "source": "外观",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 52
+        }
+      ],
+      "original_literals": [
+        "\"外观\""
+      ]
+    },
+    "msg_a2aee80dcb89": {
+      "text": "视频播放",
+      "source": "视频播放",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 53
+        }
+      ],
+      "original_literals": [
+        "\"视频播放\""
+      ]
+    },
+    "msg_ee2638183d3e": {
+      "text": "快捷键",
+      "source": "快捷键",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 55
+        }
+      ],
+      "original_literals": [
+        "\"快捷键\""
+      ]
+    },
+    "msg_2bc6f890600c": {
+      "text": "系统集成",
+      "source": "系统集成",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 56
+        }
+      ],
+      "original_literals": [
+        "\"系统集成\""
+      ]
+    },
+    "msg_1157904c1df6": {
+      "text": "让浏览方式适合你的习惯。",
+      "source": "让浏览方式适合你的习惯。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 71
+        }
+      ],
+      "original_literals": [
+        "\"让浏览方式适合你的习惯。\""
+      ]
+    },
+    "msg_81ad5e58049e": {
+      "text": "低干扰的界面，把注意力留给内容。",
+      "source": "低干扰的界面，把注意力留给内容。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 72
+        }
+      ],
+      "original_literals": [
+        "\"低干扰的界面，把注意力留给内容。\""
+      ]
+    },
+    "msg_8690bfce38f7": {
+      "text": "预览、声音与播放结束后的行为。",
+      "source": "预览、声音与播放结束后的行为。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 73
+        }
+      ],
+      "original_literals": [
+        "\"预览、声音与播放结束后的行为。\""
+      ]
+    },
+    "msg_8cdc6a51638d": {
+      "text": "为每一段视频选择舒适的阅读体验。",
+      "source": "为每一段视频选择舒适的阅读体验。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 74
+        }
+      ],
+      "original_literals": [
+        "\"为每一段视频选择舒适的阅读体验。\""
+      ]
+    },
+    "msg_cd188968c0b4": {
+      "text": "用熟悉的按键，更快地浏览媒体。",
+      "source": "用熟悉的按键，更快地浏览媒体。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 75
+        }
+      ],
+      "original_literals": [
+        "\"用熟悉的按键，更快地浏览媒体。\""
+      ]
+    },
+    "msg_0aafa1d08850": {
+      "text": "与本地文件系统自然协作。",
+      "source": "与本地文件系统自然协作。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 76
+        }
+      ],
+      "original_literals": [
+        "\"与本地文件系统自然协作。\""
+      ]
+    },
+    "msg_433bdcb25776": {
+      "text": "资料库",
+      "source": "资料库",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 134
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 142
+        }
+      ],
+      "original_literals": [
+        "\"资料库\""
+      ]
+    },
+    "msg_6518ae147e1d": {
+      "text": "刷新当前目录",
+      "source": "刷新当前目录",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 141
+        }
+      ],
+      "original_literals": [
+        "\"刷新当前目录\""
+      ]
+    },
+    "msg_de08583f4a51": {
+      "text": "显示全部媒体",
+      "source": "显示全部媒体",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 149
+        }
+      ],
+      "original_literals": [
+        "\"显示全部媒体\""
+      ]
+    },
+    "msg_a8c81f93f2e0": {
+      "text": "浏览",
+      "source": "浏览",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 150
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 158
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 166
+        }
+      ],
+      "original_literals": [
+        "\"浏览\""
+      ]
+    },
+    "msg_7e8978c85dc9": {
+      "text": "只看图片",
+      "source": "只看图片",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 157
+        }
+      ],
+      "original_literals": [
+        "\"只看图片\""
+      ]
+    },
+    "msg_4dea1c9e0d71": {
+      "text": "只看视频",
+      "source": "只看视频",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 165
+        }
+      ],
+      "original_literals": [
+        "\"只看视频\""
+      ]
+    },
+    "msg_70d21cd34437": {
+      "text": "按文件名排序",
+      "source": "按文件名排序",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 173
+        }
+      ],
+      "original_literals": [
+        "\"按文件名排序\""
+      ]
+    },
+    "msg_a96c9a854190": {
+      "text": "排序",
+      "source": "排序",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 174
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 182
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 190
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 198
+        }
+      ],
+      "original_literals": [
+        "\"排序\""
+      ]
+    },
+    "msg_7067c19eadb6": {
+      "text": "按修改时间排序",
+      "source": "按修改时间排序",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 181
+        }
+      ],
+      "original_literals": [
+        "\"按修改时间排序\""
+      ]
+    },
+    "msg_57b1ad1c1066": {
+      "text": "按文件大小排序",
+      "source": "按文件大小排序",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 189
+        }
+      ],
+      "original_literals": [
+        "\"按文件大小排序\""
+      ]
+    },
+    "msg_ebaf95ed3adb": {
+      "text": "切换升序与降序",
+      "source": "切换升序与降序",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 197
+        }
+      ],
+      "original_literals": [
+        "\"切换升序与降序\""
+      ]
+    },
+    "msg_030614ff2508": {
+      "text": "固定或收起目录导航",
+      "source": "固定或收起目录导航",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 205
+        }
+      ],
+      "original_literals": [
+        "\"固定或收起目录导航\""
+      ]
+    },
+    "msg_785d65c70fde": {
+      "text": "界面",
+      "source": "界面",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 206
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 214
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 572
+        }
+      ],
+      "original_literals": [
+        "\"界面\""
+      ]
+    },
+    "msg_aa8b6477c2ce": {
+      "text": "切换全屏",
+      "source": "切换全屏",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 213
+        }
+      ],
+      "original_literals": [
+        "\"切换全屏\""
+      ]
+    },
+    "msg_93043aa1f502": {
+      "text": "选择全部媒体",
+      "source": "选择全部媒体",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 221
+        }
+      ],
+      "original_literals": [
+        "\"选择全部媒体\""
+      ]
+    },
+    "msg_c11330b85234": {
+      "text": "选择",
+      "source": "选择",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 222
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 230
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 238
+        }
+      ],
+      "original_literals": [
+        "\"选择\""
+      ]
+    },
+    "msg_73335a971612": {
+      "text": "取消媒体选择",
+      "source": "取消媒体选择",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 229
+        }
+      ],
+      "original_literals": [
+        "\"取消媒体选择\""
+      ]
+    },
+    "msg_faa4789ec627": {
+      "text": "复制选中项路径",
+      "source": "复制选中项路径",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 237
+        }
+      ],
+      "original_literals": [
+        "\"复制选中项路径\""
+      ]
+    },
+    "msg_63da108a4a62": {
+      "text": "切换到下一项",
+      "source": "切换到下一项",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 245
+        }
+      ],
+      "original_literals": [
+        "\"切换到下一项\""
+      ]
+    },
+    "msg_979a332955c8": {
+      "text": "详情",
+      "source": "详情",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 246
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 254
+        }
+      ],
+      "original_literals": [
+        "\"详情\""
+      ]
+    },
+    "msg_d32cd6b87c4a": {
+      "text": "切换到上一项",
+      "source": "切换到上一项",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 253
+        }
+      ],
+      "original_literals": [
+        "\"切换到上一项\""
+      ]
+    },
+    "msg_1ba2bd811e63": {
+      "text": "切换静音",
+      "source": "切换静音",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 261
+        }
+      ],
+      "original_literals": [
+        "\"切换静音\""
+      ]
+    },
+    "msg_1e9b6406feba": {
+      "text": "加载字幕文件",
+      "source": "加载字幕文件",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 269
+        }
+      ],
+      "original_literals": [
+        "\"加载字幕文件\""
+      ]
+    },
+    "msg_4282571f76d4": {
+      "text": "设置 · 常规",
+      "source": "设置 · 常规",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 280
+        }
+      ],
+      "original_literals": [
+        "\"设置 · 常规\""
+      ]
+    },
+    "msg_5b325bdcdc15": {
+      "text": "设置 · 外观",
+      "source": "设置 · 外观",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 281
+        }
+      ],
+      "original_literals": [
+        "\"设置 · 外观\""
+      ]
+    },
+    "msg_520ae130476a": {
+      "text": "设置 · 视频播放",
+      "source": "设置 · 视频播放",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 282
+        }
+      ],
+      "original_literals": [
+        "\"设置 · 视频播放\""
+      ]
+    },
+    "msg_9be63081b9a4": {
+      "text": "设置 · 字幕",
+      "source": "设置 · 字幕",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 283
+        }
+      ],
+      "original_literals": [
+        "\"设置 · 字幕\""
+      ]
+    },
+    "msg_8f51b3e7f439": {
+      "text": "设置 · 快捷键",
+      "source": "设置 · 快捷键",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 284
+        }
+      ],
+      "original_literals": [
+        "\"设置 · 快捷键\""
+      ]
+    },
+    "msg_3c663afe099f": {
+      "text": "设置 · 系统集成",
+      "source": "设置 · 系统集成",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 285
+        }
+      ],
+      "original_literals": [
+        "\"设置 · 系统集成\""
+      ]
+    },
+    "msg_57907a69fc5a": {
+      "text": "偏好设置",
+      "source": "偏好设置",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 287
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 430
+        },
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 668
+        }
+      ],
+      "original_literals": [
+        "\"偏好设置\""
+      ]
+    },
+    "msg_73b55a07a3e3": {
+      "text": "关闭设置  Esc",
+      "source": "关闭设置  Esc",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 434
+        }
+      ],
+      "original_literals": [
+        "\"关闭设置  Esc\""
+      ]
+    },
+    "msg_202faaeaf44d": {
+      "text": "更改即时生效",
+      "source": "更改即时生效",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 530
+        }
+      ],
+      "original_literals": [
+        "\"更改即时生效\""
+      ]
+    },
+    "msg_595f8dbe1732": {
+      "text": "Esc  关闭",
+      "source": "Esc  关闭",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 534
+        }
+      ],
+      "original_literals": [
+        "\"Esc  关闭\""
+      ]
+    },
+    "msg_e775e58960cf": {
+      "text": "固定左侧目录导航",
+      "source": "固定左侧目录导航",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 555
+        }
+      ],
+      "original_literals": [
+        "\"固定左侧目录导航\""
+      ]
+    },
+    "msg_e2ea6c168595": {
+      "text": "取消固定后，鼠标靠近窗口左边缘即可呼出目录。",
+      "source": "取消固定后，鼠标靠近窗口左边缘即可呼出目录。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 556
+        }
+      ],
+      "original_literals": [
+        "\"取消固定后，鼠标靠近窗口左边缘即可呼出目录。\""
+      ]
+    },
+    "msg_b0fa41e940ff": {
+      "text": "当前资料库",
+      "source": "当前资料库",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 558
+        }
+      ],
+      "original_literals": [
+        "\"当前资料库\""
+      ]
+    },
+    "msg_8af17333363a": {
+      "text": "尚未打开文件夹",
+      "source": "尚未打开文件夹",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 560
+        }
+      ],
+      "original_literals": [
+        "\"尚未打开文件夹\""
+      ]
+    },
+    "msg_0d6fad8138e7": {
+      "text": "选择文件夹",
+      "source": "选择文件夹",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 565
+        }
+      ],
+      "original_literals": [
+        "\"选择文件夹\""
+      ]
+    },
+    "msg_ea7f6c178c19": {
+      "text": "递归浏览子目录，保留实际层级与原文件。",
+      "source": "递归浏览子目录，保留实际层级与原文件。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 568
+        }
+      ],
+      "original_literals": [
+        "\"递归浏览子目录，保留实际层级与原文件。\""
+      ]
+    },
+    "msg_ad2091a9e074": {
+      "text": "紧凑控件与间距",
+      "source": "紧凑控件与间距",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 573
+        }
+      ],
+      "original_literals": [
+        "\"紧凑控件与间距\""
+      ]
+    },
+    "msg_e4fad4f2893d": {
+      "text": "减少界面动画",
+      "source": "减少界面动画",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 574
+        }
+      ],
+      "original_literals": [
+        "\"减少界面动画\""
+      ]
+    },
+    "msg_61c99adde949": {
+      "text": "自动适配 Windows 显示缩放，不改变媒体原始比例。",
+      "source": "自动适配 Windows 显示缩放，不改变媒体原始比例。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 575
+        }
+      ],
+      "original_literals": [
+        "\"自动适配 Windows 显示缩放，不改变媒体原始比例。\""
+      ]
+    },
+    "msg_f84e05423960": {
+      "text": "强调色",
+      "source": "强调色",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 577
+        }
+      ],
+      "original_literals": [
+        "\"强调色\""
+      ]
+    },
+    "msg_c2f43ebe2000": {
+      "text": "鸢尾紫",
+      "source": "鸢尾紫",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 579
+        }
+      ],
+      "original_literals": [
+        "\"鸢尾紫\""
+      ]
+    },
+    "msg_d339785fca5a": {
+      "text": "暖珊瑚",
+      "source": "暖珊瑚",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 579
+        }
+      ],
+      "original_literals": [
+        "\"暖珊瑚\""
+      ]
+    },
+    "msg_d66d9f0fd779": {
+      "text": "雾蓝灰",
+      "source": "雾蓝灰",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 579
+        }
+      ],
+      "original_literals": [
+        "\"雾蓝灰\""
+      ]
+    },
+    "msg_8b5210fa8b38": {
+      "text": "选中状态预览",
+      "source": "选中状态预览",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 603
+        }
+      ],
+      "original_literals": [
+        "\"选中状态预览\""
+      ]
+    },
+    "msg_07a1de47fac0": {
+      "text": "详情页播放结束后",
+      "source": "详情页播放结束后",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 610
+        }
+      ],
+      "original_literals": [
+        "\"详情页播放结束后\""
+      ]
+    },
+    "msg_473400815c0f": {
+      "text": "声音",
+      "source": "声音",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 619
+        }
+      ],
+      "original_literals": [
+        "\"声音\""
+      ]
+    },
+    "msg_7efac23005b4": {
+      "text": "列表悬停预览沿用声音设置，播放结束后循环。",
+      "source": "列表悬停预览沿用声音设置，播放结束后循环。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 630
+        }
+      ],
+      "original_literals": [
+        "\"列表悬停预览沿用声音设置，播放结束后循环。\""
+      ]
+    },
+    "msg_fdb8d493f914": {
+      "text": "字幕与样式",
+      "source": "字幕与样式",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 634
+        }
+      ],
+      "original_literals": [
+        "\"字幕与样式\""
+      ]
+    },
+    "msg_164b15ab7b65": {
+      "text": "详情切换",
+      "source": "详情切换",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 639
+        }
+      ],
+      "original_literals": [
+        "\"详情切换\""
+      ]
+    },
+    "msg_f8baad25a051": {
+      "text": "下一项",
+      "source": "下一项",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 643
+        }
+      ],
+      "original_literals": [
+        "\"下一项\""
+      ]
+    },
+    "msg_b88f02974ea0": {
+      "text": "上一项",
+      "source": "上一项",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 644
+        }
+      ],
+      "original_literals": [
+        "\"上一项\""
+      ]
+    },
+    "msg_2008a16a6ace": {
+      "text": "两个动作不能使用同一个按键。",
+      "source": "两个动作不能使用同一个按键。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 659
+        }
+      ],
+      "original_literals": [
+        "\"两个动作不能使用同一个按键。\""
+      ]
+    },
+    "msg_dcc045b9aeb2": {
+      "text": "恢复默认快捷键",
+      "source": "恢复默认快捷键",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 661
+        }
+      ],
+      "original_literals": [
+        "\"恢复默认快捷键\""
+      ]
+    },
+    "msg_e0782ab38fa3": {
+      "text": "常用操作",
+      "source": "常用操作",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 665
+        }
+      ],
+      "original_literals": [
+        "\"常用操作\""
+      ]
+    },
+    "msg_4b495d8b87b8": {
+      "text": "命令面板",
+      "source": "命令面板",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 667
+        }
+      ],
+      "original_literals": [
+        "\"命令面板\""
+      ]
+    },
+    "msg_f8cfd254b8e4": {
+      "text": "Space / 单击视频",
+      "source": "Space / 单击视频",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 669
+        }
+      ],
+      "original_literals": [
+        "\"Space / 单击视频\""
+      ]
+    },
+    "msg_22ea3f47fee8": {
+      "text": "全屏",
+      "source": "全屏",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 670
+        }
+      ],
+      "original_literals": [
+        "\"全屏\""
+      ]
+    },
+    "msg_15de0ec4dcfb": {
+      "text": "视频快进 / 后退",
+      "source": "视频快进 / 后退",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 671
+        }
+      ],
+      "original_literals": [
+        "\"视频快进 / 后退\""
+      ]
+    },
+    "msg_a6d0103345ea": {
+      "text": "滚轮 ±30 秒",
+      "source": "滚轮 ±30 秒",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 671
+        }
+      ],
+      "original_literals": [
+        "\"滚轮 ±30 秒\""
+      ]
+    },
+    "msg_a47b574dfbd9": {
+      "text": "视频微调",
+      "source": "视频微调",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 672
+        }
+      ],
+      "original_literals": [
+        "\"视频微调\""
+      ]
+    },
+    "msg_434547728579": {
+      "text": "鼠标侧键 ±5 秒",
+      "source": "鼠标侧键 ±5 秒",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 672
+        }
+      ],
+      "original_literals": [
+        "\"鼠标侧键 ±5 秒\""
+      ]
+    },
+    "msg_a69fbfc8da41": {
+      "text": "图片前后切换",
+      "source": "图片前后切换",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 673
+        }
+      ],
+      "original_literals": [
+        "\"图片前后切换\""
+      ]
+    },
+    "msg_6123062e7e42": {
+      "text": "鼠标侧键",
+      "source": "鼠标侧键",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 673
+        }
+      ],
+      "original_literals": [
+        "\"鼠标侧键\""
+      ]
+    },
+    "msg_4fe7642ac0e6": {
+      "text": "缩略图快速切换",
+      "source": "缩略图快速切换",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 674
+        }
+      ],
+      "original_literals": [
+        "\"缩略图快速切换\""
+      ]
+    },
+    "msg_7ae34bbc866b": {
+      "text": "悬停后滚轮",
+      "source": "悬停后滚轮",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 674
+        }
+      ],
+      "original_literals": [
+        "\"悬停后滚轮\""
+      ]
+    },
+    "msg_41966b13f0ae": {
+      "text": "回到列表",
+      "source": "回到列表",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 675
+        }
+      ],
+      "original_literals": [
+        "\"回到列表\""
+      ]
+    },
+    "msg_e1d2ca63024c": {
+      "text": "Esc / 单击画面外空白",
+      "source": "Esc / 单击画面外空白",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 675
+        }
+      ],
+      "original_literals": [
+        "\"Esc / 单击画面外空白\""
+      ]
+    },
+    "msg_361bdf3f36e3": {
+      "text": "移入回收站",
+      "source": "移入回收站",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 676
+        }
+      ],
+      "original_literals": [
+        "\"移入回收站\""
+      ]
+    },
+    "msg_17abd349b511": {
+      "text": "资源管理器",
+      "source": "资源管理器",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 691
+        }
+      ],
+      "original_literals": [
+        "\"资源管理器\""
+      ]
+    },
+    "msg_57e88a43ef2b": {
+      "text": "本地文件",
+      "source": "本地文件",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 694
+        }
+      ],
+      "original_literals": [
+        "\"本地文件\""
+      ]
+    },
+    "msg_acc20f834d96": {
+      "text": "媒体与索引均保留在本地，应用无需联网。",
+      "source": "媒体与索引均保留在本地，应用无需联网。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 695
+        }
+      ],
+      "original_literals": [
+        "\"媒体与索引均保留在本地，应用无需联网。\""
+      ]
+    },
+    "msg_67de3be1d6a3": {
+      "text": "云盘挂载的可用性和读取速度由挂载驱动决定。",
+      "source": "云盘挂载的可用性和读取速度由挂载驱动决定。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 696
+        }
+      ],
+      "original_literals": [
+        "\"云盘挂载的可用性和读取速度由挂载驱动决定。\""
+      ]
+    },
+    "msg_888c641e1b27": {
+      "text": "搜索命令…",
+      "source": "搜索命令…",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 735
+        }
+      ],
+      "original_literals": [
+        "\"搜索命令…\""
+      ]
+    },
+    "msg_556513743902": {
+      "text": "没有匹配的命令",
+      "source": "没有匹配的命令",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 762
+        }
+      ],
+      "original_literals": [
+        "\"没有匹配的命令\""
+      ]
+    },
+    "msg_6abec1810c86": {
+      "text": "试试“字幕”“排序”，或输入英文关键词。",
+      "source": "试试“字幕”“排序”，或输入英文关键词。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 763
+        }
+      ],
+      "original_literals": [
+        "\"试试“字幕”“排序”，或输入英文关键词。\""
+      ]
+    },
+    "msg_928f87d4507b": {
+      "text": "命令",
+      "source": "命令",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 848
+        }
+      ],
+      "original_literals": [
+        "\"命令\""
+      ]
+    },
+    "msg_c22c24c89d11": {
+      "text": "Enter  执行",
+      "source": "Enter  执行",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 852
+        }
+      ],
+      "original_literals": [
+        "\"Enter  执行\""
+      ]
+    },
+    "msg_a6560b60a35d": {
+      "text": "↑ ↓  选择",
+      "source": "↑ ↓  选择",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 853
+        }
+      ],
+      "original_literals": [
+        "\"↑ ↓  选择\""
+      ]
+    },
+    "msg_76be2a32c205": {
+      "text": "掠影 Glimpse",
+      "source": "掠影 Glimpse",
+      "references": [
+        {
+          "file": "src/branding.rs",
+          "original_line": 3
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 255
+        }
+      ],
+      "original_literals": [
+        "\"掠影 Glimpse\""
+      ]
+    },
+    "msg_69c82c6fd672": {
+      "text": "掠影",
+      "source": "掠影",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1162
+        }
+      ],
+      "original_literals": [
+        "\"掠影\""
+      ]
+    },
+    "msg_759e7613d9ba": {
+      "text": "取消固定目录",
+      "source": "取消固定目录",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1164
+        }
+      ],
+      "original_literals": [
+        "\"取消固定目录\""
+      ]
+    },
+    "msg_630366fde3cd": {
+      "text": "固定目录导航",
+      "source": "固定目录导航",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1164
+        }
+      ],
+      "original_literals": [
+        "\"固定目录导航\""
+      ]
+    },
+    "msg_1b29a059b428": {
+      "text": "{} 图 · {} 视频 · {} 目录{}",
+      "source": "{} 图 · {} 视频 · {} 目录{}",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1196
+        }
+      ],
+      "original_literals": [
+        "\"{} 图 · {} 视频 · {} 目录{}\""
+      ],
+      "format_template": true
+    },
+    "msg_267ef9791aaf": {
+      "text": "{}\n直属：{} 图片 / {} 视频 / {} 文件夹\n包含子目录：{} 图片 / {} 视频",
+      "source": "{}\n直属：{} 图片 / {} 视频 / {} 文件夹\n包含子目录：{} 图片 / {} 视频",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1201
+        }
+      ],
+      "original_literals": [
+        "\"{}\\n直属：{} 图片 / {} 视频 / {} 文件夹\\n包含子目录：{} 图片 / {} 视频\""
+      ],
+      "format_template": true
+    },
+    "msg_b44b9173d254": {
+      "text": "视频画面已旋转 {angle}° · 原文件未修改",
+      "source": "视频画面已旋转 {angle}° · 原文件未修改",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 17
+        }
+      ],
+      "original_literals": [
+        "\"视频画面已旋转 {angle}° · 原文件未修改\""
+      ],
+      "format_template": true
+    },
+    "msg_104b0e8a6eca": {
+      "text": "向左旋转 90°",
+      "source": "向左旋转 90°",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 29
+        }
+      ],
+      "original_literals": [
+        "\"向左旋转 90°\""
+      ]
+    },
+    "msg_82751aa3ca5f": {
+      "text": "向右旋转 90°",
+      "source": "向右旋转 90°",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 29
+        }
+      ],
+      "original_literals": [
+        "\"向右旋转 90°\""
+      ]
+    },
+    "msg_55b564bc16bb": {
+      "text": "仅旋转播放画面，本次运行内记住，不改写视频文件",
+      "source": "仅旋转播放画面，本次运行内记住，不改写视频文件",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 32
+        }
+      ],
+      "original_literals": [
+        "\"仅旋转播放画面，本次运行内记住，不改写视频文件\""
+      ]
+    },
+    "msg_3b97d30d35dd": {
+      "text": "返回列表 · Esc",
+      "source": "返回列表 · Esc",
+      "references": [
+        {
+          "file": "src/browser_detail.rs",
+          "original_line": 347
+        }
+      ],
+      "original_literals": [
+        "\"返回列表 · Esc\""
+      ]
+    },
+    "msg_d11e589a9c88": {
+      "text": "固定目录",
+      "source": "固定目录",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 201
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 231
+        }
+      ],
+      "original_literals": [
+        "\"固定目录\""
+      ]
+    },
+    "msg_de314b445e07": {
+      "text": "最近访问",
+      "source": "最近访问",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 201
+        }
+      ],
+      "original_literals": [
+        "\"最近访问\""
+      ]
+    },
+    "msg_6fe9a5e2e86b": {
+      "text": "常用目录",
+      "source": "常用目录",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 201
+        }
+      ],
+      "original_literals": [
+        "\"常用目录\""
+      ]
+    },
+    "msg_7777fbadecb7": {
+      "text": "固定 / 取消固定当前目录",
+      "source": "固定 / 取消固定当前目录",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 208
+        }
+      ],
+      "original_literals": [
+        "\"固定 / 取消固定当前目录\""
+      ]
+    },
+    "msg_20590a6a7b9a": {
+      "text": "取消固定",
+      "source": "取消固定",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 229
+        }
+      ],
+      "original_literals": [
+        "\"取消固定\""
+      ]
+    },
+    "msg_3fd47edce45b": {
+      "text": "关闭",
+      "source": "关闭",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 363
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 370
+        },
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 97
+        }
+      ],
+      "original_literals": [
+        "\"关闭\""
+      ]
+    },
+    "msg_9949b1fb5f67": {
+      "text": "最大化 / 还原",
+      "source": "最大化 / 还原",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 374
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 372
+        }
+      ],
+      "original_literals": [
+        "\"最大化 / 还原\""
+      ]
+    },
+    "msg_ac29e57a46f4": {
+      "text": "最小化",
+      "source": "最小化",
+      "references": [
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 382
+        },
+        {
+          "file": "src/browser_ui.rs",
+          "original_line": 373
+        }
+      ],
+      "original_literals": [
+        "\"最小化\""
+      ]
+    },
+    "msg_a5a25e880c5e": {
+      "text": "自动播放",
+      "source": "自动播放",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 156
+        }
+      ],
+      "original_literals": [
+        "\"自动播放\""
+      ]
+    },
+    "msg_e92a0ae71f79": {
+      "text": "逐张播放图片和视频",
+      "source": "逐张播放图片和视频",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 160
+        }
+      ],
+      "original_literals": [
+        "\"逐张播放图片和视频\""
+      ]
+    },
+    "msg_33a3a58adb5a": {
+      "text": "成组播放图片",
+      "source": "成组播放图片",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 168
+        }
+      ],
+      "original_literals": [
+        "\"成组播放图片\""
+      ]
+    },
+    "msg_f6e186580dd7": {
+      "text": "暂停自动播放",
+      "source": "暂停自动播放",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 177
+        }
+      ],
+      "original_literals": [
+        "\"暂停自动播放\""
+      ]
+    },
+    "msg_d97d53f05833": {
+      "text": "继续自动播放",
+      "source": "继续自动播放",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 179
+        }
+      ],
+      "original_literals": [
+        "\"继续自动播放\""
+      ]
+    },
+    "msg_a27f76e6f97d": {
+      "text": "退出自动播放",
+      "source": "退出自动播放",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 186
+        }
+      ],
+      "original_literals": [
+        "\"退出自动播放\""
+      ]
+    },
+    "msg_00fe8dda1fd7": {
+      "text": " 秒",
+      "source": " 秒",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 194
+        }
+      ],
+      "original_literals": [
+        "\" 秒\""
+      ]
+    },
+    "msg_cfa694dce5b5": {
+      "text": "图片停留",
+      "source": "图片停留",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 195
+        }
+      ],
+      "original_literals": [
+        "\"图片停留\""
+      ]
+    },
+    "msg_7e3c63f800d1": {
+      "text": "每组图片",
+      "source": "每组图片",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 200
+        }
+      ],
+      "original_literals": [
+        "\"每组图片\""
+      ]
+    },
+    "msg_dfca64c65c59": {
+      "text": "循环播放",
+      "source": "循环播放",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 207
+        }
+      ],
+      "original_literals": [
+        "\"循环播放\""
+      ]
+    },
+    "msg_b2ae4fd1689b": {
+      "text": "组合图片铺满画面",
+      "source": "组合图片铺满画面",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 208
+        }
+      ],
+      "original_literals": [
+        "\"组合图片铺满画面\""
+      ]
+    },
+    "msg_fb3471da3c27": {
+      "text": "视频单独播放，结束后继续下一项；组合不跨文件夹。",
+      "source": "视频单独播放，结束后继续下一项；组合不跨文件夹。",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 209
+        }
+      ],
+      "original_literals": [
+        "\"视频单独播放，结束后继续下一项；组合不跨文件夹。\""
+      ]
+    },
+    "msg_c7bb9b555b95": {
+      "text": "成组播放",
+      "source": "成组播放",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 272
+        }
+      ],
+      "original_literals": [
+        "\"成组播放\""
+      ]
+    },
+    "msg_3985eb783ecf": {
+      "text": "逐张播放",
+      "source": "逐张播放",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 274
+        }
+      ],
+      "original_literals": [
+        "\"逐张播放\""
+      ]
+    },
+    "msg_7c9691192f1b": {
+      "text": "继续",
+      "source": "继续",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 280
+        }
+      ],
+      "original_literals": [
+        "\"继续\""
+      ]
+    },
+    "msg_8fa0661edd77": {
+      "text": "单图查看",
+      "source": "单图查看",
+      "references": [
+        {
+          "file": "src/browser_presentation.rs",
+          "original_line": 387
+        }
+      ],
+      "original_literals": [
+        "\"单图查看\""
+      ]
+    },
+    "msg_412b88228038": {
+      "text": "索引损坏已重建，原库保存在：{}",
+      "source": "索引损坏已重建，原库保存在：{}",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 721
+        }
+      ],
+      "original_literals": [
+        "\"索引损坏已重建，原库保存在：{}\""
+      ],
+      "format_template": true
+    },
+    "msg_dca60869e7d2": {
+      "text": "取消收藏",
+      "source": "取消收藏",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 38
+        },
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 53
+        }
+      ],
+      "original_literals": [
+        "\"取消收藏\""
+      ]
+    },
+    "msg_60a53514eb92": {
+      "text": "收藏",
+      "source": "收藏",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 38
+        },
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 53
+        }
+      ],
+      "original_literals": [
+        "\"收藏\""
+      ]
+    },
+    "msg_094e6eafb9a2": {
+      "text": "★ 收藏",
+      "source": "★ 收藏",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 49
+        }
+      ],
+      "original_literals": [
+        "\"★ 收藏\""
+      ]
+    },
+    "msg_0dd6971d63de": {
+      "text": "仅选收藏",
+      "source": "仅选收藏",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 50
+        }
+      ],
+      "original_literals": [
+        "\"仅选收藏\""
+      ]
+    },
+    "msg_c14a67f6bc2f": {
+      "text": "复制选中文件",
+      "source": "复制选中文件",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 54
+        }
+      ],
+      "original_literals": [
+        "\"复制选中文件\""
+      ]
+    },
+    "msg_a690487833d8": {
+      "text": "剪切选中文件",
+      "source": "剪切选中文件",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 55
+        }
+      ],
+      "original_literals": [
+        "\"剪切选中文件\""
+      ]
+    },
+    "msg_3251048499aa": {
+      "text": "选中此目录下的收藏",
+      "source": "选中此目录下的收藏",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 59
+        }
+      ],
+      "original_literals": [
+        "\"选中此目录下的收藏\""
+      ]
+    },
+    "msg_a81d1b3ddfdb": {
+      "text": "清理非收藏媒体和空文件夹…",
+      "source": "清理非收藏媒体和空文件夹…",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 60
+        }
+      ],
+      "original_literals": [
+        "\"清理非收藏媒体和空文件夹…\""
+      ]
+    },
+    "msg_cb45a2c41952": {
+      "text": "本进程 CPU：{cpu}（按全部逻辑核心归一化）\n工作集内存：{mem}\n进程读取：{read:.2} MiB/s · 写入：{write:.2} MiB/s\n每秒采样；包含系统计入的进程 I/O，不等于物理硬盘吞吐，不含外部解码进程或显存。",
+      "source": "本进程 CPU：{cpu}（按全部逻辑核心归一化）\n工作集内存：{mem}\n进程读取：{read:.2} MiB/s · 写入：{write:.2} MiB/s\n每秒采样；包含系统计入的进程 I/O，不等于物理硬盘吞吐，不含外部解码进程或显存。",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 90
+        }
+      ],
+      "original_literals": [
+        "\"本进程 CPU：{cpu}（按全部逻辑核心归一化）\\n工作集内存：{mem}\\n进程读取：{read:.2} MiB/s · 写入：{write:.2} MiB/s\\n每秒采样；包含系统计入的进程 I/O，不等于物理硬盘吞吐，不含外部解码进程或显存。\""
+      ],
+      "format_template": true
+    },
+    "msg_121918175edd": {
+      "text": "Language / 语言",
+      "source": "Language / 语言",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 100
+        }
+      ],
+      "original_literals": [
+        "\"Language / 语言\""
+      ]
+    },
+    "msg_9937e365aaf3": {
+      "text": "简体中文",
+      "source": "简体中文",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 100
+        }
+      ],
+      "original_literals": [
+        "\"简体中文\""
+      ]
+    },
+    "msg_f1569bbe1151": {
+      "text": "清理非收藏内容",
+      "source": "清理非收藏内容",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 115
+        }
+      ],
+      "original_literals": [
+        "\"清理非收藏内容\""
+      ]
+    },
+    "msg_a47e44af22a6": {
+      "text": "将回收 {} 个非收藏媒体，并清理其中的空目录。收藏、其他文件和包含文件的目录会保留。",
+      "source": "将回收 {} 个非收藏媒体，并清理其中的空目录。收藏、其他文件和包含文件的目录会保留。",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 115
+        }
+      ],
+      "original_literals": [
+        "\"将回收 {} 个非收藏媒体，并清理其中的空目录。收藏、其他文件和包含文件的目录会保留。\""
+      ],
+      "format_template": true
+    },
+    "msg_2cd0f3be8738": {
+      "text": "取消",
+      "source": "取消",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 116
+        }
+      ],
+      "original_literals": [
+        "\"取消\""
+      ]
+    },
+    "msg_7ba2d6728fe2": {
+      "text": "确认清理",
+      "source": "确认清理",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 116
+        }
+      ],
+      "original_literals": [
+        "\"确认清理\""
+      ]
+    },
+    "msg_821d388a68c0": {
+      "text": "{} 秒后清理非收藏内容",
+      "source": "{} 秒后清理非收藏内容",
+      "references": [
+        {
+          "file": "src/browser_features.rs",
+          "original_line": 119
+        }
+      ],
+      "original_literals": [
+        "\"{} 秒后清理非收藏内容\""
+      ],
+      "format_template": true
+    },
+    "status_library_ready": {
+      "text": "媒体库已就绪",
+      "source": "媒体库已就绪",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1934
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "msg_sticky_jump_next": {
+      "source": "下一个有图片或视频的目录",
+      "text": "下一个有图片或视频的目录",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 450
+        }
+      ],
+      "original_literals": [
+        "\"下一个有图片或视频的目录\""
+      ],
+      "format_template": false
+    },
+    "msg_sticky_jump_previous": {
+      "source": "上一个有图片或视频的目录",
+      "text": "上一个有图片或视频的目录",
+      "references": [
+        {
+          "file": "src/browser_folders.rs",
+          "original_line": 450
+        }
+      ],
+      "original_literals": [
+        "\"上一个有图片或视频的目录\""
+      ],
+      "format_template": false
+    },
+    "msg_auto_fold_empty": {
+      "source": "默认折叠没有媒体的文件夹",
+      "text": "默认折叠没有媒体的文件夹",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 600
+        }
+      ],
+      "original_literals": [
+        "\"默认折叠没有媒体的文件夹\""
+      ],
+      "format_template": false
+    },
+    "msg_auto_fold_empty_hint": {
+      "source": "只折叠已确认整棵子目录都没有图片或视频的文件夹；手动展开会保留。",
+      "text": "只折叠已确认整棵子目录都没有图片或视频的文件夹；手动展开会保留。",
+      "references": [
+        {
+          "file": "src/browser_workspace.rs",
+          "original_line": 600
+        }
+      ],
+      "original_literals": [
+        "\"只折叠已确认整棵子目录都没有图片或视频的文件夹；手动展开会保留。\""
+      ],
+      "format_template": false
+    },
+    "loading_issues": {
+      "text": "加载问题",
+      "source": "加载问题",
+      "references": [
+        {
+          "file": "src/browser_loading.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "loading_retry": {
+      "text": "重试当前目录",
+      "source": "重试当前目录",
+      "references": [
+        {
+          "file": "src/browser_loading.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "loading_retry_help": {
+      "text": "修复文件或恢复磁盘连接后，可重试当前目录。损坏或不支持的文件会继续显示原因。",
+      "source": "修复文件或恢复磁盘连接后，可重试当前目录。损坏或不支持的文件会继续显示原因。",
+      "references": [
+        {
+          "file": "src/browser_loading.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "loading_geometry_slow": {
+      "text": "尺寸读取较慢，可重试当前目录",
+      "source": "尺寸读取较慢，可重试当前目录",
+      "references": [
+        {
+          "file": "src/browser_loading.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "empty_folder_title": {
+      "text": "当前文件夹为空",
+      "source": "当前文件夹为空",
+      "references": [
+        {
+          "file": "src/browser_loading.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "empty_folder_hint": {
+      "text": "未找到支持的图片或视频。",
+      "source": "未找到支持的图片或视频。",
+      "references": [
+        {
+          "file": "src/browser_loading.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "empty_filtered_title": {
+      "text": "没有符合筛选条件的媒体",
+      "source": "没有符合筛选条件的媒体",
+      "references": [
+        {
+          "file": "src/browser_loading.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "empty_filtered_hint": {
+      "text": "可切换为全部媒体，或关闭仅看收藏。",
+      "source": "可切换为全部媒体，或关闭仅看收藏。",
+      "references": [
+        {
+          "file": "src/browser_loading.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "empty_scan_failed_title": {
+      "text": "当前文件夹未能完整读取",
+      "source": "当前文件夹未能完整读取",
+      "references": [
+        {
+          "file": "src/browser_loading.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "empty_scan_failed_hint": {
+      "text": "请在“加载问题”中查看原因并重试。",
+      "source": "请在“加载问题”中查看原因并重试。",
+      "references": [
+        {
+          "file": "src/browser_loading.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    }
+  },
+  "managed_technical_sources": [
+    "--db <index file> is required for scan diagnostics",
+    "--scan-report requires a directory",
+    "GIF ICC: {error}",
+    "HEIF color profile: {e}",
+    "HEIF context allocation failed",
+    "HEIF dimensions exceed budget",
+    "HEIF file exceeds 512MiB limit",
+    "ICC profile exceeds 4MiB",
+    "IPC connect: {error}",
+    "Incomplete video FBO",
+    "Index schema {version} is newer than supported version 1; preserve the database",
+    "Invalid HEIF buffer",
+    "Invalid HEIF plane",
+    "Invalid UTF-16 path blob",
+    "No active root",
+    "OpenGL required",
+    "Path is not Unicode",
+    "Scan diagnostic timed out after 60s",
+    "Timed out loading media",
+    "Unsupported non-RGB ICC profile",
+    "View root is outside scanned tree",
+    "executable path",
+    "input path required",
+    "libheif {}/{}: {msg}",
+    "missing test scope",
+    "mpv async command failed: {}",
+    "mpv command {args:?}: {code}",
+    "mpv option {key}: {code}",
+    "mpv render context: {code}",
+    "mpv_create failed",
+    "mpv_initialize: {code}",
+    "mpv_render: {code}",
+    "output PNG required",
+    "video path required"
+  ]
+}

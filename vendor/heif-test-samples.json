@@ -1,0 +1,26 @@
+[
+  {
+    "filename": "RGB_10__128x128.heif",
+    "source": "https://raw.githubusercontent.com/bigcat88/pillow_heif/master/tests/images/heif/RGB_10__128x128.heif",
+    "sha256": "7fbf1573c1e5c1693953b31bb287327c53eaefa74a6f1324e7391a08b3ed1e73",
+    "redistribution": "test-only; review source fixture rights before public distribution"
+  },
+  {
+    "filename": "zPug_3.heic",
+    "source": "https://raw.githubusercontent.com/bigcat88/pillow_heif/master/tests/images/heif/zPug_3.heic",
+    "sha256": "daf1515c651e15968ad6ec142e443759156fee76c65715e4f5713cf1ad072774",
+    "redistribution": "test-only; review source fixture rights before public distribution"
+  },
+  {
+    "filename": "arrow.heic",
+    "source": "https://raw.githubusercontent.com/bigcat88/pillow_heif/master/tests/images/heif_other/arrow.heic",
+    "sha256": "73f604d7353df4848505a1f45a5517f736857fe047372f95c2f3d671df92c22c",
+    "redistribution": "test-only; review source fixture rights before public distribution"
+  },
+  {
+    "filename": "spatial_photo.heic",
+    "source": "https://raw.githubusercontent.com/bigcat88/pillow_heif/master/tests/images/heif_other/spatial_photo.heic",
+    "sha256": "ef941d328072a2df034adb3c3b46f41117606bfc8fcc100dff975d31f55ec028",
+    "redistribution": "test-only; review source fixture rights before public distribution"
+  }
+]

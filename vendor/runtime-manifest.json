@@ -1,0 +1,93 @@
+[
+  {
+    "file": "concrt140.dll",
+    "bytes": 324208,
+    "sha256": "2405355F0A58067B258F8DF33C327E3A3D716EAAC5A3A5AEBB757842D85BD376"
+  },
+  {
+    "file": "heif.dll",
+    "bytes": 1447424,
+    "sha256": "E8D3D8AD171260BEF23129B97B0B5596B733A7436C07A6FBEA84C012734DD136"
+  },
+  {
+    "file": "libde265-COPYING",
+    "bytes": 44339,
+    "sha256": "02CC1585A20677992E0BA578FA692635DC193735F2691DC81DE924B51C4E8020"
+  },
+  {
+    "file": "libde265.dll",
+    "bytes": 1209856,
+    "sha256": "3AF4E8B406CA65175F67380BAED2A98DEC9148DF2484448BA7811CD38EA01662"
+  },
+  {
+    "file": "libheif-COPYING",
+    "bytes": 44366,
+    "sha256": "FA81CE652315B013359D6E8E4744335F31A50C7C192907176D3632F78A3B4596"
+  },
+  {
+    "file": "libmpv-2.dll",
+    "bytes": 157874176,
+    "sha256": "302D770CD0AB54F3B803CD17EC574C9320AC3BC0CEB6F771A8DD9A4BFBD9E287"
+  },
+  {
+    "file": "libmpv-LICENSE.GPL",
+    "bytes": 17984,
+    "sha256": "EDAEF632CBB643E4E7A221717A6C441A4C1A7C918E6E4D56DEBC3D8739B233F6"
+  },
+  {
+    "file": "msvcp140_1.dll",
+    "bytes": 35952,
+    "sha256": "BFAD5AEF4C63A669E3C140655CDFDF395B6C979B400A447BD5DCB65ED8826C3D"
+  },
+  {
+    "file": "msvcp140_2.dll",
+    "bytes": 280200,
+    "sha256": "3EA06F0EE098B4823CB79599DF3780E7F23CCE52C19AAC31D2A0D47EFE33A5E9"
+  },
+  {
+    "file": "msvcp140_atomic_wait.dll",
+    "bytes": 50304,
+    "sha256": "640B2AEFCED484D0368EEA5BDD06ADDD0658A3A70A49256E560D6923B404A479"
+  },
+  {
+    "file": "msvcp140_codecvt_ids.dll",
+    "bytes": 31872,
+    "sha256": "F2069A52880EC885EE7F0511186100EB7FADA0411A2B4948FAFEA7735B878A18"
+  },
+  {
+    "file": "msvcp140.dll",
+    "bytes": 557728,
+    "sha256": "0F885B509A685D2BBFA652FED26B5FB31D88FBDAB0A978C641D1C7B8AA460AA9"
+  },
+  {
+    "file": "NotoSansSC-OFL.txt",
+    "bytes": 4388,
+    "sha256": "1C05C68C34F9708415AADA51F17E1B0092D2CEA709BF4A94CD38114F9E73D7D9"
+  },
+  {
+    "file": "vccorlib140.dll",
+    "bytes": 352384,
+    "sha256": "19839407C3FDBC824E5BCE189BF68DDF8097F12EC28B757797FFA0415C144DDD"
+  },
+  {
+    "file": "vcruntime140_1.dll",
+    "bytes": 49792,
+    "sha256": "1F2D41C4AA5DB0BC33EBF7B66D72943A817D7CE6CBE880502A9403823633093F"
+  },
+  {
+    "file": "vcruntime140_threads.dll",
+    "bytes": 38528,
+    "sha256": "219915CF20822F34D5E7C1FDD4E21AE7F3396881096C51036225FB8F84B47AFA"
+  },
+  {
+    "file": "vcruntime140.dll",
+    "bytes": 124544,
+    "sha256": "D5E4D9A3E835FA679450145D6A7D94E36573A509317111904D9B3712C30D9066"
+  },
+  {
+    "file": "Chinese-full.ttf",
+    "bytes": 10595892,
+    "sha256": "ba390191b55c16b128cf1c12a2e3e0e0d9ece3cb0bbb5d585a8a03d3ae14f1b8",
+    "source": "NotoSansSC-variable.ttf; instantiate wght=400; see assets/font-manifest.json"
+  }
+]

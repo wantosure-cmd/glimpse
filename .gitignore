@@ -1,0 +1,16 @@
+/target/
+/vendor/downloads/
+/vendor/runtime/
+/vendor/extracted/
+/vendor/native/
+/vendor/tools-fonttools/
+/test-media/
+/artifacts/
+/dist/
+/handoff/
+*.log
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example

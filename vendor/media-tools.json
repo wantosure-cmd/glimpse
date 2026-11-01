@@ -1,0 +1,20 @@
+[
+  {
+    "component": "ffmpeg",
+    "version": "ffmpeg version 8.1.1-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+    "acquisition": "Existing local WinGet Gyan.FFmpeg installation",
+    "upstream": "https://www.gyan.dev/ffmpeg/builds/",
+    "sha256": "09948D4CDD0650DA6FF5A87577469F2A218DC2615AE379F8F734D24C49DE0F73",
+    "bytes": 227398656,
+    "release_license_audit": "pending P5; GPL build"
+  },
+  {
+    "component": "ffprobe",
+    "version": "ffprobe version 8.1.1-full_build-www.gyan.dev Copyright (c) 2007-2026 the FFmpeg developers",
+    "acquisition": "Existing local WinGet Gyan.FFmpeg installation",
+    "upstream": "https://www.gyan.dev/ffmpeg/builds/",
+    "sha256": "A6618E99BB58869DED3C6F37B53AA1A8D701C3591DBB7B5B317D47369C112BE2",
+    "bytes": 227193344,
+    "release_license_audit": "pending P5; GPL build"
+  }
+]

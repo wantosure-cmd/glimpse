@@ -1,0 +1,9 @@
+{
+  "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
+  "source_sha256": "a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da",
+  "output_sha256": "25cb5e1f2515325629ba09424dbac49f9ae23428af097f7c2dbbced9a9312fa1",
+  "full_sha256": "ba390191b55c16b128cf1c12a2e3e0e0d9ece3cb0bbb5d585a8a03d3ae14f1b8",
+  "weight": 400,
+  "license": "SIL Open Font License 1.1",
+  "note": "Subset and complete filename fallback both instantiated at regular weight 400."
+}

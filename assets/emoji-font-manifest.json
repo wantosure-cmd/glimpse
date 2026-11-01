@@ -1,0 +1,52 @@
+{
+  "crate": "epaint_default_fonts",
+  "version": "0.37.0",
+  "cargo_feature": "egui/monochrome_emoji_fonts",
+  "archive_checksum_source": "Cargo.lock",
+  "scope": "Existing pinned dependency resources embedded in the executable; no OS font copies or network loading at runtime. Monochrome fallback, not a promise of every modern color/ZWJ composition.",
+  "fonts": [
+    {
+      "crate_file": "fonts/NotoEmoji-Regular.ttf",
+      "bytes": 418804,
+      "sha256": "415dc6290378574135b64c808dc640c1df7531973290c4970c51fdeb849cb0c5",
+      "license_files": [
+        "fonts/OFL.txt"
+      ]
+    },
+    {
+      "crate_file": "fonts/emoji-icon-font.ttf",
+      "bytes": 324132,
+      "sha256": "f426bec371f484646d002717e2c555a95cd5145e635d83a48bbef83f3abf18ca",
+      "license_files": [
+        "fonts/emoji-icon-font-mit-license.txt"
+      ]
+    }
+  ],
+  "license_and_credit_texts": [
+    {
+      "crate_file": "fonts/egui-icons.txt",
+      "bytes": 761,
+      "sha256": "36dbbfd79d73974f864116879c17dd11559e1340277385f1ac52d8d29a5f5c79"
+    },
+    {
+      "crate_file": "fonts/emoji-icon-font-mit-license.txt",
+      "bytes": 1069,
+      "sha256": "b9d2c1d909aa149996fd4c91dcb92b2362a04431640c1d200959da94caf8cde1"
+    },
+    {
+      "crate_file": "fonts/Hack-Regular.txt",
+      "bytes": 3734,
+      "sha256": "47c0cccbeec7e8614548cc485588b28149e7874188df5f41b36efebcee285c87"
+    },
+    {
+      "crate_file": "fonts/OFL.txt",
+      "bytes": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+    },
+    {
+      "crate_file": "fonts/UFL.txt",
+      "bytes": 4673,
+      "sha256": "2f0015108d68627bd788d313f529c21ff4da2c2c42a5e1f3883acc83480f9002"
+    }
+  ]
+}

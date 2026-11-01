@@ -1,0 +1,16 @@
+[
+  {
+    "component": "libmpv official GPL build",
+    "filename": "libmpv-v0.41.0-dev-ga2cd83c56-38817383469-x86_64-w64-mingw32-gpl.zip",
+    "source": "https://github.com/mpv-player/mpv/releases/download/git-release/libmpv-v0.41.0-dev-ga2cd83c56-38817383469-x86_64-w64-mingw32-gpl.zip",
+    "sha256": "57dce66365f0f84986ad556a59e1276c303b83c86f9268ff9eded3397638f9b7",
+    "bytes": 64908877
+  },
+  {
+    "component": "pillow-heif wheel inspection only",
+    "filename": "pillow_heif-1.8.1-cp312-cp312-win_amd64.whl",
+    "source": "https://files.pythonhosted.org/packages/db/fd/2ff579be4694ac68cc73bfaafe1abc255bd658b678bfb3b33922784ddaf0/pillow_heif-1.8.1-cp312-cp312-win_amd64.whl",
+    "sha256": "ce0ff957ad901a5a6bf8cd22ea26c4304bab7cf2f93d0a2f03046487e5711910",
+    "bytes": 6604108
+  }
+]

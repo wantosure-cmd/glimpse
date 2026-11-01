@@ -1,0 +1,27 @@
+{
+  "application_version": "0.4.46",
+  "application_sha256": "7f4305e7e54189ce401172341fc7d56aef521d4fddbddb27f51da3b615bbddc5",
+  "captured_on": "2026-11-01",
+  "screenshots": [
+    {
+      "file": "library.png",
+      "native_capture": "design-library.png",
+      "sha256": "fb4c7e49a1c694c426220bd5f806ffc82ee30c4c48971c2ac9ffe9b118fa9c04"
+    },
+    {
+      "file": "image-detail.png",
+      "native_capture": "design-detail.png",
+      "sha256": "b8430c1ffe0579f7a49f91a5e13cc27c4c2ab2ccdc2e9931ab2ceac7f09912ed"
+    },
+    {
+      "file": "video-detail.png",
+      "native_capture": "design-detail-video-playing.png",
+      "sha256": "ed60038af902bc8e0fe8b9be10499ca4c22fef01f1d5a8ef69a0e39608e52c45"
+    },
+    {
+      "file": "settings.png",
+      "native_capture": "design-settings-2.png",
+      "sha256": "a7cbd45f56599d7fa77b1fc07177ea9879545b9deb110b985821b24162232970"
+    }
+  ]
+}

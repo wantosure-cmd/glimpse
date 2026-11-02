@@ -24,10 +24,18 @@ assert (r['empty_sequence_closes_detail']['batch'],r['empty_sequence_closes_deta
 assert len(data['reports'])==6
 assert [(x['success_count'],x['failed_count']) for x in data['reports']]==[(1,0),(1,0),(1,1),(1,0),(1,0),(1,0)]
 assert all(x['release_confirmed'] and x['submitted'] for x in data['reports'])
+assert all(x.get('undo_wait_ms',0)>=10000 for x in data['reports']),data['reports']
+assert r['undo_wait_files_intact']['batch']==0 and r['undo_wait_files_intact']['media']==6
+assert r['undo_visible_over_playing_video']['detail'] is not None
+assert r['undo_cancelled_without_submission']['batch']==0 and r['undo_cancelled_without_submission']['media']==6
+assert r['undo_cancelled_without_submission']['detail']==r['undo_visible_over_playing_video']['detail']
+assert r['browsed_other_media_during_countdown']['detail']==r['video_recycled_next_gif']['detail']
 assert all(item['pre_delete_flags'] & 0x80 for report in data['reports'] for item in report['items'] if item['success'])
 def hashes(rows):return {r['Path']:r['Hash'] for r in rows}
 assert hashes(run['originals_before'])==hashes(run['originals_after'])
 assert hashes(run['copies_before'])==hashes(run['copies_after'])
 assert len(run['restored'])==6 and all(x['bytes_restored'] for x in run['restored'])
 summary={'checks_pass':True,'exe_sha256':run['exe_sha256'],'scope':data['scope'],'batches':6,'successes':6,'failures':1,'successful_copies_restored':6,'source_originals_unchanged':3,'all_fixture_copies_restored_unchanged':6,'release_gates_pass':True,'held_delete_deduplicated':True,'empty_selection_noop':True,'detail_ignores_underlying_selection':True,'failure_window_blocks_delete':True,'watcher_counts_converged':True,'ancestor_counts_after_recycle':True,'last_item_falls_back_previous':True,'empty_sequence_closes_detail':True}
+summary.update(media_undo_clicked_in_fullscreen=True,files_intact_during_undo_grace=True,all_six_batches_waited_at_least_10_seconds=True,
+               wait_ms=[r['undo_wait_ms'] for r in data['reports']],browsing_during_grace_and_no_completion_jump=True)
 (evidence/'p4-trash-ui-verification.json').write_text(json.dumps(summary,indent=2),encoding='utf8');print(json.dumps(summary,indent=2))

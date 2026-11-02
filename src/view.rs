@@ -48,7 +48,7 @@ pub struct MediaView {
 }
 
 // Group lookup needs path identity, not path ordering. Final presentation order
-// still comes exclusively from directory_cmp below. Keep the old map for diagnosis.
+// comes from the sibling ordering and preorder traversal below.
 struct DirectoryIndex<V> {
     ordered: BTreeMap<PathBuf, V>,
     hashed: Option<HashMap<PathBuf, V>>,
@@ -147,14 +147,17 @@ pub fn build_with_caches(
             }
         }
     }
-    let mut groups = grouped.into_entries();
-    groups.sort_by(|a, b| directory_cmp(&a.0, &b.0));
+    let groups = grouped.into_entries();
+    let paths: Vec<_> = groups.iter().map(|g| g.0.clone()).collect();
+    let order = directory_order(snapshot, settings, &paths);
+    let mut groups: Vec<_> = groups.into_iter().map(Some).collect();
     let mut result = MediaView {
         groups: Vec::new(),
         sequence: Vec::new(),
         shown: Counts::default(),
     };
-    for (directory, mut records) in groups {
+    for index in order {
+        let (directory, mut records) = groups[index].take().unwrap();
         if cache_keys {
             // Build temporary keys once per record on the existing prepare worker.
             // Keep lossless path bytes as the exact former deterministic tie-break.
@@ -264,6 +267,65 @@ pub fn build_with_caches(
             title,
             sections,
         });
+    }
+    result
+}
+
+/// Sort siblings only; never reverse a parent and its descendants or split a subtree.
+/// Runs on the prepare worker using the scan/index snapshot, with no filesystem IO.
+fn directory_order(snapshot: &LibrarySnapshot, settings: &ViewSettings, paths: &[PathBuf]) -> Vec<usize> {
+    let lookup: HashMap<_, _> = paths.iter().enumerate().map(|(i, p)| (p.as_path(), i)).collect();
+    let parents: Vec<_> = paths.iter().map(|p| p.parent().and_then(|p| lookup.get(p).copied())).collect();
+    let mut bytes = vec![0_u64; paths.len()];
+    let mut modified = vec![None; paths.len()];
+    for file in &snapshot.files {
+        if let Some(&i) = lookup.get(file.file.parent.as_path()) {
+            bytes[i] = bytes[i].saturating_add(file.file.fingerprint.bytes);
+        }
+    }
+    let mut deepest: Vec<_> = (0..paths.len()).collect();
+    deepest.sort_by_key(|i| std::cmp::Reverse(paths[*i].components().count()));
+    for i in deepest {
+        if let Some(parent) = parents[i] {
+            bytes[parent] = bytes[parent].saturating_add(bytes[i]);
+        }
+    }
+    // Repository totals survive the only-favorites snapshot filter and count all media.
+    for dir in &snapshot.directories {
+        if let Some(&i) = lookup.get(dir.path.as_path()) {
+            bytes[i] = dir.recursive_bytes;
+            modified[i] = dir.modified_ns;
+        }
+    }
+    let names: Vec<_> = paths.iter().map(|p| p.file_name().unwrap_or_default().to_string_lossy().to_lowercase()).collect();
+    let identity: Vec<_> = paths.iter().map(|p| path_blob(p)).collect();
+    let compare = |a: &usize, b: &usize| {
+        let name = || natural_cmp_folded(names[*a].as_bytes(), names[*b].as_bytes());
+        let field = match settings.sort {
+            SortField::Name => name(),
+            SortField::Size => bytes[*a].cmp(&bytes[*b]),
+            SortField::Modified => match (modified[*a], modified[*b]) {
+                (Some(a), Some(b)) => a.cmp(&b),
+                (Some(_), None) => return std::cmp::Ordering::Less,
+                (None, Some(_)) => return std::cmp::Ordering::Greater,
+                (None, None) => std::cmp::Ordering::Equal,
+            },
+        };
+        (if settings.descending { field.reverse() } else { field })
+            .then_with(name).then_with(|| identity[*a].cmp(&identity[*b]))
+    };
+    let mut children = vec![Vec::new(); paths.len()];
+    let mut roots = Vec::new();
+    for (i, parent) in parents.iter().enumerate() {
+        match parent { Some(parent) => children[*parent].push(i), None => roots.push(i) }
+    }
+    roots.sort_by(compare);
+    for siblings in &mut children { siblings.sort_by(compare); }
+    let mut pending: Vec<_> = roots.into_iter().rev().collect();
+    let mut result = Vec::with_capacity(paths.len());
+    while let Some(i) = pending.pop() {
+        result.push(i);
+        pending.extend(children[i].iter().rev().copied());
     }
     result
 }
@@ -415,6 +477,8 @@ mod tests {
         for suffix in ["empty", "sub/child", "sub/child/deeper"] {
             let path = s.root.join(suffix);
             s.directories.push(DirectoryRecord {
+                modified_ns: None,
+                recursive_bytes: 0,
                 parent: path.parent().map(|p| p.to_owned()),
                 path,
                 direct: Counts::default(),
@@ -567,6 +631,60 @@ mod tests {
         assert_eq!(build(&snapshot(), &options).sequence, vec![2, 1, 3, 4]);
         options.sort = SortField::Modified;
         assert_eq!(build(&snapshot(), &options).sequence, vec![1, 2, 4, 3]);
+    }
+    #[test]
+    fn folder_sort_uses_sibling_keys_keeps_subtrees_and_filter_independent_totals() {
+        let mut s = snapshot();
+        s.files.clear();
+        for (id, name, bytes) in [(1,"folder1/1.jpg",300),(2,"folder2/10.jpg",20),
+            (3,"folder2/2.mov",80),(4,"folder2/nested10/1.jpg",90),(5,"folder10/1.mov",200)] {
+            let path=s.root.join(name);
+            s.files.push(MediaRecord {id, file:MediaFile {parent:path.parent().unwrap().into(),kind:media_kind(&path).unwrap(),path,
+                fingerprint:Fingerprint {bytes,modified_ns:100-id}},width:Some(40),height:Some(30),duration_ms:None,revision:0,error:None});
+        }
+        for (path,modified,bytes) in [("",0,690),("folder1",20,300),("folder2",30,190),
+            ("folder2/nested3",5,0),("folder2/nested10",999,90),("folder10",10,200)] {
+            let path=s.root.join(path);
+            s.directories.push(DirectoryRecord {parent:path.parent().map(PathBuf::from),path,
+                modified_ns:Some(modified),recursive_bytes:bytes,direct:Counts::default(),recursive:Counts::default(),
+                state:ScanState::Complete,subtree_complete:true});
+        }
+        let relative = |view: &MediaView| view.groups.iter().map(|g|g.directory.strip_prefix(&s.root).unwrap().to_string_lossy().replace('\\',"/")).collect::<Vec<_>>();
+        for (sort,descending,expected) in [
+            (SortField::Name,false,vec!["","folder1","folder2","folder2/nested3","folder2/nested10","folder10"]),
+            (SortField::Name,true,vec!["","folder10","folder2","folder2/nested10","folder2/nested3","folder1"]),
+            (SortField::Modified,false,vec!["","folder10","folder1","folder2","folder2/nested3","folder2/nested10"]),
+            (SortField::Modified,true,vec!["","folder2","folder2/nested10","folder2/nested3","folder1","folder10"]),
+            (SortField::Size,false,vec!["","folder2","folder2/nested3","folder2/nested10","folder10","folder1"]),
+            (SortField::Size,true,vec!["","folder1","folder10","folder2","folder2/nested10","folder2/nested3"])] {
+            for filter in [MediaFilter::All,MediaFilter::Images,MediaFilter::Videos] {
+                let settings=ViewSettings {sort,descending,filter,type_groups:false};
+                let view=build(&s,&settings);
+                assert_eq!(relative(&view),expected,"{settings:?}");
+                let mut favorites=s.clone();favorites.files.retain(|f|f.id==3);
+                assert_eq!(relative(&build(&favorites,&settings)),expected,"favorites {settings:?}");
+                let layout=crate::layout::MasonryLayout::build_with_gap(&s,&view,640.,160.,&HashSet::from([s.root.join("folder2")]),6.);
+                assert!(!layout.headers.iter().any(|h|h.directory.starts_with(s.root.join("folder2/nested10"))));
+                assert!(layout.headers.iter().any(|h|h.directory==s.root.join("folder1")));
+                if sort==SortField::Name && filter==MediaFilter::All {
+                    assert_eq!(view.groups.iter().find(|g|g.directory==s.root.join("folder2")).unwrap().sections[0].items,
+                        if descending {vec![2,3]} else {vec![3,2]});
+                }
+            }
+        }
+    }
+    #[test]
+    fn directory_unknown_time_stays_last_and_equal_keys_have_stable_natural_ties() {
+        let mut s=snapshot();s.files.clear();
+        for (name,time) in [("unknown",None),("album10",Some(42)),("album2",Some(42))] {
+            let path=s.root.join(name);
+            s.directories.push(DirectoryRecord {parent:Some(s.root.clone()),path,modified_ns:time,recursive_bytes:0,
+                direct:Counts::default(),recursive:Counts::default(),state:ScanState::Unknown,subtree_complete:false});
+        }
+        for descending in [false,true] {
+            let view=build(&s,&ViewSettings {sort:SortField::Modified,descending,..Default::default()});
+            assert_eq!(view.groups.iter().skip(1).map(|g|g.title.as_str()).collect::<Vec<_>>(),vec!["album2","album10","unknown"]);
+        }
     }
     #[test]
     fn navigation_restores_anchor_and_discards_forward_branch() {

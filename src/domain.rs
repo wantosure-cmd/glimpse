@@ -102,6 +102,9 @@ pub enum ScanState {
 #[derive(Debug, Clone)]
 pub struct DirectoryRecord {
     pub path: PathBuf,
+    pub modified_ns: Option<i64>,
+    /// All indexed media bytes in this subtree, independent of view filters.
+    pub recursive_bytes: u64,
     pub parent: Option<PathBuf>,
     pub direct: Counts,
     pub recursive: Counts,

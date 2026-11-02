@@ -10,21 +10,24 @@ New-Item -ItemType Directory -Path $taskMedia | Out-Null
 $taskWork=Join-Path $taskRoot ('artifacts/trash-ui-'+[DateTime]::Now.Ticks)
 $taskEvidenceDir=Join-Path $taskWork 'artifacts'
 New-Item -ItemType Directory -Path $taskEvidenceDir | Out-Null
-Set-Content -LiteralPath (Join-Path $taskBase '.trash-smoke-owned') -Value 'generated recycle UI copies' -NoNewline -Encoding utf8
+[IO.File]::WriteAllText((Join-Path $taskBase '.trash-smoke-owned'), 'generated recycle UI copies', (New-Object Text.UTF8Encoding($false)))
 $taskImage=Join-Path $taskRoot 'test-media/ui-demo/封面.jpg'
 $taskVideo=Join-Path $taskRoot 'test-media/test-h264-aac.mp4'
+$taskLongVideo=Join-Path $taskWork 'generated-undo-video.mp4'
+& (Join-Path $taskRoot 'vendor/runtime/ffmpeg.exe') -v error -nostdin -stream_loop -1 -i $taskVideo -t 30 -c copy $taskLongVideo
+if($LASTEXITCODE -ne 0){throw 'Failed to create dedicated long undo fixture'}
 $taskGif=Join-Path $taskRoot 'test-media/gif-demo/循环.gif'
 foreach($taskName in '01.jpg','02.jpg','05.jpg','06.jpg'){Copy-Item -LiteralPath $taskImage -Destination (Join-Path $taskMedia $taskName)}
-Copy-Item -LiteralPath $taskVideo -Destination (Join-Path $taskMedia '03.mp4')
+Copy-Item -LiteralPath $taskLongVideo -Destination (Join-Path $taskMedia '03.mp4')
 Copy-Item -LiteralPath $taskGif -Destination (Join-Path $taskMedia '04.gif')
-$taskOriginals=@($taskImage,$taskVideo,$taskGif) | Get-FileHash -Algorithm SHA256 | Select-Object Path,Hash
-$taskCopies=Get-ChildItem -LiteralPath $taskMedia -File | Get-FileHash -Algorithm SHA256 | Select-Object Path,Hash
+$taskOriginals=Get-FileHash -LiteralPath @($taskImage,$taskVideo,$taskGif) -Algorithm SHA256 | Select-Object Path,Hash
+$taskCopies=Get-FileHash -LiteralPath @(Get-ChildItem -LiteralPath $taskMedia -File | Select-Object -ExpandProperty FullName) -Algorithm SHA256 | Select-Object Path,Hash
 $taskStarted=[DateTime]::UtcNow
 $taskApp=Start-Process -FilePath $taskExe -ArgumentList '--trash-smoke','--open',('"'+$taskBase+'"'),'--instance-scope',([IO.Path]::GetFileName($taskBase)),'--data-dir',('"'+(Join-Path $taskBase 'data')+'"') -WorkingDirectory $taskWork -RedirectStandardOutput "$taskEvidenceDir/p4-trash-ui-stdout.log" -RedirectStandardError "$taskEvidenceDir/p4-trash-ui-stderr.log" -PassThru
 if(-not $taskApp.WaitForExit(180000)){throw "Owned trash diagnostic still live; inspect PID $($taskApp.Id) before retrying"}
 $taskEvidence=Get-Item -LiteralPath "$taskEvidenceDir/p4-trash-ui.json"
 if($taskEvidence.LastWriteTimeUtc -lt $taskStarted){throw 'Missing fresh recycle UI evidence'}
-$taskResult=Get-Content -LiteralPath $taskEvidence.FullName -Raw | ConvertFrom-Json
+$taskResult=Get-Content -LiteralPath $taskEvidence.FullName -Raw -Encoding utf8 | ConvertFrom-Json
 # Restore only exact receipt items under this run's marked generated media directory.
 $taskReceipts=@($taskResult.reports)+@($taskResult.rows | ForEach-Object last_trash)
 $taskItems=@($taskReceipts | Where-Object submitted | ForEach-Object items | Where-Object success | Sort-Object path -Unique)
@@ -47,8 +50,8 @@ foreach($taskItem in $taskItems){
     if(-not $taskOriginalHash -or (Get-FileHash -LiteralPath $taskExpectedPath -Algorithm SHA256).Hash -ne $taskOriginalHash){throw "Owned copy restore failed: $taskExpectedPath"}
     $taskRestored+=@{path=$taskExpectedPath;bytes_restored=$true}
 }
-$taskAfter=$taskOriginals.Path | Get-FileHash -Algorithm SHA256 | Select-Object Path,Hash
-$taskCopiesAfter=Get-ChildItem -LiteralPath $taskMedia -File | Get-FileHash -Algorithm SHA256 | Select-Object Path,Hash
+$taskAfter=Get-FileHash -LiteralPath @($taskOriginals.Path) -Algorithm SHA256 | Select-Object Path,Hash
+$taskCopiesAfter=Get-FileHash -LiteralPath @(Get-ChildItem -LiteralPath $taskMedia -File | Select-Object -ExpandProperty FullName) -Algorithm SHA256 | Select-Object Path,Hash
 $taskRun=@{exit_code=$taskApp.ExitCode;started_utc=$taskStarted;ended_utc=[DateTime]::UtcNow;exe_path=$taskExe;exe_sha256=(Get-FileHash -LiteralPath $taskExe -Algorithm SHA256).Hash;fixture=$taskBase;originals_before=$taskOriginals;originals_after=$taskAfter;copies_before=$taskCopies;copies_after=$taskCopiesAfter;restored=$taskRestored}
 $taskRun | ConvertTo-Json -Depth 8 | Set-Content "$taskEvidenceDir/p4-trash-ui-run.json" -Encoding utf8
 if($taskApp.ExitCode -ne 0 -or $taskResult.error){throw "Recycle UI failed: $($taskResult.error)"}

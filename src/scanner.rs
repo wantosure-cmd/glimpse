@@ -21,6 +21,7 @@ pub enum ScanEvent {
     Directory {
         generation: u64,
         path: PathBuf,
+        modified_ns: Option<i64>,
         counts: Counts,
         complete: bool,
         children: Vec<PathBuf>,
@@ -37,6 +38,10 @@ pub enum ScanEvent {
     },
 }
 
+fn modified_ns(metadata: &fs::Metadata) -> Option<i64> {
+    metadata.modified().ok()?.duration_since(UNIX_EPOCH).ok()
+        .map(|d| d.as_nanos().min(i64::MAX as u128) as i64)
+}
 fn is_link(metadata: &fs::Metadata) -> bool {
     #[cfg(windows)]
     {
@@ -108,10 +113,11 @@ fn scan_excluding(
             return;
         }
     };
-    let mut queue = VecDeque::from([root]);
+    let root_modified = fs::symlink_metadata(&root).ok().and_then(|m| modified_ns(&m));
+    let mut queue = VecDeque::from([(root, root_modified)]);
     let mut batch = Vec::with_capacity(100);
     let mut last_batch = Instant::now();
-    while let Some(dir) = queue.pop_front() {
+    while let Some((dir, directory_modified)) = queue.pop_front() {
         if current.load(Ordering::Acquire) != generation {
             return;
         }
@@ -140,6 +146,7 @@ fn scan_excluding(
                     ScanEvent::Directory {
                         generation,
                         path: dir,
+                        modified_ns: directory_modified,
                         counts,
                         complete: false,
                         children: vec![],
@@ -206,7 +213,7 @@ fn scan_excluding(
             }
             if metadata.is_dir() {
                 children.push(path.clone());
-                queue.push_back(path);
+                queue.push_back((path, modified_ns(&metadata)));
                 continue;
             }
             if !metadata.is_file() {
@@ -266,6 +273,7 @@ fn scan_excluding(
             ScanEvent::Directory {
                 generation,
                 path: dir,
+                modified_ns: directory_modified,
                 counts,
                 complete,
                 children,

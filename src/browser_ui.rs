@@ -452,7 +452,8 @@ impl Browser {
                             toolbar_divider(ui);
                             self.favorites_toolbar(ui);
                             toolbar_divider(ui);
-                            egui::ComboBox::from_id_salt("sort")
+                            if let Some(smoke)=self.design_smoke.as_mut() {smoke.sort_options.clear();}
+                            let sort_combo=egui::ComboBox::from_id_salt("sort")
                                 .width(82.)
                                 .selected_text(match self.settings.sort {
                                     SortField::Name => media_browser::ui_text!(msg_a6e48adc26d6),
@@ -462,30 +463,35 @@ impl Browser {
                                     SortField::Size => media_browser::ui_text!(msg_b9bf6916437a),
                                 })
                                 .show_ui(ui, |ui| {
-                                    ui.selectable_value(
+                                    let name=ui.selectable_value(
                                         &mut self.settings.sort,
                                         SortField::Name,
                                         media_browser::ui_text!(msg_a6e48adc26d6),
                                     );
-                                    ui.selectable_value(
+                                    let modified=ui.selectable_value(
                                         &mut self.settings.sort,
                                         SortField::Modified,
                                         media_browser::ui_text!(msg_257bbcc44c83),
                                     );
-                                    ui.selectable_value(
+                                    let size=ui.selectable_value(
                                         &mut self.settings.sort,
                                         SortField::Size,
                                         media_browser::ui_text!(msg_b9bf6916437a),
                                     );
+                                    if let Some(smoke)=self.design_smoke.as_mut() {
+                                        smoke.sort_options=vec![(SortField::Name,name.rect),(SortField::Modified,modified.rect),(SortField::Size,size.rect)];
+                                    }
                                 });
-                            if ui
-                                .button(if self.settings.descending {
+                            let reverse=ui.button(if self.settings.descending {
                                     media_browser::ui_text!(msg_4b77c3546823)
                                 } else {
                                     media_browser::ui_text!(msg_ca715c0d8d83)
-                                })
-                                .clicked()
-                            {
+                                });
+                            if let Some(smoke)=self.design_smoke.as_mut() {
+                                smoke.sort_combo=Some(sort_combo.response.rect);
+                                smoke.reverse_sort=Some(reverse.rect);
+                            }
+                            if reverse.clicked() {
                                 self.settings.descending = !self.settings.descending;
                             }
                             ui.checkbox(

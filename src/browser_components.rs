@@ -96,18 +96,28 @@ pub(super) fn transport_row<R>(
 ) -> egui::InnerResponse<R> {
     egui::Frame::new()
         .fill(Color32::TRANSPARENT)
-        .inner_margin(egui::Margin::symmetric(10, 2))
+        .inner_margin(egui::Margin::symmetric(10, 0))
         .show(ui, |ui| {
             ui.allocate_ui_with_layout(
-                egui::vec2(ui.available_width(), 32.),
+                egui::vec2(ui.available_width(), 24.),
                 egui::Layout::left_to_right(egui::Align::Center),
                 |ui| {
-                    ui.set_min_height(32.);
+                    ui.set_min_height(24.);
                     body(ui)
                 },
             )
             .inner
         })
+}
+pub(super) fn tracked_transport_icon(
+    ui: &mut egui::Ui,
+    regions: &mut Vec<Rect>,
+    glyph: icons::Glyph,
+    label: &str,
+) -> egui::Response {
+    let response = icons::icon_button_with_size(ui, glyph, label, egui::vec2(24., 24.));
+    regions.push(response.rect);
+    response
 }
 pub(super) fn tracked_icon(
     ui: &mut egui::Ui,

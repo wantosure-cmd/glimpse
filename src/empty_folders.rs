@@ -30,6 +30,8 @@ mod tests {
     fn only_known_empty_subtrees_fold_and_explicit_expansion_wins() {
         let directory = |name: &str, images, videos, state, complete| DirectoryRecord {
             path: name.into(),
+            modified_ns: None,
+            recursive_bytes: 0,
             parent: None,
             direct: Counts::default(),
             recursive: Counts { images, videos },

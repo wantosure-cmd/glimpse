@@ -107,7 +107,7 @@ impl Browser {
         record: &MediaRecord,
         detail: bool,
     ) -> Result<(), String> {
-        if self.trash_operation.is_some() {
+        if self.trash_releasing() || self.trash_blocks_media(record.id) {
             return Err(media_browser::ui_text!(msg_21e9b02cc82e).into());
         }
         if self.player_media != Some(record.id) {
@@ -127,6 +127,7 @@ impl Browser {
             || p.error().is_some();
         self.playback_errors.remove(&record.id);
         if changed {
+            self.resume_pause_override=None;
             self.subtitle_notice = None;
             self.seek_notice = None;
             self.load_started = Some(Instant::now());
@@ -278,9 +279,10 @@ impl Browser {
                         self.seek_flight = Some((request, Instant::now()));
                         // Restoring a saved position starts paused to avoid flashing frame zero.
                         if self.resume_starting {
-                            let paused = self.detail.is_some()
+                            let default_paused = self.detail.is_some()
                                 && self.presentation.mode != presentation_ui::Mode::Manual
                                 && !self.presentation.playing;
+                            let paused=self.resume_pause_override.take().unwrap_or(default_paused);
                             let _ = p.set("pause", if paused { "yes" } else { "no" });
                             self.resume_starting = false;
                         }
@@ -299,7 +301,7 @@ impl Browser {
     }
 
     pub(super) fn hover_tick(&mut self, ctx: &egui::Context) {
-        if self.detail.is_some() || self.trash_operation.is_some() {
+        if self.detail.is_some() || self.trash_releasing() {
             self.hover_candidate = None;
             return;
         }
@@ -324,6 +326,7 @@ impl Browser {
             && (self.pinned || !self.sidebar_open);
         let candidate = if allowed {
             self.hovered_video.filter(|id| {
+                if self.trash_blocks_media(*id) { return false; }
                 !self.playback_errors.get(id).is_some_and(|(version, _)| {
                     self.prepared.as_ref().and_then(|p| {
                         p.lookup
@@ -401,14 +404,13 @@ impl Browser {
         self.routed_zoom = 0.;
         let mut pointer = ctx.input(|i| i.pointer.hover_pos());
         let blocked = self.workspace.is_open()
-            || self.features.cleanup.is_some()
+            || self.features.cleanup_blocks_input()
             || !raw.focused
             || ctx.text_edit_focused()
             || egui::Popup::is_any_open(ctx)
             || self.rotation.is_some()
             || self.rotation_message.is_some()
             || self.permanent_prompt.is_some()
-            || self.trash_operation.is_some()
             || !self.trash_failures.is_empty();
         if !raw.focused {
             self.key_latch.clear();
@@ -714,11 +716,18 @@ impl Browser {
                 }
                 Action::TogglePause => self.toggle_detail_pause(),
                 Action::Fullscreen => {
-                    self.fullscreen = !self.fullscreen;
-                    ctx.send_viewport_cmd(egui::ViewportCommand::Fullscreen(self.fullscreen));
+                    let video = self.detail.as_ref().is_some_and(|d| self.prepared.as_ref()
+                        .and_then(|p| p.lookup.get(&d.id).map(|i| p.snapshot.files[*i].file.kind)) == Some(MediaKind::Video));
+                    if video { self.toggle_video_fullscreen(); }
+                    else {
+                        self.fullscreen = !self.fullscreen;
+                        ctx.send_viewport_cmd(egui::ViewportCommand::Fullscreen(self.fullscreen));
+                    }
                 }
                 Action::Escape => {
-                    if self.fullscreen {
+                    if self.video_fullscreen.is_some() {
+                        self.exit_video_fullscreen();
+                    } else if self.fullscreen {
                         self.fullscreen = false;
                         ctx.send_viewport_cmd(egui::ViewportCommand::Fullscreen(false));
                     } else {

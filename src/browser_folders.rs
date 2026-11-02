@@ -430,6 +430,7 @@ impl Browser {
         viewport: Rect,
     ) {
         self.sticky_paths.clear();
+        if let Some(smoke)=self.design_smoke.as_mut(){smoke.sticky_stats=None;}
         let Some(active) = prepared.layout.headers[..prepared
             .layout
             .headers
@@ -448,6 +449,8 @@ impl Browser {
             .collect();
         chain.reverse();
         self.sticky_paths = chain.clone();
+        let (media_counts,folders)=prepared.directory_stats.get(&active.directory).copied().unwrap_or_default();
+        let stats=media_browser::ui_format!(msg_032ad5fbb9db,media_counts.images,media_counts.videos,folders);
         let target = self.media_jump_target(prepared);
         self.sticky_jump_target = target.clone();
         let ctx = ui.ctx().clone();
@@ -461,7 +464,9 @@ impl Browser {
                     .inner_margin(4.)
                     .show(ui, |ui| {
                         ui.horizontal(|ui| {
-                            let breadcrumb_width = (viewport.width() - 56.).max(30.);
+                            let stats_width=ui.painter().layout_no_wrap(stats.clone(),egui::FontId::proportional(12.),modern_ui::MUTED)
+                                .size().x.min(ui.available_width()*0.48);
+                            let breadcrumb_width = (ui.available_width()-stats_width-32.-2.*ui.spacing().item_spacing.x).max(24.);
                             ui.allocate_ui_with_layout(
                                 egui::vec2(breadcrumb_width, 28.),
                                 egui::Layout::left_to_right(egui::Align::Center),
@@ -535,6 +540,11 @@ impl Browser {
                                         });
                                 },
                             );
+                            let label=ui.allocate_ui_with_layout(egui::vec2(stats_width,28.),
+                                egui::Layout::left_to_right(egui::Align::Center),|ui| {
+                                    ui.add(egui::Label::new(egui::RichText::new(&stats).size(12.).color(modern_ui::MUTED)).truncate())
+                                }).inner.on_hover_text(&stats);
+                            if let Some(smoke)=self.design_smoke.as_mut(){smoke.sticky_stats=Some((media_counts,folders,label.rect));}
                             let response = ui
                                 .add_enabled_ui(target.is_some(), |ui| {
                                     icons::floating_navigation_button(
@@ -568,6 +578,7 @@ impl Browser {
     }
     pub(super) fn schedule_folder_delete(&mut self, fallback: &Path) {
         if self.features.cleanup.is_some()
+            || self.pending_trash.is_some()
             || self.pending_folders.is_some()
             || self.folder_prepare.is_some()
             || self.trash_operation.is_some()

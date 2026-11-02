@@ -346,6 +346,9 @@ pub struct Browser {
     trash_smoke: Option<trash_smoke::TrashSmoke>,
     trash_service: media_browser::trash::TrashService,
     trash_operation: Option<trash_ui::TrashOperation>,
+    pending_trash: Option<trash_ui::PendingTrash>,
+    trash_undo_panel: Option<Rect>,
+    trash_undo_button: Option<Rect>,
     trash_counter: u64,
     trash_message: Option<String>,
     trash_failures: Vec<(PathBuf, String)>,
@@ -371,6 +374,7 @@ pub struct Browser {
     positions: HashMap<MediaId, (Fingerprint, f64)>,
     resume_pending: Option<f64>,
     resume_starting: bool,
+    resume_pause_override: Option<bool>,
     restore_flight: bool,
     volume: f32,
     muted: bool,
@@ -470,6 +474,8 @@ pub struct Browser {
     smoke_rows: Vec<serde_json::Value>,
     quit_after: Option<Duration>,
     fullscreen: bool,
+    video_fullscreen: Option<bool>,
+    video_fullscreen_activity: Instant,
     font_receiver: Option<std::sync::mpsc::Receiver<Vec<u8>>>,
     full_font_loaded: bool,
 }
@@ -623,6 +629,9 @@ impl Browser {
                 trash_ctx.request_repaint()
             }),
             trash_operation: None,
+            pending_trash: None,
+            trash_undo_panel: None,
+            trash_undo_button: None,
             trash_counter: 0,
             format_smoke: argument("--format-smoke").map(|path| {
                 format_smoke::FormatSmoke::new(PathBuf::from(path))
@@ -679,6 +688,7 @@ impl Browser {
             positions: HashMap::new(),
             resume_pending: None,
             resume_starting: false,
+            resume_pause_override: None,
             restore_flight: false,
             volume: if config.volume.is_finite() {
                 config.volume.clamp(0., 400.)
@@ -812,6 +822,10 @@ impl Browser {
                 .map(|p| presentation_smoke::PresentationSmoke::new(PathBuf::from(p))),
             design_smoke: argument("--design-smoke")
                 .map(|p| design_smoke::DesignSmoke::new(PathBuf::from(p)))
+                .or_else(|| argument("--detail-ui-smoke")
+                    .map(|p| design_smoke::DesignSmoke::new_detail_ui(PathBuf::from(p))))
+                .or_else(|| argument("--folder-sort-smoke")
+                    .map(|p| design_smoke::DesignSmoke::new_folder_sort(PathBuf::from(p))))
                 .or_else(|| {
                     argument("--resize-only-smoke")
                         .map(|p| design_smoke::DesignSmoke::new_resize(PathBuf::from(p)))
@@ -872,6 +886,8 @@ impl Browser {
                 .and_then(|s| s.parse().ok())
                 .map(Duration::from_millis),
             fullscreen: args.iter().any(|s| s == "--fullscreen"),
+            video_fullscreen: None,
+            video_fullscreen_activity: Instant::now(),
             font_receiver: None,
             full_font_loaded: false,
         }
@@ -888,9 +904,6 @@ impl Browser {
     }
     fn navigate(&mut self, root: PathBuf, preserve_tree: bool) {
         self.folder_location_anchor = None;
-        if self.trash_operation.is_some() {
-            return;
-        }
         if let Some(state) = self.current_state() {
             self.history.replace_current(state);
         }
@@ -905,9 +918,6 @@ impl Browser {
         self.navigate_state(state, preserve_tree);
     }
     fn navigate_state(&mut self, state: NavigationState, preserve_tree: bool) {
-        if self.trash_operation.is_some() {
-            return;
-        }
         self.loading.scan_error = None;
         self.list_animations.clear();
         self.animated_images.clear();
@@ -1525,8 +1535,12 @@ impl Browser {
         self.list_animations.clear();
         self.presentation.reset_clock();
         self.folder_location_anchor = None;
-        if self.trash_operation.is_some() || self.rotation.is_some() {
+        if self.trash_releasing() || self.trash_blocks_media(id) || self.rotation.is_some() {
             return;
+        }
+        if !self.prepared.as_ref().is_some_and(|p| p.lookup.get(&id)
+            .is_some_and(|i| p.snapshot.files[*i].file.kind == MediaKind::Video)) {
+            self.exit_video_fullscreen();
         }
         if self.detail.is_none() {
             self.begin_media_motion(id, false);
@@ -1596,6 +1610,7 @@ impl Browser {
         }
     }
     fn close_detail(&mut self) {
+        self.exit_video_fullscreen();
         self.presentation.mode = presentation_ui::Mode::Manual;
         self.presentation.playing = false;
         self.presentation.reset_clock();
@@ -2176,7 +2191,8 @@ impl Browser {
                     .is_some_and(|e| e.eq_ignore_ascii_case("gif"));
                 if gif
                     && self.detail.is_none()
-                    && self.trash_operation.is_none()
+                    && !self.trash_releasing()
+                    && !self.trash_blocks_media(record.id)
                     && self.rotation.is_none()
                 {
                     if let Some((w, h)) = record.width.zip(record.height) {
@@ -2642,7 +2658,7 @@ impl eframe::App for Browser {
         self.preview_seek_rect = None;
         self.list_animation_requests.clear();
         let list_visible = self.detail.is_none()
-            && self.trash_operation.is_none()
+            && !self.trash_releasing()
             && self.rotation.is_none()
             && !self.workspace.is_open()
             && ctx.input(|i| {
@@ -2803,6 +2819,9 @@ impl eframe::App for Browser {
                 self.sidebar_open = false;
             }
         }
+        if self.pending_trash.is_some() {
+            if let Some(rect)=self.trash_undo_panel {self.control_regions.push(rect);}
+        }
         self.detail(&ctx, &mut jobs);
         self.paint_closing_motion(&ctx);
         self.folder_undo_ui(&ctx);
@@ -2810,7 +2829,7 @@ impl eframe::App for Browser {
         self.rotation_dialog(&ctx);
         self.workspace_ui(&ctx);
         let list_visible = self.detail.is_none()
-            && self.trash_operation.is_none()
+            && !self.trash_releasing()
             && self.rotation.is_none()
             && !self.workspace.is_open()
             && self.animation.released()
@@ -2900,11 +2919,7 @@ impl eframe::App for Browser {
         }
         self.thumbnails.set_requests(
             self.generation,
-            if self.trash_operation.is_some() {
-                Vec::new()
-            } else {
-                jobs
-            },
+            jobs.into_iter().filter(|job| !self.trash_blocks_media(job.id)).collect(),
         );
         if self.prepare_dirty {
             ctx.request_repaint_after(Duration::from_millis(100));

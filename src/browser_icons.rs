@@ -87,7 +87,10 @@ impl Glyph {
     }
 }
 pub(super) fn paint(p: &egui::Painter, rect: Rect, glyph: Glyph, color: Color32) {
-    let size = rect.width().min(rect.height()).min(16.);
+    paint_sized(p,rect,glyph,color,16.);
+}
+pub(super) fn paint_sized(p: &egui::Painter, rect: Rect, glyph: Glyph, color: Color32, max_size: f32) {
+    let size = rect.width().min(rect.height()).min(max_size);
     let target = Rect::from_center_size(rect.center(), egui::Vec2::splat(size));
     if size <= 0. || !p.is_visible() || !p.clip_rect().intersects(target) {
         return;
@@ -259,7 +262,7 @@ pub(super) fn floating_navigation_button(
 pub(super) fn compact_icon_button(ui: &mut egui::Ui, glyph: Glyph, label: &str) -> egui::Response {
     icon_button_with_size(ui, glyph, label, egui::vec2(20., 26.))
 }
-fn icon_button_with_size(
+pub(super) fn icon_button_with_size(
     ui: &mut egui::Ui,
     glyph: Glyph,
     label: &str,

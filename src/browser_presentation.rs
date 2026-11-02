@@ -104,11 +104,19 @@ impl Browser {
         } else if target < 0 || target >= count as i64 {
             return None;
         }
-        if groups {
-            self.presentation.plan[target as usize].ids.first().copied()
-        } else {
-            prepared.view.sequence.get(target as usize).copied()
+        for _ in 0..count {
+            let candidate = if groups {
+                let ids = &self.presentation.plan[target as usize].ids;
+                ids.first().copied().filter(|_| !ids.iter().any(|id| self.trash_blocks_media(*id)))
+            } else {
+                prepared.view.sequence.get(target as usize).copied().filter(|id| !self.trash_blocks_media(*id))
+            };
+            if candidate.is_some() { return candidate; }
+            target += if delta < 0 { -1 } else { 1 };
+            if repeat { target = target.rem_euclid(count as i64); }
+            else if target < 0 || target >= count as i64 { return None; }
         }
+        None
     }
 
     pub(super) fn set_presentation_mode(&mut self, mode: Mode) {
@@ -121,7 +129,8 @@ impl Browser {
             self.animation.clear();
         }
         if let Some(prepared) = self.prepared.clone() {
-            if restore_animation {
+            if restore_animation && !self.trash_releasing()
+                && !self.detail.as_ref().is_some_and(|v| self.trash_blocks_media(v.id)) {
                 if let Some(record) = self
                     .detail
                     .as_ref()
@@ -232,7 +241,9 @@ impl Browser {
                 .as_ref()
                 .is_some_and(|v| Some(v.id) == self.player_media)
             {
-                let _ = p.lock().unwrap().toggle_pause();
+                let player=p.lock().unwrap();
+                let _ = player.toggle_pause();
+                if self.resume_pause_override.is_some(){self.resume_pause_override=Some(player.paused_intent());}
             }
         }
     }

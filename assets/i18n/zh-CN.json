@@ -8078,6 +8078,20 @@
       ],
       "original_literals": [],
       "format_template": false
+    },
+    "msg_media_delete_undo": {
+      "text": "{count} 项将在 {seconds} 秒后移入回收站",
+      "source": "{count} 项将在 {seconds} 秒后移入回收站",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [
+        "\"{count} 项将在 {seconds} 秒后移入回收站\""
+      ],
+      "format_template": true
     }
   },
   "managed_technical_sources": [

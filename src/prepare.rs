@@ -32,6 +32,7 @@ pub struct Prepared {
     pub layout: MasonryLayout,
     pub lookup: Arc<HashMap<MediaId, usize>>,
     pub media_directories: Arc<crate::media_jump::MediaDirectoryIndex>,
+    pub directory_stats: Arc<HashMap<PathBuf, (Counts, u64)>>,
     pub automatic_collapsed: Arc<HashSet<PathBuf>>,
     pub effective_collapsed: HashSet<PathBuf>,
     pub build_ms: f64,
@@ -57,7 +58,7 @@ fn same_view_inputs(a: &LibrarySnapshot, b: &LibrarySnapshot) -> bool {
         && a.directories
             .iter()
             .zip(&b.directories)
-            .all(|(a, b)| a.path == b.path)
+            .all(|(a, b)| a.path == b.path && a.modified_ns == b.modified_ns && a.recursive_bytes == b.recursive_bytes)
 }
 #[derive(Default)]
 struct State {
@@ -180,6 +181,8 @@ impl PrepareService {
                             })
                     });
                 let prepared = Arc::new(Prepared {
+                    directory_stats: reusable.map(|p|p.directory_stats.clone()).unwrap_or_else(||
+                        Arc::new(view.groups.iter().map(|g|(g.directory.clone(),(g.counts,g.direct_folders))).collect())),
                     automatic_collapsed: Arc::new(automatic_collapsed),
                     effective_collapsed,
                     media_directories: reusable
@@ -265,6 +268,8 @@ mod tests {
                 .collect(),
             directories: vec![DirectoryRecord {
                 path: root,
+                modified_ns: None,
+                recursive_bytes: 0,
                 parent: None,
                 direct: Counts::default(),
                 recursive: Counts::default(),
@@ -320,6 +325,8 @@ mod tests {
             let second = prepare(&service, newer.clone(), ViewSettings::default(), None, 2);
             assert_eq!(second.view_reused, cache_completed);
             assert_eq!(Arc::ptr_eq(&first.view, &second.view), cache_completed);
+            assert_eq!(Arc::ptr_eq(&first.directory_stats,&second.directory_stats),cache_completed);
+            assert_eq!(second.directory_stats.get(&second.snapshot.root).unwrap().0.images,3);
             assert_eq!(*second.view, view::build(&newer, &ViewSettings::default()));
             assert_eq!(second.snapshot.files[0].height, Some(1200));
             assert!(second.layout.rectangles[&1].h > first.layout.rectangles[&1].h);
@@ -360,7 +367,7 @@ mod tests {
         let service = PrepareService::new(|| {});
         let original = snapshot();
         let first = prepare(&service, original.clone(), ViewSettings::default(), None, 1);
-        for case in 0..10 {
+        for case in 0..12 {
             let mut changed = original.clone();
             let mut settings = ViewSettings::default();
             match case {
@@ -396,6 +403,8 @@ mod tests {
                 9 => {
                     changed.files.swap(0, 1);
                 }
+                10 => changed.directories[0].modified_ns = Some(123),
+                11 => changed.directories[0].recursive_bytes = 123,
                 _ => unreachable!(),
             }
             let prepared = prepare(

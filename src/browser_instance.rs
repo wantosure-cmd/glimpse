@@ -54,9 +54,6 @@ impl Browser {
                 bridge.pending_root = Some(root);
             }
         }
-        if self.trash_operation.is_some() {
-            return;
-        }
         if bridge.activate {
             ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(false));
             ctx.send_viewport_cmd(egui::ViewportCommand::Focus);

@@ -8078,6 +8078,20 @@
       ],
       "original_literals": [],
       "format_template": false
+    },
+    "msg_media_delete_undo": {
+      "text": "{count} items will be recycled in {seconds} seconds",
+      "source": "{count} items will be recycled in {seconds} seconds",
+      "references": [
+        {
+          "file": "src/browser_trash.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [
+        "\"{count} items will be recycled in {seconds} seconds\""
+      ],
+      "format_template": true
     }
   },
   "managed_technical_sources": [

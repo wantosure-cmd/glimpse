@@ -25,6 +25,9 @@ pub(super) struct Features {
     pub cleanup: Option<Cleanup>,
 }
 impl Features {
+    pub(super) fn cleanup_blocks_input(&self) -> bool {
+        self.cleanup.as_ref().is_some_and(|c| !c.started && c.deadline.is_none())
+    }
     pub fn new(dir: &Path) -> Self {
         let result = Favorites::load(&dir.join("favorites.json"));
         let error = result.as_ref().err().cloned();
@@ -486,6 +489,7 @@ impl Browser {
     }
     fn begin_cleanup(&mut self, root: &Path) {
         if self.features.favorites_error.is_some()
+            || self.pending_trash.is_some()
             || self.trash_operation.is_some()
             || self.pending_folders.is_some()
             || self.folder_prepare.is_some()

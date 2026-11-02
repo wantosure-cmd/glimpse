@@ -1,6 +1,13 @@
 //! UI-side recycle coordinator. Source release gates precede every Shell submission.
 use super::*;
 use media_browser::trash::{TrashEvent, TrashRequest};
+pub(super) struct PendingTrash {
+    prepared: Arc<Prepared>,
+    requests: Vec<TrashRequest>,
+    ids: HashSet<MediaId>,
+    created: Instant,
+    deadline: Instant,
+}
 pub(super) struct PermanentPrompt {
     prepared: Arc<Prepared>,
     requests: Vec<TrashRequest>,
@@ -14,18 +21,34 @@ pub(super) struct TrashOperation {
     batch: u64,
     requests: Vec<TrashRequest>,
     ids: HashSet<MediaId>,
+    directories: Vec<PathBuf>,
     started: Instant,
-    submitted: bool,
+    pub(super) submitted: bool,
     sequence: Vec<MediaId>,
     detail: Option<MediaId>,
     root: PathBuf,
     success: HashSet<MediaId>,
     results: Vec<serde_json::Value>,
     release_ms: Option<f64>,
+    undo_wait_ms: Option<f64>,
+    resume_detail: Option<(MediaId,bool)>,
 }
 impl Browser {
+    // Keep the release barrier until submission, then isolate only the batch's sources.
+    pub(super) fn trash_releasing(&self) -> bool {
+        self.trash_operation.as_ref().is_some_and(|op| !op.submitted)
+    }
+    pub(super) fn trash_blocks_media(&self, id: MediaId) -> bool {
+        let Some(op) = &self.trash_operation else { return false; };
+        if op.ids.contains(&id) { return true; }
+        let path = self.prepared.as_ref().and_then(|p| {
+            p.lookup.get(&id).map(|i| &p.snapshot.files[*i].file.path)
+        });
+        path.is_some_and(|path| op.directories.iter().any(|root| path.starts_with(root)))
+    }
     pub(super) fn trash_diagnostic_for_smoke(&self) -> serde_json::Value {
         serde_json::json!({
+            "pending":self.pending_trash.as_ref().map(|p|serde_json::json!({"requests":p.requests.len(),"remaining_ms":p.deadline.saturating_duration_since(Instant::now()).as_millis(),"age_ms":p.created.elapsed().as_millis()})),
             "operation":self.trash_operation.as_ref().map(|op|serde_json::json!({
                 "batch":op.batch,"submitted":op.submitted,"requests":op.requests.len(),
                 "results":op.results.len(),"age_ms":op.started.elapsed().as_millis(),
@@ -38,6 +61,10 @@ impl Browser {
     }
     pub(super) fn begin_trash(&mut self) {
         if self.trash_operation.is_some()
+            || self.pending_trash.is_some()
+            || self.pending_folders.is_some()
+            || self.folder_prepare.is_some()
+            || self.features.cleanup.is_some()
             || self.rotation.is_some()
             || self.permanent_prompt.is_some()
         {
@@ -73,14 +100,22 @@ impl Browser {
         if requests.is_empty() {
             return;
         }
-        self.start_trash_requests(prepared, requests, ids);
+        let created=Instant::now();
+        self.pending_trash=Some(PendingTrash {prepared,requests,ids,created,deadline:created+Duration::from_secs(10)});
+        self.ctx.request_repaint();
     }
     pub(super) fn start_trash_requests(
         &mut self,
         prepared: Arc<Prepared>,
         requests: Vec<TrashRequest>,
-        ids: HashSet<MediaId>,
+        mut ids: HashSet<MediaId>,
     ) {
+        ids.extend(requests.iter().map(|r| r.id));
+        let current=self.detail.as_ref().map(|v|v.id);
+        let detail=current.filter(|id|ids.contains(id));
+        let resume_detail=current.filter(|_|detail.is_none()).map(|id| (id,
+            self.player.as_ref().is_some_and(|p|p.lock().unwrap().paused_intent())));
+        let directories = requests.iter().filter(|r| r.directory).map(|r| r.path.clone()).collect();
         self.trash_counter = self.trash_counter.wrapping_add(1).max(1);
         self.thumbnails.block_sources(&ids);
         self.video_prefetch.cancel();
@@ -94,6 +129,7 @@ impl Browser {
         self.seek_flight = None;
         self.resume_pending = None;
         self.resume_starting = false;
+        self.resume_pause_override = None;
         self.restore_flight = false;
         self.load_started = None;
         self.player_media = None;
@@ -118,14 +154,17 @@ impl Browser {
             batch: self.trash_counter,
             requests,
             ids,
+            directories,
             started: Instant::now(),
             submitted: false,
             sequence: prepared.view.sequence.clone(),
-            detail: self.detail.as_ref().map(|v| v.id),
+            detail,
             root: prepared.snapshot.root.clone(),
             success: HashSet::new(),
             results: Vec::new(),
             release_ms: None,
+            undo_wait_ms: None,
+            resume_detail,
         });
         self.ctx.request_repaint();
     }
@@ -139,12 +178,33 @@ impl Browser {
             self.last_trash = Some(
                 serde_json::json!({"batch":op.batch,"submitted":false,"error":message,"source_count":op.ids.len()}),
             );
-            if let Some(id) = op.detail {
+            if let Some((id,paused))=op.resume_detail {self.restore_trash_viewer(id,paused);}
+            else if let Some(id) = op.detail.filter(|id| self.detail.as_ref().is_some_and(|v| v.id == *id)) {
                 self.open_detail(id);
             }
         }
     }
+    fn restore_trash_viewer(&mut self,id:MediaId,paused:bool) {
+        if let Some(viewer)=self.detail.clone().filter(|v|v.id==id) {
+            self.open_detail(id);
+            if self.detail.as_ref().is_some_and(|v|v.id==id) {
+                self.detail=Some(viewer);
+                if self.player_media==Some(id) {
+                    if self.resume_starting {self.resume_pause_override=Some(paused);}
+                    else if let Some(player)=&self.player {let _=player.lock().unwrap().set("pause",if paused {"yes"} else {"no"});}
+                }
+            }
+        }
+    }
     pub(super) fn trash_tick(&mut self, ctx: &egui::Context) {
+        if self.pending_trash.as_ref().is_some_and(|p|Instant::now()>=p.deadline)
+            && self.trash_operation.is_none() && self.rotation.is_none() && self.permanent_prompt.is_none() {
+            let pending=self.pending_trash.take().unwrap();
+            let wait=pending.created.elapsed().as_secs_f64()*1000.;
+            self.start_trash_requests(pending.prepared,pending.requests,pending.ids);
+            if let Some(op)=self.trash_operation.as_mut(){op.undo_wait_ms=Some(wait);}
+        }
+        if self.pending_trash.is_some(){ctx.request_repaint_after(Duration::from_millis(100));}
         let Some(op) = self.trash_operation.as_ref() else {
             return;
         };
@@ -191,6 +251,8 @@ impl Browser {
                 }
             }
         }
+        let resume=self.trash_operation.as_mut().filter(|op|op.submitted).and_then(|op|op.resume_detail.take());
+        if let Some((id,paused))=resume {self.restore_trash_viewer(id,paused);}
         while let Some(event) = self.trash_service.poll() {
             match event {
                 TrashEvent::Item {
@@ -285,7 +347,7 @@ impl Browser {
                         )
                     });
                     self.last_trash = Some(
-                        serde_json::json!({"batch":batch,"permanent":op.permanent,"submitted":true,"release_confirmed":true,"release_ms":op.release_ms,"success_count":op.success.len(),"failed_count":op.results.len()-op.success.len(),"items":op.results}),
+                        serde_json::json!({"batch":batch,"permanent":op.permanent,"submitted":true,"release_confirmed":true,"release_ms":op.release_ms,"undo_wait_ms":op.undo_wait_ms,"success_count":op.success.len(),"failed_count":op.results.len()-op.success.len(),"items":op.results}),
                     );
                     let next = op.detail.and_then(|id| {
                         if !op.success.contains(&id) {
@@ -325,7 +387,8 @@ impl Browser {
                             .open_view(&op.root, self.watch_source_root.as_deref());
                         self.scan_busy = true;
                         self.refresh_pending = false;
-                        if op.detail.is_some() {
+                        // Do not undo browsing/navigation performed while the worker ran.
+                        if op.detail.is_some() && self.detail.as_ref().map(|v| v.id) == op.detail {
                             if let Some(id) = next {
                                 self.open_detail(id);
                             } else {
@@ -341,35 +404,67 @@ impl Browser {
         }
     }
     pub(super) fn trash_ui(&mut self, ctx: &egui::Context) {
+        self.trash_undo_panel=None;self.trash_undo_button=None;
+        if let Some(pending)=&self.pending_trash {
+            let seconds=pending.deadline.saturating_duration_since(Instant::now()).as_secs_f32().ceil() as u32;
+            let mut undo=false;
+            let panel=egui::Area::new(egui::Id::unique("media-delete-undo"))
+                .order(egui::Order::Tooltip).movable(false)
+                .anchor(egui::Align2::RIGHT_TOP,egui::vec2(-12.,48.)).show(ctx,|ui| {
+                    modern_ui::toast_frame(ui.style()).show(ui,|ui| {
+                        ui.horizontal(|ui| {
+                            ui.label(media_browser::ui_format!(msg_media_delete_undo,count=pending.requests.len(),seconds=seconds));
+                            let button=ui.button(media_browser::ui_text!(msg_6b5819895525));
+                            self.trash_undo_button=Some(button.rect);self.control_focused |= button.has_focus();
+                            undo=button.clicked();
+                        });
+                        ui.small(media_browser::ui_text!(msg_a5ca50de174e));
+                    });
+                });
+            self.trash_undo_panel=Some(panel.response.rect);
+            self.control_regions.push(panel.response.rect);
+            if undo {self.pending_trash=None;self.trash_undo_panel=None;self.trash_undo_button=None;}
+            ctx.request_repaint_after(Duration::from_millis(100));
+        }
         if let Some(op) = &self.trash_operation {
-            egui::Modal::new(egui::Id::unique("recycle-progress"))
-                .frame(modern_ui::dialog_frame(&ctx.style_of(egui::Theme::Dark)))
+            egui::Area::new(egui::Id::unique("recycle-progress"))
+                .order(egui::Order::Tooltip)
+                .anchor(egui::Align2::RIGHT_TOP, egui::vec2(-12., 48.))
+                .interactable(false)
                 .show(ctx, |ui| {
-                    ui.set_min_width(300.);
-                    ui.heading(if op.permanent {
+                    modern_ui::toast_frame(ui.style()).show(ui, |ui| {
+                    ui.set_width(264_f32.min((ctx.content_rect().width() - 48.).max(160.)));
+                    ui.spacing_mut().item_spacing.y = 5.;
+                    ui.label(egui::RichText::new(if op.permanent {
                         media_browser::ui_text!(msg_b66ddfe77c44)
                     } else if op.submitted {
                         media_browser::ui_text!(msg_8761dfbbab6a)
                     } else {
                         media_browser::ui_text!(msg_f1a3d5eceef2)
-                    });
+                    }).size(13.).strong());
                     ui.horizontal(|ui| {
-                        ui.spinner();
-                        ui.label(media_browser::ui_format!(
+                        ui.add(egui::Spinner::new().size(12.));
+                        ui.label(egui::RichText::new(media_browser::ui_format!(
                             msg_992665840148,
                             op.results.len(),
                             op.requests.len()
-                        ));
+                        )).size(11.).color(modern_ui::MUTED));
+                        if op.submitted && !op.requests.is_empty() {
+                            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                                ui.label(egui::RichText::new(format!("{:.0}%", 100. * op.results.len() as f32 / op.requests.len() as f32)).size(11.).color(modern_ui::MUTED));
+                            });
+                        }
                     });
                     if op.submitted && !op.requests.is_empty() {
                         ui.add(
                             egui::ProgressBar::new(
                                 op.results.len() as f32 / op.requests.len() as f32,
                             )
-                            .desired_width(280.)
-                            .show_percentage(),
+                            .desired_width(ui.available_width())
+                            .desired_height(3.),
                         );
                     }
+                    });
                 });
         }
         self.permanent_confirmation_ui(ctx);

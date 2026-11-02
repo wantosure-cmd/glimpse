@@ -573,6 +573,7 @@ macro_rules! ui_text {
     (msg_fee9acef3c93) => { if $crate::ui_text::english() { "Folder path exceeds the IPC message limit" } else { "目录路径超过 IPC 消息预算" } };
     (msg_ff443d52ba30) => { if $crate::ui_text::english() { "Recycle Bin unavailable for this file or drive; no permanent deletion performed" } else { "此文件或磁盘当前无法使用回收站，未执行永久删除" } };
     (msg_ff7f1d6e58be) => { if $crate::ui_text::english() { "HEIF context allocation failed" } else { "HEIF context allocation failed" } };
+    (msg_media_delete_undo) => { if $crate::ui_text::english() { "{count} items will be recycled in {seconds} seconds" } else { "{count} 项将在 {seconds} 秒后移入回收站" } };
     (msg_sticky_jump_next) => { if $crate::ui_text::english() { "Next folder containing images or videos" } else { "下一个有图片或视频的目录" } };
     (msg_sticky_jump_previous) => { if $crate::ui_text::english() { "Previous folder containing images or videos" } else { "上一个有图片或视频的目录" } };
     (status_library_ready) => { if $crate::ui_text::english() { "Library ready" } else { "媒体库已就绪" } };
@@ -1147,6 +1148,7 @@ macro_rules! ui_format {
     (msg_fee9acef3c93, $($args:tt)*) => { if $crate::ui_text::english() { format!("Folder path exceeds the IPC message limit" , $($args)*) } else { format!("目录路径超过 IPC 消息预算" , $($args)*) } };
     (msg_ff443d52ba30, $($args:tt)*) => { if $crate::ui_text::english() { format!("Recycle Bin unavailable for this file or drive; no permanent deletion performed" , $($args)*) } else { format!("此文件或磁盘当前无法使用回收站，未执行永久删除" , $($args)*) } };
     (msg_ff7f1d6e58be, $($args:tt)*) => { if $crate::ui_text::english() { format!("HEIF context allocation failed" , $($args)*) } else { format!("HEIF context allocation failed" , $($args)*) } };
+    (msg_media_delete_undo, $($args:tt)*) => { if $crate::ui_text::english() { format!("{count} items will be recycled in {seconds} seconds" , $($args)*) } else { format!("{count} 项将在 {seconds} 秒后移入回收站" , $($args)*) } };
     (msg_sticky_jump_next, $($args:tt)*) => { if $crate::ui_text::english() { format!("Next folder containing images or videos" , $($args)*) } else { format!("下一个有图片或视频的目录" , $($args)*) } };
     (msg_sticky_jump_previous, $($args:tt)*) => { if $crate::ui_text::english() { format!("Previous folder containing images or videos" , $($args)*) } else { format!("上一个有图片或视频的目录" , $($args)*) } };
     (status_library_ready, $($args:tt)*) => { if $crate::ui_text::english() { format!("Library ready" , $($args)*) } else { format!("媒体库已就绪" , $($args)*) } };
@@ -1719,6 +1721,7 @@ pub fn variants(id: &str) -> (&'static str, &'static str) { match id {
     "msg_fee9acef3c93" => ("目录路径超过 IPC 消息预算", "Folder path exceeds the IPC message limit"),
     "msg_ff443d52ba30" => ("此文件或磁盘当前无法使用回收站，未执行永久删除", "Recycle Bin unavailable for this file or drive; no permanent deletion performed"),
     "msg_ff7f1d6e58be" => ("HEIF context allocation failed", "HEIF context allocation failed"),
+    "msg_media_delete_undo" => ("{count} 项将在 {seconds} 秒后移入回收站", "{count} items will be recycled in {seconds} seconds"),
     "msg_sticky_jump_next" => ("下一个有图片或视频的目录", "Next folder containing images or videos"),
     "msg_sticky_jump_previous" => ("上一个有图片或视频的目录", "Previous folder containing images or videos"),
     "status_library_ready" => ("媒体库已就绪", "Library ready"),

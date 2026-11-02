@@ -129,6 +129,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     | "--loading-smoke"
                     | "--browser-smoke"
                     | "--folder-smoke"
+                    | "--folder-sort-smoke"
+                    | "--detail-ui-smoke"
                     | "--detail-smoke"
                     | "--format-smoke"
                     | "--seek-benchmark"

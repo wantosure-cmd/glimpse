@@ -1,5 +1,6 @@
 //! Detail viewer: media canvas, playback controls and virtualized filmstrip.
 use super::*;
+const VIDEO_FOOTER_HEIGHT: f32 = 64.;
 fn paint_detail_footer(ui: &egui::Ui, canvas: Rect, screen: Rect) {
     ui.painter().rect_filled(
         Rect::from_min_max(
@@ -15,6 +16,7 @@ pub(super) struct DetailLayout {
     pub canvas: Option<Rect>,
     pub header: Option<Rect>,
     pub close: Option<Rect>,
+    pub fullscreen_button: Option<Rect>,
     pub image_viewport: Option<media_browser::long_png::Region>,
     pub image_viewport_ready: bool,
     pub image_full_rect: Option<Rect>,
@@ -35,6 +37,84 @@ pub(super) struct DetailLayout {
 }
 
 impl Browser {
+    pub(super) fn exit_video_fullscreen(&mut self) {
+        if let Some(previous) = self.video_fullscreen.take() {
+            self.fullscreen = previous;
+            self.ctx.send_viewport_cmd(egui::ViewportCommand::Fullscreen(previous));
+            self.ctx.request_repaint();
+        }
+    }
+    pub(super) fn toggle_video_fullscreen(&mut self) {
+        if self.video_fullscreen.is_some() { self.exit_video_fullscreen(); }
+        else {
+            self.video_fullscreen = Some(self.fullscreen);
+            self.video_fullscreen_activity = Instant::now();
+            self.fullscreen = true;
+            self.ctx.send_viewport_cmd(egui::ViewportCommand::Fullscreen(true));
+            self.ctx.request_repaint();
+        }
+    }
+    fn video_fullscreen_button(&mut self, ui: &mut egui::Ui, header: Rect) {
+        let rect = Rect::from_min_size(egui::pos2(header.right()-104.,header.top()+2.),egui::vec2(60.,28.));
+        let mut child=ui.new_child(egui::UiBuilder::new().id_salt("video-fullscreen-button").max_rect(rect));
+        let button=child.add_sized(rect.size(),egui::Button::new(media_browser::ui_text!(msg_22ea3f47fee8)))
+            .on_hover_text(format!("{} · Esc",media_browser::ui_text!(msg_aa8b6477c2ce)));
+        self.detail_layout.fullscreen_button=Some(button.rect);
+        self.control_regions.push(button.rect);
+        self.control_focused |= button.has_focus();
+        if button.clicked() { self.toggle_video_fullscreen(); }
+    }
+    fn detail_close_corner(&mut self, ui: &mut egui::Ui, header: Rect, visible: bool) -> bool {
+        // The hit rectangle touches both viewport edges; the glyph stays compact.
+        let hit=Rect::from_min_max(egui::pos2(header.right()-40.,header.top()),header.right_bottom());
+        let mut child=ui.new_child(egui::UiBuilder::new().id_salt("detail-close").max_rect(hit)
+            .layout(egui::Layout::left_to_right(egui::Align::Center)));
+        let response=if visible {
+            icons::icon_button_with_size(&mut child,icons::Glyph::Close,media_browser::ui_text!(msg_3b97d30d35dd),hit.size())
+        } else {child.allocate_exact_size(hit.size(),egui::Sense::click()).1};
+        self.detail_layout.close=Some(response.rect);
+        self.control_regions.push(response.rect);
+        self.control_focused |= response.has_focus();
+        response.clicked()
+    }
+    fn fullscreen_video_detail(&mut self, ctx:&egui::Context, jobs:&mut Vec<ThumbJob>, prepared:&Arc<Prepared>, mut viewer:Viewer, record:&MediaRecord) {
+        let screen=ctx.content_rect();
+        if ctx.input(|i| i.pointer.delta()!=Vec2::ZERO || i.pointer.any_pressed()) {
+            self.video_fullscreen_activity=Instant::now();
+        }
+        let chrome=self.video_fullscreen_activity.elapsed()<Duration::from_secs(2);
+        if chrome {ctx.request_repaint_after(Duration::from_secs(2).saturating_sub(self.video_fullscreen_activity.elapsed()));}
+        let popup=egui::Popup::is_any_open(ctx) || self.workspace.is_open();
+        let mut next=None;let mut close=false;
+        egui::Modal::new(egui::Id::unique("fullscreen-video"))
+            .frame(egui::Frame::new().fill(Color32::BLACK).inner_margin(0.))
+            .show(ctx,|ui| {
+                ui.spacing_mut().item_spacing=Vec2::ZERO;
+                let (canvas,response)=ui.allocate_exact_size(screen.size(),egui::Sense::click_and_drag());
+                self.detail_layout.canvas=Some(canvas);
+                let content=contain(canvas,self.video_size(record));
+                self.video_region=Some((viewer.id,content));
+                self.paint_video(ui,content);
+                response.context_menu(|ui|self.detail_context_menu(ui,record,&mut viewer,&mut next,&mut close));
+                if chrome {
+                    self.detail_navigation(ui,canvas,canvas.center().y,viewer.id,prepared,&mut next);
+                    self.video_fullscreen_button(ui,Rect::from_min_size(canvas.min,egui::vec2(canvas.width(),32.)));
+                }
+                close |= self.detail_close_corner(ui,Rect::from_min_size(canvas.min,egui::vec2(canvas.width(),32.)),chrome);
+                if !popup && !egui::Popup::is_any_open(ctx) {
+                    let over_control=ctx.input(|i|i.pointer.interact_pos().is_some_and(|p|self.control_regions.iter().any(|r|r.contains(p))));
+                    if !over_control && response.double_clicked() {close=true;}
+                    else if !over_control && response.clicked() && response.interact_pointer_pos().is_some_and(|p|content.contains(p)) {
+                        self.toggle_detail_pause();
+                    }
+                }
+                self.detail_preload(ctx,prepared,viewer.id,canvas,jobs);
+            });
+        if next.is_some(){close=false;}
+        if !close {self.detail_end_action(&mut viewer,prepared,&mut next);}
+        self.detail=Some(viewer);
+        if close {self.close_detail();} else if let Some(id)=next {self.open_detail(id);}
+    }
     pub(super) fn detail(&mut self, ctx: &egui::Context, jobs: &mut Vec<ThumbJob>) {
         let Some(mut viewer) = self.detail.clone() else {
             return;
@@ -54,6 +134,10 @@ impl Browser {
         self.presentation.tiles.clear();
         self.detail_layout = DetailLayout::default();
         let screen = ctx.content_rect();
+        if record.file.kind == MediaKind::Video && self.video_fullscreen.is_some() {
+            self.fullscreen_video_detail(ctx, jobs, &prepared, viewer, &record);
+            return;
+        }
         let mut close = false;
         let mut next = None;
         let mut slider_seek = None;
@@ -82,7 +166,7 @@ impl Browser {
                     ui.available_width(),
                     (ui.available_height()
                         - if record.file.kind == MediaKind::Video {
-                            112.
+                            VIDEO_FOOTER_HEIGHT
                         } else {
                             76.
                         })
@@ -110,7 +194,8 @@ impl Browser {
                 } else if record.file.kind == MediaKind::Image {
                     let animated = self.is_animated(&record);
                     if animated
-                        && self.trash_operation.is_none()
+                        && !self.trash_releasing()
+                        && !self.trash_blocks_media(record.id)
                         && self.rotation.is_none()
                         && self.permanent_prompt.is_none()
                     {
@@ -308,7 +393,7 @@ impl Browser {
                             .unwrap_or_else(|| p.number("time-pos").unwrap_or(0.));
                         let duration = p.number("duration").unwrap_or(0.);
                         let controls = modern_ui::transport_row(ui, |ui| {
-                            ui.spacing_mut().interact_size.y = 28.;
+                            ui.spacing_mut().interact_size.y = 24.;
                             let compact = ui.available_width() < 460.;
                             ui.spacing_mut().item_spacing.x = if compact { 4. } else { 6. };
                             let volume_width = if compact { 40. } else { 72. };
@@ -330,7 +415,7 @@ impl Browser {
                                 .fold(0_f32, f32::max)
                                 + 4.;
                             let seek_width = (ui.available_width()
-                                - 3. * 28.
+                                - 3. * 24.
                                 - 2. * time_width
                                 - volume_width
                                 - 6. * ui.spacing().item_spacing.x)
@@ -339,7 +424,7 @@ impl Browser {
                             let paused = p.paused_intent();
                             let play = ui
                                 .add_enabled_ui(failed || p.ready(), |ui| {
-                                    modern_ui::tracked_icon(
+                                    modern_ui::tracked_transport_icon(
                                         ui,
                                         &mut self.control_regions,
                                         if failed {
@@ -369,7 +454,7 @@ impl Browser {
                                 }
                             }
                             let elapsed = ui.add_sized(
-                                egui::vec2(time_width, 28.),
+                                egui::vec2(time_width, 24.),
                                 egui::Label::new(
                                     egui::RichText::new(elapsed_text)
                                         .font(clock_font.clone())
@@ -392,7 +477,7 @@ impl Browser {
                                 slider_seek = Some(time);
                             }
                             let total = ui.add_sized(
-                                egui::vec2(time_width, 28.),
+                                egui::vec2(time_width, 24.),
                                 egui::Label::new(
                                     egui::RichText::new(total_text)
                                         .font(clock_font)
@@ -400,7 +485,7 @@ impl Browser {
                                 ),
                             );
                             self.detail_layout.total_time = Some(total.rect);
-                            let mute = modern_ui::tracked_icon(
+                            let mute = modern_ui::tracked_transport_icon(
                                 ui,
                                 &mut self.control_regions,
                                 if self.muted {
@@ -436,7 +521,7 @@ impl Browser {
                             if volume_response.changed() {
                                 let _ = p.set("volume", &format!("{:.1}", self.volume));
                             }
-                            let expand = modern_ui::tracked_icon(
+                            let expand = modern_ui::tracked_transport_icon(
                                 ui,
                                 &mut self.control_regions,
                                 icons::Glyph::Expand,
@@ -445,10 +530,7 @@ impl Browser {
                             self.detail_layout.expand = Some(expand.rect);
                             self.control_focused |= expand.has_focus();
                             if expand.clicked() {
-                                self.fullscreen = !self.fullscreen;
-                                ctx.send_viewport_cmd(egui::ViewportCommand::Fullscreen(
-                                    self.fullscreen,
-                                ));
+                                self.toggle_video_fullscreen();
                             }
                         });
                         self.detail_layout.transport = Some(controls.response.rect);
@@ -510,7 +592,7 @@ impl Browser {
                     self.toggle_detail_pause();
                 }
 
-                ui.separator();
+                if record.file.kind == MediaKind::Image { ui.separator(); }
                 self.detail_thumbnails(ui, &prepared, &mut viewer, jobs, &mut next);
             });
         if toggle_pause {
@@ -525,8 +607,7 @@ impl Browser {
                 })
         }) && !popup_was_open
             && !egui::Popup::is_any_open(ctx);
-        if self.trash_operation.is_none()
-            && self.frame > self.detail_open_frame
+        if self.frame > self.detail_open_frame
             && (blank_clicked || modal.backdrop_response.clicked())
         {
             close = true;
@@ -592,7 +673,7 @@ impl Browser {
                 .id_salt("detail-title-bar")
                 .max_rect(Rect::from_min_max(
                     canvas.min + egui::vec2(6., 0.),
-                    canvas.max - egui::vec2(40., 0.),
+                    canvas.max - egui::vec2(if record.file.kind == MediaKind::Video {108.} else {40.}, 0.),
                 ))
                 .layout(egui::Layout::left_to_right(egui::Align::Center)),
         );
@@ -672,25 +753,10 @@ impl Browser {
             egui::vec2(progress_width, 28.),
             egui::Label::new(egui::RichText::new(count).size(11.).color(modern_ui::MUTED)),
         );
-        let mut close_ui = ui.new_child(
-            egui::UiBuilder::new()
-                .id_salt("detail-close")
-                .max_rect(Rect::from_center_size(
-                    egui::pos2(canvas.right() - 20., canvas.center().y),
-                    egui::vec2(28., 28.),
-                ))
-                .layout(egui::Layout::left_to_right(egui::Align::Center)),
-        );
-        let response = icons::icon_button(
-            &mut close_ui,
-            icons::Glyph::Close,
-            media_browser::ui_text!(msg_3b97d30d35dd),
-        );
-        self.detail_layout.close = Some(response.rect);
-        self.control_focused |= response.has_focus();
-        if response.clicked() {
-            *close = true;
+        if record.file.kind == MediaKind::Video {
+            self.video_fullscreen_button(ui, canvas);
         }
+        *close |= self.detail_close_corner(ui,canvas,true);
         self.detail_layout.header = Some(canvas);
         self.control_regions.push(canvas);
     }
@@ -810,12 +876,12 @@ impl Browser {
         }
         for (delta, glyph, x) in [
             (-1, icons::Glyph::Left, canvas.left() + 12.),
-            (1, icons::Glyph::Right, canvas.right() - 56.),
+            (1, icons::Glyph::Right, canvas.right() - 76.),
         ] {
             let target = self.detail_target(prepared, id, delta, false, false);
             let rect = Rect::from_min_size(
-                egui::pos2(x, navigation_center_y - 32.),
-                egui::vec2(44., 64.),
+                egui::pos2(x, navigation_center_y - 44.),
+                egui::vec2(64., 88.),
             );
             self.detail_layout.arrows.push(rect);
             // Overlay children must not move the main layout cursor back into the canvas.
@@ -825,7 +891,7 @@ impl Browser {
                     .max_rect(rect),
             );
             let (hit, response) = overlay.allocate_exact_size(rect.size(), egui::Sense::click());
-            let visible = Rect::from_center_size(hit.center(), egui::vec2(32., 40.));
+            let visible = Rect::from_center_size(hit.center(), egui::vec2(48., 64.));
             overlay
                 .painter()
                 .rect_filled(visible, modern_ui::CONTROL_RADIUS, modern_ui::OVERLAY);
@@ -844,7 +910,7 @@ impl Browser {
                     egui::StrokeKind::Inside,
                 );
             }
-            icons::paint(overlay.painter(), visible, glyph, modern_ui::TEXT);
+            icons::paint_sized(overlay.painter(), visible, glyph, modern_ui::TEXT,28.);
             self.control_regions.push(response.rect);
             self.control_focused |= response.has_focus();
             if response
@@ -870,14 +936,17 @@ impl Browser {
     ) {
         let sequence = &prepared.view.sequence;
         let current = sequence.iter().position(|id| *id == viewer.id).unwrap_or(0);
-        let stride = 84.;
+        let compact = prepared.lookup.get(&viewer.id)
+            .is_some_and(|i| prepared.snapshot.files[*i].file.kind == MediaKind::Video);
+        let stride = if compact {44.} else {84.};
+        let image_height = if compact {24.} else {52.};
         let viewport_width = ui.available_width();
         let padding = ((viewport_width - stride) / 2.).max(0.);
         let mut strip = egui::ScrollArea::horizontal()
             .id_salt("detail-filmstrip")
             .wheel_scroll_multiplier(egui::vec2(0., 0.))
             .auto_shrink([false, false])
-            .max_height(64.);
+            .max_height(if compact {30.} else {64.});
         if viewer.center_thumbnail {
             strip = strip.horizontal_scroll_offset(current as f32 * stride);
             viewer.center_thumbnail = false;
@@ -885,7 +954,7 @@ impl Browser {
         let output = strip.show_viewport(ui, |ui, viewport| {
             ui.set_min_size(egui::vec2(
                 (2. * padding + sequence.len() as f32 * stride).max(viewport_width),
-                56.,
+                image_height + 4.,
             ));
             let origin = ui.min_rect().min;
             let start = ((viewport.left() - padding) / stride).floor().max(0.) as usize;
@@ -898,7 +967,7 @@ impl Browser {
                 let record = &prepared.snapshot.files[*record_index];
                 let rect = Rect::from_min_size(
                     origin + egui::vec2(padding + index as f32 * stride + 4., 2.),
-                    egui::vec2(stride - 8., 52.),
+                    egui::vec2(stride - 8., image_height),
                 );
                 let response = ui.allocate_rect(rect, egui::Sense::click());
                 self.detail_layout.thumbnails.push((*id, rect));
@@ -938,8 +1007,8 @@ impl Browser {
                 if record.file.kind == MediaKind::Video {
                     ui.painter().rect_filled(
                         Rect::from_min_size(
-                            rect.left_bottom() + egui::vec2(3., -23.),
-                            egui::vec2(22., 22.),
+                            rect.left_bottom() + egui::vec2(3., if compact {-16.} else {-23.}),
+                            if compact {egui::vec2(16.,14.)} else {egui::vec2(22.,22.)},
                         ),
                         4.,
                         Color32::from_black_alpha(160),
@@ -947,8 +1016,8 @@ impl Browser {
                     icons::paint(
                         ui.painter(),
                         Rect::from_min_size(
-                            rect.left_bottom() + egui::vec2(6., -20.),
-                            egui::vec2(16., 16.),
+                            rect.left_bottom() + if compact {egui::vec2(5.,-15.)} else {egui::vec2(6.,-20.)},
+                            Vec2::splat(if compact {12.} else {16.}),
                         ),
                         icons::Glyph::Video,
                         Color32::WHITE,
@@ -1216,7 +1285,8 @@ impl Browser {
             return;
         }
         if next.is_some()
-            || self.trash_operation.is_some()
+            || self.trash_releasing()
+            || self.trash_blocks_media(viewer.id)
             || self.rotation.is_some()
             || self.player_media != Some(viewer.id)
             || self.playback_errors.contains_key(&viewer.id)

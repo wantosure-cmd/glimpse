@@ -9,6 +9,9 @@ pub(super) struct TrashSmoke {
     reports: Vec<serde_json::Value>,
     locked: Option<std::fs::File>,
     failure_captured: bool,
+    undo_checked: bool,
+    undo_captured: bool,
+    browsed_pending: bool,
 }
 impl TrashSmoke {
     pub(super) fn new() -> Self {
@@ -21,6 +24,9 @@ impl TrashSmoke {
             reports: vec![],
             locked: None,
             failure_captured: false,
+            undo_checked: false,
+            undo_captured: false,
+            browsed_pending: false,
         }
     }
     pub(super) fn inject(&mut self, raw: &mut egui::RawInput) {
@@ -59,6 +65,7 @@ impl TrashSmoke {
     }
     fn ready(b: &Browser, count: usize, batch: u64) -> bool {
         b.trash_operation.is_none()
+            && b.pending_trash.is_none()
             && b.trash_counter == batch
             && b.prepared.as_ref().is_some_and(|p| {
                 p.snapshot.generation == b.generation
@@ -80,7 +87,7 @@ impl TrashSmoke {
             return;
         }
         ctx.request_repaint_after(Duration::from_millis(20));
-        if self.started.elapsed() > Duration::from_secs(60) {
+        if self.started.elapsed() > Duration::from_secs(140) {
             self.finish(b, ctx, Some(format!("timeout phase {}", self.phase)));
             return;
         }
@@ -92,6 +99,42 @@ impl TrashSmoke {
     fn step(&mut self, b: &mut Browser, ctx: &egui::Context) -> Result<(), String> {
         let elapsed = self.at.elapsed();
         match self.phase {
+            100=>{
+                if elapsed<Duration::from_secs(3){return Ok(());}
+                if b.pending_trash.is_none() || b.trash_operation.is_some() || b.trash_counter!=0 {
+                    return Err("Media deletion was submitted before undo grace elapsed".into());
+                }
+                for name in ["02.jpg","06.jpg"] {
+                    let id=Self::id(b,name)?;let p=b.prepared.as_ref().unwrap();
+                    if !p.snapshot.files[p.lookup[&id]].file.path.exists(){return Err("File removed before undo deadline".into());}
+                }
+                self.capture(b,"undo_wait_files_intact");
+                b.open_detail(Self::id(b,"03.mp4")?);b.toggle_video_fullscreen();self.next();
+            }
+            101=>{
+                if elapsed<Duration::from_secs(1) || !ctx.input(|i|i.viewport().fullscreen==Some(true)){return Ok(());}
+                if !b.player.as_ref().is_some_and(|p|p.lock().unwrap().has_presented_frame()){return Ok(());}
+                if b.pending_trash.is_none() || b.trash_counter!=0 {return Err("Undo grace disappeared while browsing".into());}
+                if !self.undo_captured {
+                    self.undo_captured=true;self.capture(b,"undo_visible_over_playing_video");
+                    b.snapshot_image(ctx,"p4-media-undo-countdown.png");self.at=Instant::now();return Ok(());
+                }
+                if elapsed<Duration::from_millis(550){return Ok(());}
+                let pos=b.trash_undo_button.ok_or("Undo control missing above detail")?.center();
+                self.events.push(egui::Event::PointerMoved(pos));
+                for pressed in [true,false]{self.events.push(egui::Event::PointerButton {pos,button:egui::PointerButton::Primary,pressed,modifiers:Default::default()});}
+                self.next();
+            }
+            102=>{
+                if elapsed<Duration::from_millis(200){return Ok(());}
+                if b.pending_trash.is_some() || b.trash_operation.is_some() || b.trash_counter!=0
+                    || b.video_fullscreen.is_none() || b.detail.as_ref().map(|v|v.id)!=Some(Self::id(b,"03.mp4")?) {
+                    return Err("Undo click failed or leaked through the playing detail".into());
+                }
+                for name in ["01.jpg","02.jpg","03.mp4","04.gif","05.jpg","06.jpg"]{Self::id(b,name)?;}
+                self.capture(b,"undo_cancelled_without_submission");
+                self.undo_checked=true;b.close_detail();b.selection.clear();self.phase=1;self.at=Instant::now();
+            }
             0 => {
                 if !Self::ready(b, 6, 0) {
                     return Ok(());
@@ -153,6 +196,9 @@ impl TrashSmoke {
                 }
                 self.capture(b, "empty_selection_noop");
                 b.selection = HashSet::from([Self::id(b, "02.jpg")?, Self::id(b, "06.jpg")?]);
+                if !self.undo_checked {
+                    self.click_delete();self.phase=100;self.at=Instant::now();return Ok(());
+                }
                 b.open_detail(Self::id(b, "03.mp4")?);
                 self.next();
             }
@@ -168,6 +214,12 @@ impl TrashSmoke {
                 self.next();
             }
             3 => {
+                if b.pending_trash.is_some() && !self.browsed_pending {
+                    b.open_detail(Self::id(b,"04.gif")?);
+                    self.browsed_pending=true;
+                    self.capture(b,"browsed_other_media_during_countdown");
+                    return Ok(());
+                }
                 if !Self::ready(b, 5, 1) {
                     return Ok(());
                 }

@@ -368,7 +368,6 @@ impl Browser {
             || self.permanent_prompt.is_some()
             || self.rotation_message.is_some()
             || self.rotation.is_some()
-            || self.trash_operation.is_some()
             || !self.trash_failures.is_empty();
         raw.events.retain(|e| {
             if let egui::Event::Key {

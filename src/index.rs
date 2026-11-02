@@ -63,6 +63,15 @@ impl Repository {
                 variant TEXT NOT NULL,fingerprint BLOB NOT NULL,cache_path BLOB NOT NULL,bytes INTEGER NOT NULL,last_access INTEGER NOT NULL);
             PRAGMA user_version=1; COMMIT;")?;
         }
+        // Additive, nullable extension: previous releases can still read this index.
+        let has_directory_time = {
+            let mut q = db.prepare("PRAGMA table_info(directories)")?;
+            q.query_map([], |r| r.get::<_, String>(1))?
+                .collect::<rusqlite::Result<Vec<_>>>()?.iter().any(|name| name == "modified_ns")
+        };
+        if !has_directory_time {
+            db.execute("ALTER TABLE directories ADD COLUMN modified_ns INTEGER", [])?;
+        }
         Ok(Self {
             db,
             active: None,
@@ -137,6 +146,7 @@ impl Repository {
             }
             ScanEvent::Directory {
                 path,
+                modified_ns,
                 children,
                 complete,
                 ..
@@ -170,10 +180,11 @@ impl Repository {
                     }
                 }
                 tx.execute(
-                    "UPDATE directories SET state=?2 WHERE path=?1",
+                    "UPDATE directories SET state=?2,modified_ns=?3 WHERE path=?1",
                     params![
                         path_blob(&path),
-                        if complete { "complete" } else { "partial" }
+                        if complete { "complete" } else { "partial" },
+                        modified_ns
                     ],
                 )?;
                 tx.commit()?;
@@ -289,18 +300,19 @@ impl Repository {
             });
         }
         let mut q = self.db.prepare(&format!(
-            "{TREE} SELECT d.path,d.parent,d.state FROM directories d JOIN tree t ON d.path=t.path"
+            "{TREE} SELECT d.path,d.parent,d.state,d.modified_ns FROM directories d JOIN tree t ON d.path=t.path"
         ))?;
         let rows = q.query_map([root], |r| {
             Ok((
                 r.get::<_, Vec<u8>>(0)?,
                 r.get::<_, Option<Vec<u8>>>(1)?,
                 r.get::<_, String>(2)?,
+                r.get::<_, Option<i64>>(3)?,
             ))
         })?;
         let mut directories = Vec::new();
         for row in rows {
-            let (path, parent, state) = row?;
+            let (path, parent, state, modified_ns) = row?;
             let path = path_from_blob(&path)?;
             let counts = direct.remove(&path).unwrap_or_default();
             let state = match state.as_str() {
@@ -311,12 +323,22 @@ impl Repository {
             };
             directories.push(DirectoryRecord {
                 path,
+                modified_ns,
+                recursive_bytes: 0,
                 parent: parent.map(|b| path_from_blob(&b)).transpose()?,
                 direct: counts,
                 recursive: counts,
                 state,
                 subtree_complete: state == ScanState::Complete,
             });
+        }
+        let mut direct_bytes: HashMap<PathBuf, u64> = HashMap::new();
+        for file in &files {
+            let total = direct_bytes.entry(file.file.parent.clone()).or_default();
+            *total = total.saturating_add(file.file.fingerprint.bytes);
+        }
+        for directory in &mut directories {
+            directory.recursive_bytes = direct_bytes.remove(&directory.path).unwrap_or(0);
         }
         // Children precede parents so each count and completeness bit is propagated exactly once.
         directories.sort_by_key(|d| std::cmp::Reverse(d.path.components().count()));
@@ -327,6 +349,7 @@ impl Repository {
             .collect();
         for i in 0..directories.len() {
             let counts = directories[i].recursive;
+            let bytes = directories[i].recursive_bytes;
             let complete = directories[i].subtree_complete;
             if let Some(parent) = directories[i]
                 .parent
@@ -335,6 +358,7 @@ impl Repository {
                 .copied()
             {
                 directories[parent].recursive.merge(counts);
+                directories[parent].recursive_bytes = directories[parent].recursive_bytes.saturating_add(bytes);
                 directories[parent].subtree_complete &= complete;
             }
         }
@@ -453,12 +477,35 @@ mod tests {
     fn dir(repo: &mut Repository, g: u64, path: &Path, children: Vec<PathBuf>, complete: bool) {
         repo.apply(ScanEvent::Directory {
             generation: g,
+            modified_ns: None,
             path: path.to_owned(),
             children,
             complete,
             counts: Counts::default(),
         })
         .unwrap();
+    }
+    #[test]
+    fn optional_directory_time_upgrade_keeps_cached_media_and_legacy_schema_readable() {
+        let root=root();let mut repo=Repository::memory().unwrap();
+        repo.begin_scan(&root,1).unwrap();
+        batch(&mut repo,1,vec![file(&root.join("keep.jpg"),123)]);
+        let id=repo.snapshot().unwrap().files[0].id;
+        repo.db.execute("ALTER TABLE directories DROP COLUMN modified_ns",[]).unwrap();
+        let Repository {db,..}=repo;
+        let mut repo=Repository::from_connection(db).unwrap();
+        let version:i64=repo.db.query_row("PRAGMA user_version",[],|r|r.get(0)).unwrap();
+        assert_eq!(version,1);
+        repo.begin_scan(&root,2).unwrap();
+        assert_eq!(repo.snapshot().unwrap().files[0].id,id);
+        assert_eq!(repo.snapshot().unwrap().directories[0].modified_ns,None);
+        repo.apply(ScanEvent::Directory {generation:2,path:root.clone(),modified_ns:Some(456),
+            counts:Counts::default(),complete:false,children:vec![]}).unwrap();
+        let snapshot=repo.snapshot().unwrap();
+        assert_eq!(snapshot.directories[0].modified_ns,Some(456));
+        assert_eq!(snapshot.directories[0].recursive_bytes,123);
+        // Existing readers' SQL does not reference the optional column.
+        assert_eq!(repo.db.query_row("SELECT count(*) FROM media",[],|r|r.get::<_,i64>(0)).unwrap(),1);
     }
     #[test]
     fn metadata_batch_preserves_order_versions_error_recovery_and_cancel_rollback() {

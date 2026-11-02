@@ -1,6 +1,12 @@
 //! Opt-in, read-only design regression. Events enter through the native input hook.
 use super::*;
 pub(super) struct DesignSmoke {
+    pub sticky_stats: Option<(media_browser::domain::Counts,u64,Rect)>,
+    pub sort_combo: Option<Rect>,
+    pub sort_options: Vec<(SortField, Rect)>,
+    pub reverse_sort: Option<Rect>,
+    folder_sort_only: bool,
+    detail_ui_only: bool,
     pub menu_rect: Option<Rect>,
     pub toolbar_sidebar: Option<Rect>,
     pub toolbar_search: Option<Rect>,
@@ -33,6 +39,12 @@ pub(super) struct DesignSmoke {
 impl DesignSmoke {
     pub fn new(output: PathBuf) -> Self {
         Self {
+            sticky_stats: None,
+            sort_combo: None,
+            sort_options: Vec::new(),
+            reverse_sort: None,
+            folder_sort_only: false,
+            detail_ui_only: false,
             menu_rect: None,
             toolbar_sidebar: None,
             toolbar_search: None,
@@ -68,6 +80,14 @@ impl DesignSmoke {
         probe.resize_only = true;
         probe
     }
+    pub fn new_folder_sort(output: PathBuf) -> Self {
+        let mut probe=Self::new(output);
+        probe.folder_sort_only=true;
+        probe
+    }
+    pub fn new_detail_ui(output: PathBuf) -> Self {
+        let mut probe=Self::new(output);probe.detail_ui_only=true;probe
+    }
     pub fn inject(&mut self, raw: &mut egui::RawInput) {
         if self.resize_only {
             raw.events.clear();
@@ -75,6 +95,7 @@ impl DesignSmoke {
             raw.focused = false;
             return;
         }
+        if self.detail_ui_only {raw.events.clear();}
         raw.focused = true;
         raw.events.append(&mut self.events);
         if let Some(pos) = self.slider_release.take() {
@@ -161,11 +182,24 @@ impl DesignSmoke {
                 .lookup
                 .get(&d.id)
                 .map(|i| format!("{:?}", p.snapshot.files[*i].file.kind)))));
+        row["detail_id"]=serde_json::json!(b.detail.as_ref().map(|d|d.id));
+        row["player_media"]=serde_json::json!(b.player_media);
+        row["video_fullscreen"]=serde_json::json!(b.video_fullscreen.is_some());
+        row["os_fullscreen"]=serde_json::json!(ctx.input(|i|i.viewport().fullscreen));
+        row["fullscreen_button"]=serde_json::json!(b.detail_layout.fullscreen_button.map(rect));
+        row["strip"]=serde_json::json!(b.detail_layout.strip.map(rect));
+        row["thumbnails"]=serde_json::json!(b.detail_layout.thumbnails.iter().map(|(_,r)|rect(*r)).collect::<Vec<_>>());
+        row["sticky_stats"]=serde_json::json!(self.sticky_stats.map(|(c,f,r)|serde_json::json!({"images":c.images,"videos":c.videos,"folders":f,"rect":rect(r)})));
         self.rows.push(row);
         b.snapshot_image(ctx, &format!("design-{name}.png"));
     }
     pub fn tick(&mut self, b: &mut Browser, ctx: &egui::Context) {
         if self.phase == 255 {
+            return;
+        }
+        if self.detail_ui_only {self.tick_detail_ui(b,ctx);return;}
+        if self.folder_sort_only {
+            self.tick_folder_sort(b,ctx);
             return;
         }
         if self.resize_only {
@@ -356,6 +390,10 @@ impl DesignSmoke {
                 80 => Some(String::from("window-controls-compact")),
                 81 => Some(String::from("window-controls-scale200")),
                 82 => Some(String::from("window-controls-scale100")),
+                83 => Some(String::from("background-trash-list")),
+                84 => Some(String::from("background-trash-video")),
+                85 => Some(String::from("background-trash-paused")),
+                86 => Some(String::from("background-trash-closed")),
                 _ => None,
             };
             if let Some(name) = name {
@@ -475,7 +513,7 @@ impl DesignSmoke {
                 None
             }
             16 => {
-                if b.trash_operation.is_some()
+                if b.trash_operation.is_some() || b.pending_trash.is_some()
                     || b.snapshot.as_ref().unwrap().files.len() != self.initial_count
                     || b.selection.is_empty()
                 {
@@ -1073,6 +1111,73 @@ impl DesignSmoke {
                 None
             }
             82 => {
+                // Hold a simulated submitted batch so native UI/input can be tested
+                // deterministically. No request reaches the filesystem worker.
+                b.close_detail();
+                let prepared = b.prepared.clone().unwrap();
+                let record = prepared.snapshot.files.iter().find(|r| r.file.kind == MediaKind::Image).unwrap().clone();
+                let request = media_browser::trash::TrashRequest {
+                    empty_only: false, directory: false, id: record.id,
+                    root: prepared.snapshot.root.clone(), path: record.file.path.clone(),
+                    fingerprint: record.file.fingerprint.clone(),
+                };
+                b.start_trash_requests(prepared, vec![request], HashSet::from([record.id]));
+                b.trash_operation.as_mut().unwrap().submitted = true;
+                b.open_detail(record.id);
+                if b.detail.is_some() {
+                    self.finish(ctx, Some("Pending deletion source reopened"));
+                    return;
+                }
+                None
+            }
+            83 => {
+                let video = self.rotation_video.unwrap();
+                b.open_detail(video);
+                if b.detail.as_ref().map(|v| v.id) != Some(video) {
+                    self.finish(ctx, Some("Background deletion blocked unaffected video"));
+                    return;
+                }
+                None
+            }
+            84 => {
+                if !b.player.as_ref().is_some_and(|p| p.lock().unwrap().has_presented_frame()) {
+                    self.finish(ctx, Some("Background deletion blocked video rendering"));
+                    return;
+                }
+                if b.detail_layout.transport.is_none_or(|r| r.height() > 24.5) {
+                    self.finish(ctx, Some("Transport exceeds compact height"));
+                    return;
+                }
+                // Ensure a known state before injecting the ordinary Space key.
+                b.player.as_ref().unwrap().lock().unwrap().set("pause", "no").ok();
+                self.key(egui::Key::Space, false);
+                None
+            }
+            85 => {
+                if !b.player.as_ref().is_some_and(|p| p.lock().unwrap().paused_intent()) {
+                    self.finish(ctx, Some("Background deletion blocked Space"));
+                    return;
+                }
+                self.click(b.detail_layout.close.unwrap().center());
+                None
+            }
+            86 => {
+                if b.detail.is_some() {
+                    self.finish(ctx, Some("Background deletion blocked close click"));
+                    return;
+                }
+                let root = b.prepared.as_ref().unwrap().snapshot.root.clone();
+                b.navigate(root.join("Travel"), false);
+                None
+            }
+            87 => {
+                if b.watch_root.as_ref().is_none_or(|p| !p.ends_with("Travel")) {
+                    self.finish(ctx, Some("Background deletion blocked directory navigation"));
+                    return;
+                }
+                self.capture(b, ctx, "background-trash-navigated");
+                b.trash_operation = None;
+                // This read-only diagnostic exits immediately; source blocks die with it.
                 self.finish(ctx, None);
                 return;
             }
@@ -1084,6 +1189,161 @@ impl DesignSmoke {
         } else {
             self.advance();
         }
+    }
+    fn tick_detail_ui(&mut self, b:&mut Browser, ctx:&egui::Context) {
+        ctx.request_repaint_after(Duration::from_millis(20));
+        if self.started.elapsed()>Duration::from_secs(55) {self.finish(ctx,Some("Detail UI timeout"));return;}
+        if b.prepared.as_ref().is_none_or(|p|!p.snapshot.finished || p.revision!=b.revision)
+            || b.prepare_dirty || self.at.elapsed()<Duration::from_millis(350) {return;}
+        let find=|name:&str|b.prepared.as_ref().unwrap().snapshot.files.iter()
+            .find(|r|r.file.path.file_name().is_some_and(|n|n==name)).map(|r|r.id);
+        let (Some(image),Some(landscape),Some(portrait))=(find("01-image.png"),find("02-landscape.mov"),find("03-portrait.mov")) else {
+            self.finish(ctx,Some("Missing generated detail fixture"));return;
+        };
+        let screen=ctx.content_rect();
+        let corner=egui::pos2(screen.right()-0.5,screen.top()+0.5);
+        let ready=b.player.as_ref().is_some_and(|p|p.lock().unwrap().has_presented_frame());
+        // Screenshot commands complete on a later native frame. Hold each state
+        // before injecting the next click/key or resizing the OS window.
+        let capture_name=match self.phase {
+            1=>Some("detail-large-arrows"),2=>Some("detail-compact-footer"),
+            3=>Some("video-fullscreen-landscape"),4=>Some("video-fullscreen-paused"),
+            5=>Some("video-restored-from-fullscreen"),6=>Some("portrait-compact-footer"),
+            7=>Some("video-fullscreen-portrait"),8=>Some("portrait-restored"),
+            10=>Some("sticky-media-counts"),11=>Some("sticky-counts-narrow"),
+            13=>Some("sticky-counts-scale200"),14=>Some("detail-corner-scale200"),_=>None,
+        };
+        if !self.captured {
+            if matches!(self.phase,2|6) && !ready {return;}
+            if matches!(self.phase,3|7) && (!ctx.input(|i|i.viewport().fullscreen==Some(true))
+                || self.at.elapsed()<Duration::from_millis(2400)) {return;}
+            if matches!(self.phase,5|8) && ctx.input(|i|i.viewport().fullscreen==Some(true)){return;}
+            if self.phase==11 && screen.width()>410.{return;}
+            if self.phase==13 && (ctx.pixels_per_point()-2.).abs()>0.02{return;}
+            if let Some(name)=capture_name {
+                self.capture(b,ctx,name);self.captured=true;self.at=Instant::now();return;
+            }
+        }
+        if self.captured && self.at.elapsed()<Duration::from_millis(500){return;}
+        let fail=match self.phase {
+            0=>{b.muted=true;b.open_detail(image);self.events.push(egui::Event::PointerMoved(screen.center()));None}
+            1=>{
+                if b.detail_layout.arrows.len()!=2 || b.detail_layout.arrows.iter().any(|r|r.width()<64. || r.height()<88.) {
+                    Some("Detail arrows were not enlarged")
+                }else {self.click(b.detail_layout.arrows[1].center());None}
+            }
+            2=>{
+                if !ready || b.player_media!=Some(landscape){return;}
+                let canvas=b.detail_layout.canvas.unwrap();
+                if screen.bottom()-canvas.bottom()>64.5 || b.detail_layout.strip.is_none_or(|r|r.height()>30.5)
+                    || b.detail_layout.thumbnails.iter().any(|(_,r)|r.height()>24.5) {
+                    Some("Video footer was not compacted as a whole")
+                }else if b.detail_layout.close.is_none_or(|r|!r.contains(corner)) {Some("Detail close misses viewport corner")}
+                else {self.click(b.detail_layout.fullscreen_button.unwrap().center());None}
+            }
+            3=>{
+                if !ctx.input(|i|i.viewport().fullscreen==Some(true)) {return;}
+                if b.video_fullscreen.is_none() || b.detail_layout.canvas.is_none_or(|r|(r.size()-screen.size()).length()>1.)
+                    || b.detail_layout.transport.is_some() || b.detail_layout.strip.is_some() || b.detail_layout.header.is_some()
+                    || b.detail_layout.fullscreen_button.is_some() || !b.detail_layout.arrows.is_empty() {
+                    Some("Video fullscreen still reserves chrome or fails to hide idle overlays")
+                }else {self.key(egui::Key::Space,false);None}
+            }
+            4=>{
+                if !b.player.as_ref().unwrap().lock().unwrap().paused_intent(){Some("Fullscreen Space did not pause")}
+                else {self.key(egui::Key::Escape,false);None}
+            }
+            5=>{
+                if ctx.input(|i|i.viewport().fullscreen==Some(true)){return;}
+                if b.video_fullscreen.is_some() || b.detail.as_ref().map(|v|v.id)!=Some(landscape) || b.detail_layout.strip.is_none(){
+                    Some("Escape did not restore normal video detail")
+                }else {b.open_detail(portrait);None}
+            }
+            6=>{
+                if !ready || b.player_media!=Some(portrait){return;}
+                self.click(b.detail_layout.expand.unwrap().center());None
+            }
+            7=>{
+                if !ctx.input(|i|i.viewport().fullscreen==Some(true)){return;}
+                self.key(egui::Key::F11,false);None
+            }
+            8=>{
+                if ctx.input(|i|i.viewport().fullscreen==Some(true)){return;}
+                if b.video_fullscreen.is_some(){Some("F11 did not leave pure video fullscreen")}
+                else {self.click(corner);None}
+            }
+            9=>{
+                if b.detail.is_some(){Some("Extreme top-right click did not close detail")}
+                else {b.scroll_override=Some(80.);None}
+            }
+            10=>{
+                if self.sticky_stats.is_none_or(|(c,f,_)|c.images!=2 || c.videos!=2 || f!=1){Some("Sticky counts do not match root's media")}
+                else {ctx.send_viewport_cmd(egui::ViewportCommand::InnerSize(egui::vec2(400.,720.)));None}
+            }
+            11=>{
+                if screen.width()>410.{return;}
+                if self.sticky_stats.is_none_or(|(_,_,r)|!screen.contains_rect(r)){Some("Narrow sticky counts exceed viewport")}
+                else {ctx.send_viewport_cmd(egui::ViewportCommand::InnerSize(egui::vec2(1000.,800.)));None}
+            }
+            12=>{
+                if screen.width()<900.{return;}
+                ctx.set_zoom_factor(2./ctx.native_pixels_per_point().unwrap_or(1.));None
+            }
+            13=>{
+                if (ctx.pixels_per_point()-2.).abs()>0.02{return;}
+                b.scroll_override=Some(80.);b.open_detail(image);
+                self.events.push(egui::Event::PointerMoved(screen.center()));None
+            }
+            14=>{
+                if b.detail_layout.close.is_none_or(|r|!r.contains(corner)){Some("Scaled close misses extreme corner")}
+                else {self.click(corner);None}
+            }
+            15=>{
+                if b.detail.is_some(){Some("Scaled corner click failed")}
+                else {ctx.set_zoom_factor(1./ctx.native_pixels_per_point().unwrap_or(1.));self.finish(ctx,None);return;}
+            }
+            _=>None,
+        };
+        if let Some(error)=fail {self.finish(ctx,Some(error));}else{self.advance();}
+    }
+    fn tick_folder_sort(&mut self, b: &mut Browser, ctx: &egui::Context) {
+        ctx.request_repaint_after(Duration::from_millis(20));
+        if self.started.elapsed()>Duration::from_secs(45) {
+            self.finish(ctx,Some("Folder sort native input timeout"));return;
+        }
+        if b.prepared.as_ref().is_none_or(|p|!p.snapshot.finished) || b.prepare_dirty
+            || self.at.elapsed()<Duration::from_millis(250) {return;}
+        if self.phase==24 {self.finish(ctx,None);return;}
+        let case=self.phase/4;
+        let field=[SortField::Name,SortField::Modified,SortField::Size][case/2];
+        let descending=case%2==1;
+        match self.phase%4 {
+            0 => {let Some(r)=self.sort_combo else{return;}; self.click(r.center());}
+            1 => {
+                let Some((_,r))=self.sort_options.iter().find(|(f,_)|*f==field) else{return;};
+                self.click(r.center());
+            }
+            2 => {
+                if b.settings.descending!=descending {
+                    let Some(r)=self.reverse_sort else{return;};self.click(r.center());
+                }
+            }
+            _ => {
+                if b.settings.sort!=field || b.settings.descending!=descending {
+                    self.finish(ctx,Some("Sort dropdown/reverse click did not apply"));return;
+                }
+                let p=b.prepared.as_ref().unwrap();
+                if p.revision!=b.revision {return;}
+                let relative=|path:&Path|path.strip_prefix(&p.snapshot.root).unwrap().to_string_lossy().replace('\\',"/");
+                self.rows.push(serde_json::json!({"case":case,"sort":format!("{field:?}"),"descending":descending,
+                    "groups":p.view.groups.iter().map(|g|relative(&g.directory)).collect::<Vec<_>>(),
+                    "headers":p.layout.headers.iter().filter(|h|h.kind.is_none()).map(|h|relative(&h.directory)).collect::<Vec<_>>(),
+                    "sequence":p.view.sequence.iter().map(|id|relative(&p.snapshot.files[p.lookup[id]].file.path)).collect::<Vec<_>>(),
+                    "directories":p.snapshot.directories.iter().map(|d|serde_json::json!({"path":relative(&d.path),"modified_ns":d.modified_ns,"bytes":d.recursive_bytes})).collect::<Vec<_>>() }));
+                b.snapshot_image(ctx,&format!("folder-sort-{case}.png"));
+            }
+        }
+        self.advance();
     }
     fn tick_resize(&mut self, b: &mut Browser, ctx: &egui::Context) {
         ctx.request_repaint_after(Duration::from_millis(20));

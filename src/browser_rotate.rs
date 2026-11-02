@@ -7,7 +7,7 @@ pub(super) struct RotationOperation {
 }
 impl Browser {
     pub(super) fn begin_rotation(&mut self, clockwise: bool, single: Option<MediaId>) {
-        if self.rotation.is_some() || self.trash_operation.is_some() {
+        if self.rotation.is_some() || self.trash_operation.is_some() || self.pending_trash.is_some() {
             return;
         }
         let Some(p) = self.prepared.clone() else {

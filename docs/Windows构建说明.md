@@ -1,6 +1,6 @@
 # Windows x64 构建说明
 
-当前源码版本0.4.54，正在核验；最新已交付本地测试包0.4.50。实际版本以Cargo.toml、对应delivery.json与同构建verification为准；完整源码包的生产输入须逐项匹配production_source_sha256。现有工具链/缓存下的离线重建与干净机器离线首次构建分开记录，构建成功也不代表已完成交付。推进状态见[v0.5推进记录](v0.5公开测试版推进.md)。
+当前源码版本0.4.55，正在核验；最新已交付本地测试包0.4.50。实际版本以Cargo.toml、对应delivery.json与同构建verification为准；完整源码包的生产输入须逐项匹配production_source_sha256。现有工具链/缓存下的离线重建与干净机器离线首次构建分开记录，构建成功也不代表已完成交付。推进状态见[v0.5推进记录](v0.5公开测试版推进.md)。
 
 本项目使用 Rust/eframe/egui/glow 与内嵌 libmpv GPU 视频。源码目录必须完整，不能只复制已跟踪的 Git 文件。以下命令生成本机程序或测试结果；最终便携包、安装包和源码包还需执行独立的版本/载荷/交付校验。
 
@@ -69,3 +69,15 @@ win_pwsh='/mnt/c/Users/Wantosure/.cache/codex-runtimes/codex-primary-runtime/dep
 本机内部目录 `dist/0.4.20-internal-payload-20261024-r2` 已实际通过安装/卸载：450 文件逐项哈希、安装后的 HEIC 解码/MOV 探测、非空/联接/运行中拒绝、未知与修改文件保留和设置保留。证据 `artifacts/win11-v0420-internal-installation.json` 明确标记内部测试，`final_delivery_acceptance=false`。205 项 Windows Rust 依赖许可证文本无缺口。没有登记注册表或变更 Explorer 入口，不代表干净断网系统认证。
 
 首次暂存 `dist/0.4.20-internal-payload-20261024` 因缺少锁定许可证文本被校验拒绝，原目录保留。使用 SHA256 为 `e30b6d305099d746c95b934ccd8ea0e0e902fdc75d29b318e832855b934a8589` 的原 0.4.18 便携 ZIP，通过 `tools/restore_runtime.py` 完整核验 24 项后仅补回 6 份缺失文本：libde265/libheif/libmpv/NotoSansSC，以及 jpeg-decoder 的 Apache/MIT 文本。已有文件哈希不同会拒绝覆盖；没有修改运行库 DLL 或程序。随后在新的 r2 目录组装成功。新增内部清单门禁 3 项测试通过。
+
+## 显式打包当前构建
+
+设置过CARGO_TARGET_DIR时，请使用app构建结果JSON中的实际target_directory，不要从另一份target缓存猜选程序。打包入口支持`--application <实际应用exe>`和`--setup-stub <同版本静态CRT安装器>`；两者FileVersion仍须与Cargo.toml一致，旧版本会在创建输出目录前被拒绝。`-Stage setup`始终使用源码内`target/setup-static`，构建日志现单独记录此实际位置。
+
+例如本机自定义应用缓存位于父目录时：
+
+```powershell
+python -X utf8 tools/package_local.py --tag 0.4.55 --application ../target/release/media-browser.exe --setup-stub target/setup-static/release/media-browser-setup.exe --runtime-directory vendor/runtime
+```
+
+此入口仍仅形成local-test-only交付，不选择应用开源许可或上传Release。输出目录已存在或已经交付同版本时拒绝覆盖；新程序须递增版本。仅文档/工具刷新须显式`--refresh-source`，其production输入和程序哈希门禁保持，delivery.json另记录刷新前后source ZIP及不变exe哈希，不冒充新二进制。

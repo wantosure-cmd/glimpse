@@ -64,6 +64,7 @@ try {
             $taskMetadata=(& $taskCargo metadata --locked --offline --no-deps --format-version 1 | ConvertFrom-Json)
             if($LASTEXITCODE -ne 0){throw 'Cannot resolve actual Cargo output directory'}
             $taskActualTarget=$taskMetadata.target_directory
+            if($Stage -eq 'setup'){$taskActualTarget=Join-Path $taskRoot 'target/setup-static'}
             $taskCode=0
             try {
                 if($Stage -eq 'setup'){

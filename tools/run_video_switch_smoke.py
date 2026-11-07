@@ -6,6 +6,7 @@ import json
 import math
 import os
 import shutil
+import struct
 import subprocess
 import time
 import tomllib
@@ -28,9 +29,11 @@ def main():
     parser.add_argument('--exe', type=Path, required=True)
     parser.add_argument('--directory', type=Path)
     parser.add_argument('--selection', choices=('smallest', 'spread'), default='smallest')
+    parser.add_argument('--init-recovery', action='store_true', help='Generated-only missing DLL, failed retry, restore and real retry test')
     parser.add_argument('--pairs', type=int, default=2, choices=(1, 2))
     parser.add_argument('--transitions', type=int, default=20, choices=range(20, 41))
     args = parser.parse_args()
+    assert not args.init_recovery or (args.directory is None and args.pairs == 1), 'Init recovery accepts one generated pair only'
     exe = args.exe.resolve(strict=True)
     assert application_version(exe) == tomllib.loads((ROOT / 'Cargo.toml').read_text(encoding='utf8'))['package']['version']
     task = ROOT / 'target' / ('switch-owned-' + uuid.uuid4().hex)
@@ -48,6 +51,8 @@ def main():
     for pin in pins:
         source = runtime_source / pin['file']
         assert digest(source) == pin['sha256'].lower(), 'Native runtime differs from locked identity: ' + pin['file']
+        if args.init_recovery and pin['file'] == 'libmpv-2.dll':
+            continue  # intentional omission in this new task-owned application only
         destination = runtime / pin['file']
         try:
             os.link(source, destination)  # read-only runtime; bounded disk use on same volume
@@ -113,7 +118,9 @@ def main():
             name = f'{pair+1}-{mode}'
             root = source_root if mode == 'source' else local
             manifest = task / (name + '-sources.json')
-            manifest.write_text(json.dumps(dict(paths=[str(root / p.name) for p in selected], transitions=args.transitions)), encoding='utf8')
+            init_recovery = args.init_recovery and pair == 0 and mode == 'source'
+            manifest.write_text(json.dumps(dict(paths=[str(root / p.name) for p in selected], transitions=args.transitions,
+                                                init_recovery=init_recovery)), encoding='utf8')
             raw = task / (name + '-native.json')
             command = [str(staged_exe), '--open', str(root), '--data-dir', str(task / (name + '-data')),
                        '--instance-scope', task.name + '-' + name, '--video-switch-smoke', str(raw), '--switch-sources', str(manifest)]
@@ -123,7 +130,32 @@ def main():
                 result['runs'].append(row)
                 save()
                 began = time.monotonic()
+                restored = False
                 while proc.poll() is None:
+                    failure = raw.with_suffix('.init-failure.json')
+                    if init_recovery and not restored and failure.exists():
+                        try:
+                            observation = json.loads(failure.read_text(encoding='utf8'))
+                        except (json.JSONDecodeError, PermissionError):
+                            # The native sidecar is a live handshake; allow its
+                            # short write to finish, while the native timeout stays active.
+                            time.sleep(.02)
+                            continue
+                        assert observation['negative_retry_confirmed'] and observation['error']
+                        destination = runtime / 'libmpv-2.dll'
+                        assert not destination.exists(), 'Expected omitted DLL only in owned runtime'
+                        source = runtime_source / destination.name
+                        try:
+                            os.link(source, destination)
+                        except OSError:
+                            with source.open('rb') as incoming, destination.open('xb') as output_stream:
+                                shutil.copyfileobj(incoming, output_stream)
+                        pin = next(p for p in pins if p['file'] == destination.name)
+                        assert digest(destination) == pin['sha256'].lower()
+                        raw.with_suffix('.runtime-restored').write_bytes(b'restored verified runtime')
+                        row['init_failure_observation'] = observation
+                        restored = True
+                        save()
                     if time.monotonic() - began > 115 + args.transitions * 21:
                         raise TimeoutError(f'Owned switch process still live PID {proc.pid}; inspect before restarting')
                     time.sleep(.1)
@@ -133,6 +165,27 @@ def main():
             row['report'] = report
             save()
             assert proc.returncode == 0 and report['checks_pass'] and len(report['rows']) == args.transitions, report
+            if init_recovery:
+                assert restored and report['initialization_recovered'] and report['negative_retry_confirmed']
+                # Verify the actual native FBO contains the visible red error,
+                # not merely a retained error field or an allocated retry rect.
+                picture = raw.with_suffix('.init-failure.png')
+                width, height = struct.unpack('>II', picture.read_bytes()[16:24])
+                assert 0 < width <= 8192 and 0 < height <= 8192
+                rgb = subprocess.check_output([str(runtime / 'ffmpeg.exe'), '-v', 'error', '-nostdin', '-i', str(picture),
+                                               '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-'],
+                                              creationflags=subprocess.CREATE_NO_WINDOW)
+                assert len(rgb) == width*height*3
+                x, y, w, h = row['init_failure_observation']['canvas']
+                scale = row['init_failure_observation']['pixels_per_point']
+                red = 0
+                for py in range(max(0, int(y*scale)), min(height, int((y+h)*scale))):
+                    for px in range(max(0, int(x*scale)), min(width, int((x+w)*scale))):
+                        at = (py*width+px)*3
+                        r, g, b = rgb[at:at+3]
+                        red += r > 140 and r > g*1.25 and r > b*1.25
+                assert red >= 20, 'Missing visible init-error pixels in native FBO'
+                row['init_error_red_pixels'] = red
             values = sorted(item['input_to_ready_render_ms'] for item in report['rows'])
             assert all(math.isfinite(v) and v > 0 for v in values)
             row['timing_ms'] = dict(median=(values[(len(values)-1)//2]+values[len(values)//2])/2,
@@ -149,7 +202,8 @@ def main():
     assert digest(exe) == result['exe_sha256']
     assert digest(staged_exe) == result['exe_sha256']
     assert all(digest(runtime / p['file']) == p['sha256'].lower() for p in pins)
-    result.update(checks_pass=True, all_sources_and_copies_unchanged=True, matching_sequence_and_geometry=True)
+    result.update(checks_pass=True, all_sources_and_copies_unchanged=True, matching_sequence_and_geometry=True,
+                  initialization_recovery_pass=args.init_recovery)
     save()
     print(json.dumps(dict(checks_pass=True, evidence=str(output), runs=[dict(mode=r['mode'], pair=r['pair'], **r['timing_ms']) for r in result['runs']]), ensure_ascii=False))
 

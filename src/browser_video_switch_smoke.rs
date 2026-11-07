@@ -2,7 +2,10 @@
 use super::*;
 
 #[derive(Deserialize)]
-struct Sources { paths: Vec<PathBuf>, transitions: usize }
+struct Sources {
+    paths: Vec<PathBuf>, transitions: usize,
+    #[serde(default)] init_recovery: bool,
+}
 
 pub(super) struct VideoSwitchSmoke {
     output: PathBuf,
@@ -21,6 +24,10 @@ pub(super) struct VideoSwitchSmoke {
     rows: Vec<serde_json::Value>,
     initial_ms: Option<f64>,
     loading_ticks: usize,
+    init_recovery: bool,
+    negative_retry_confirmed: bool,
+    recovered: bool,
+    click: Option<Pos2>,
 }
 
 fn normalized(path: &Path) -> String {
@@ -35,10 +42,18 @@ impl VideoSwitchSmoke {
     pub fn new(output: PathBuf, manifest: Option<PathBuf>) -> Self {
         Self { output, manifest, started: Instant::now(), at: Instant::now(), phase: 0,
             ids: vec![], paths: vec![], count: 20, current: 0, target: 0, forward: true,
-            queued: None, sent: None, rows: vec![], initial_ms: None, loading_ticks: 0 }
+            queued: None, sent: None, rows: vec![], initial_ms: None, loading_ticks: 0,
+            init_recovery: false, negative_retry_confirmed: false, recovered: false, click: None }
     }
     pub fn inject(&mut self, raw: &mut egui::RawInput) {
         raw.events.clear(); raw.events.push(egui::Event::PointerGone); raw.focused = true;
+        if let Some(pos) = self.click.take() {
+            self.sent = Some(Instant::now());
+            raw.events.push(egui::Event::PointerMoved(pos));
+            for pressed in [true, false] { raw.events.push(egui::Event::PointerButton {
+                pos, button: egui::PointerButton::Primary, pressed, modifiers: Default::default()
+            }); }
+        }
         if let Some(key) = self.queued.take() {
             self.sent = Some(Instant::now());
             for pressed in [true, false] { raw.events.push(egui::Event::Key {
@@ -56,6 +71,8 @@ impl VideoSwitchSmoke {
             "version":env!("CARGO_PKG_VERSION"), "rows":self.rows, "expected_transitions":self.count,
             "paths":self.paths, "initial_ready_ms":self.initial_ms, "phase":self.phase,
             "pending_target":self.target, "status":b.status,
+            "init_recovery":self.init_recovery, "negative_retry_confirmed":self.negative_retry_confirmed,
+            "initialization_recovered":self.recovered,
             "detail_id":b.detail.as_ref().map(|v|v.id), "player_media":b.player_media,
             "deferred_detail":b.deferred_detail, "resume_pending":b.resume_pending,
             "resume_starting":b.resume_starting, "restore_flight":b.restore_flight,
@@ -100,6 +117,7 @@ impl VideoSwitchSmoke {
                 if sources.paths.iter().map(|p|normalized(p)).collect::<HashSet<_>>().len() != sources.paths.len() {
                     return Err("Duplicate source path".into());
                 }
+                self.init_recovery = sources.init_recovery;
                 self.paths = sources.paths; self.count = sources.transitions; self.phase = 1;
             }
             1 => {
@@ -124,12 +142,46 @@ impl VideoSwitchSmoke {
                 self.paths = self.ids.iter().map(|id|p.snapshot.files[p.lookup[id]].file.path.clone()).collect();
                 b.positions.clear(); self.at = Instant::now(); b.open_detail(self.ids[0]); self.phase = 3;
             }
-            3 | 5 => {
+            3 if self.init_recovery => {
+                if self.at.elapsed() < Duration::from_millis(200) { return Ok(()); }
+                let id = self.ids[0];
+                if b.player.is_some() || !b.playback_errors.contains_key(&id) {
+                    return Err("Missing-runtime init failure was not retained for its target".into());
+                }
+                let (_, rect) = b.video_retry_button.filter(|(target, _)| *target == id)
+                    .ok_or("Initialization failure has no visible retry action")?;
+                self.click = Some(rect.center()); self.phase = 8; self.at = Instant::now();
+            }
+            8 => {
+                if self.at.elapsed() < Duration::from_millis(200) { return Ok(()); }
+                let id = self.ids[0];
+                let (version, error) = b.playback_errors.get(&id).ok_or("Failed retry incorrectly cleared init error")?;
+                let p = b.prepared.as_ref().ok_or("Lost prepared state during retry")?;
+                if b.player.is_some() || b.detail.as_ref().map(|v|v.id) != Some(id)
+                    || version != &p.snapshot.files[p.lookup[&id]].file.fingerprint {
+                    return Err("Failed retry changed target or accepted wrong source version".into());
+                }
+                let (_, rect) = b.video_retry_button.filter(|(target, _)|*target == id).ok_or("Retry action disappeared")?;
+                self.negative_retry_confirmed = true;
+                b.snapshot_image(ctx, &self.output.with_extension("init-failure.png").to_string_lossy());
+                let report = serde_json::json!({"target":id,"error":error,"negative_retry_confirmed":true,
+                    "retry_rect":[rect.left(),rect.top(),rect.width(),rect.height()],"pixels_per_point":ctx.pixels_per_point(),
+                    "canvas":b.detail_layout.canvas.map(|r|[r.left(),r.top(),r.width(),r.height()])});
+                std::fs::write(self.output.with_extension("init-failure.json"),serde_json::to_vec_pretty(&report).unwrap()).map_err(|e|e.to_string())?;
+                self.phase = 6; self.at = Instant::now();
+            }
+            6 => {
+                if self.at.elapsed() > Duration::from_secs(20) { return Err("Runtime restoration acknowledgement timeout".into()); }
+                if std::fs::read(self.output.with_extension("runtime-restored")).ok().as_deref() != Some(b"restored verified runtime") { return Ok(()); }
+                let (_, rect) = b.video_retry_button.filter(|(target, _)|*target == self.ids[0]).ok_or("Missing retry after restoration")?;
+                self.sent = None; self.click = Some(rect.center()); self.phase = 7;
+            }
+            3 | 5 | 7 => {
                 let expected = self.ids[self.target];
                 let matching = b.detail.as_ref().is_some_and(|v|v.id == expected) && b.player_media == Some(expected);
                 let ready = matching && b.resume_pending.is_none() && !b.resume_starting
                     && b.player.as_ref().is_some_and(|p|p.lock().unwrap().has_presented_frame());
-                let began = if self.phase == 5 { self.sent } else { Some(self.at) };
+                let began = if self.phase == 3 { Some(self.at) } else { self.sent };
                 let Some(began) = began else { return Ok(()); };
                 if !ready {
                     self.loading_ticks += 1;
@@ -138,7 +190,13 @@ impl VideoSwitchSmoke {
                 }
                 let elapsed = began.elapsed().as_secs_f64() * 1000.;
                 let player = b.player.as_ref().unwrap().lock().unwrap();
-                if self.phase == 3 { self.initial_ms = Some(elapsed); }
+                if self.phase == 3 || self.phase == 7 {
+                    self.initial_ms = Some(elapsed);
+                    if self.phase == 7 {
+                        if b.playback_errors.contains_key(&expected) { return Err("Recovered player retained error".into()); }
+                        self.recovered = true;
+                    }
+                }
                 else { self.rows.push(serde_json::json!({"index":self.rows.len(), "from":self.paths[self.current],
                     "to":self.paths[self.target], "direction":if self.forward {"next"} else {"previous"},
                     "input_to_ready_render_ms":elapsed, "mpv_first_ready_render_ms":player.first_ready_render_ms,

@@ -226,10 +226,14 @@ def check():
 
 def equivalence():
     c=json.loads(CATALOG.read_text(encoding='utf-8'));p=ROOT/'target/ui-catalog-equivalence.rs'
-    lines=['#![allow(dead_code)]',f'#[path={rust_string(str(RUST))}] mod ui_text;','fn main() {','let pairs: &[(&str, &str)] = &[']
+    lines=['#![allow(dead_code)]',f'#[path={rust_string(str(RUST))}] mod ui_text;','fn main() {','let pairs: &[(&str, &str, &str, &str)] = &[']
     for key,item in sorted(c['messages'].items()):
-        for literal in item.get('original_literals',[rust_string(item['source'])]):lines.append(f'    ({literal}, ui_text!({key})),')
-    lines+= ['];','for (old, new) in pairs { assert_eq!(old, new); }','println!("Rust literal equivalence passed: {}", pairs.len());','}']
+        for literal in item.get('original_literals',[rust_string(item['source'])]):
+            lines.append(f'    ({literal}, {rust_string(item["source"])}, {rust_string(item["text"])}, ui_text!({key})),')
+    # Historical literals still have to decode exactly to the recorded source.
+    # Reviewed wording/branding edits belong to `text`; verify emitted bytes
+    # against that current catalog, rather than silently reverting those edits.
+    lines+= ['];','for (old, source, expected, actual) in pairs { assert_eq!(old, source); assert_eq!(expected, actual); }','println!("Rust source literals and current catalog bytes passed: {}", pairs.len());','}']
     p.write_text('\n'.join(lines)+'\n',encoding='utf-8');print(p)
 
 if __name__=='__main__':

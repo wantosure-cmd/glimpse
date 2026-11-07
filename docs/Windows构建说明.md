@@ -1,6 +1,6 @@
 # Windows x64 构建说明
 
-当前开发主线版本0.4.43，实际版本以Cargo.toml、对应delivery.json与同构建verification为准；完整源码包的生产输入须逐项匹配production_source_sha256。现有工具链/缓存下的离线重建与干净机器离线首次构建分开记录，构建成功也不代表已完成交付。
+当前源码版本0.4.51，正在核验；最新已交付本地测试包0.4.50。实际版本以Cargo.toml、对应delivery.json与同构建verification为准；完整源码包的生产输入须逐项匹配production_source_sha256。现有工具链/缓存下的离线重建与干净机器离线首次构建分开记录，构建成功也不代表已完成交付。推进状态见[v0.5推进记录](v0.5公开测试版推进.md)。
 
 本项目使用 Rust/eframe/egui/glow 与内嵌 libmpv GPU 视频。源码目录必须完整，不能只复制已跟踪的 Git 文件。以下命令生成本机程序或测试结果；最终便携包、安装包和源码包还需执行独立的版本/载荷/交付校验。
 
@@ -17,7 +17,20 @@
 
 `tools/build_windows.ps1` 从仓库自身路径定位源码，自动使用 `vswhere` 或标准 Build Tools 位置；自定义安装路径可通过 `-VisualStudioPath` 指定。它先确认锁定工具链已安装，再用 `--locked --offline` 调用 Cargo，日志与退出码 JSON 写入项目 `artifacts`。工具只在当前进程调整环境，不更改系统设置。
 
-本项目维护终端使用 WSL；从仓库根目录调用本机 Windows 版 PowerShell 7。下面的 `win_pwsh` 是当前机器已实际验证的路径；其他机器应改为其实际存在的 `pwsh.exe`，不要照搬旧电脑的程序路径：
+在Windows仓库根目录用PowerShell 7执行：
+
+```powershell
+pwsh -NoProfile -File tools/build_windows.ps1 -CheckOnly
+python -X utf8 tools/check_source.py
+cargo fetch --locked
+pwsh -NoProfile -File tools/build_windows.ps1 -Stage app
+pwsh -NoProfile -File tools/build_windows.ps1 -Stage lib-tests
+pwsh -NoProfile -File tools/build_windows.ps1 -Stage app-tests
+```
+
+`cargo fetch`首次联网准备依赖；构建入口随后使用`--locked --offline`。原生运行库仍须按[运行库恢复说明](构建说明.md)准备，源代码检查不代替原生运行验证。若源码和交付目录分开，可显式执行`pwsh -File tools/handoff_preflight.ps1 -DeliveryDirectory C:/path/to/dist/同版本目录 -CheckCargoCache`；没有迁移包时不要求伪造`PROJECT-TRANSFER.json`。
+
+以下WSL路径仅保留为历史示例；使用WSL时改为本机实际存在的Windows PowerShell路径：
 
 ```bash
 win_pwsh='/mnt/c/Users/Wantosure/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/powershell/pwsh.exe'

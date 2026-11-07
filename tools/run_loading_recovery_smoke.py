@@ -1,13 +1,16 @@
 """Owned generated PNG, actual Win32 read lock and temporarily unavailable path."""
 from pathlib import Path
-import argparse,ctypes,hashlib,json,subprocess,time,uuid
-from PIL import Image
+import argparse,ctypes,hashlib,json,struct,subprocess,time,uuid,zlib
 ROOT=Path(__file__).resolve().parent.parent
 p=argparse.ArgumentParser();p.add_argument('--exe',type=Path,required=True);p.add_argument('--prefix',required=True);a=p.parse_args()
 assert a.prefix.replace('-','').isalnum()
 output=ROOT/'artifacts'/(a.prefix+'.json');assert not output.exists()
 task=ROOT/'target'/('recovery-owned-'+uuid.uuid4().hex);media=task/'media';media.mkdir(parents=True);held=task/'held-media';native=task/'native';native.mkdir();work=task/'work';work.mkdir();(task/'.owned-fixture').write_text('Generated PNG only; no private source writes or device changes')
-source=media/'locked.png';Image.new('RGB',(320,240),(45,105,175)).save(source)
+def chunk(kind,data):
+ return struct.pack('>I',len(data))+kind+data+struct.pack('>I',zlib.crc32(kind+data)&0xffffffff)
+source=media/'locked.png'
+source.write_bytes(b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('>IIBBBBB',320,240,8,2,0,0,0))+
+ chunk(b'IDAT',zlib.compress((b'\0'+bytes((45,105,175))*320)*240))+chunk(b'IEND',b''))
 digest=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 before=digest(source);fingerprint=(source.stat().st_size,source.stat().st_mtime_ns)
 exe=a.exe.resolve(strict=True);identity=digest(exe)
@@ -39,9 +42,14 @@ try:
  raw=json.loads((native/'report.json').read_text());r['raw']=raw;r['native_report']=str(native/'report.json');save();assert app.returncode==0 and raw['checks_pass'],raw
  assert r['events']==['released','disconnected','restored']
  row=next(v for v in raw['rows'] if v['name']=='failure-reason-menu');x,y,w,h=row['card_rect'];scale=row['pixels_per_point']
- image=Image.open(work/'artifacts/recovery-failure-reason-menu.png').convert('RGB')
+ picture=work/'artifacts/recovery-failure-reason-menu.png'
+ width,height=struct.unpack('>II',picture.read_bytes()[16:24])
+ ffmpeg=next((f for f in (ROOT/'vendor/runtime/ffmpeg.exe',exe.parent/'runtime/ffmpeg.exe') if f.is_file()),None)
+ assert ffmpeg is not None,'Restore the pinned runtime before checking native pixels'
+ pixels=subprocess.check_output([str(ffmpeg),'-v','error','-i',str(picture),'-f','rawvideo','-pix_fmt','rgb24','-'],creationflags=subprocess.CREATE_NO_WINDOW)
+ assert len(pixels)==width*height*3
  # Inspect the card center, excluding selection border and favorite icon.
- colors=[image.getpixel((px,py)) for py in range(int((y+h*.5-14)*scale),int((y+h*.5+14)*scale)) for px in range(int((x+w*.5-65)*scale),int((x+w*.5+65)*scale))]
+ colors=[pixels[(py*width+px)*3:][:3] for py in range(max(0,int((y+h*.5-14)*scale)),min(height,int((y+h*.5+14)*scale))) for px in range(max(0,int((x+w*.5-65)*scale)),min(width,int((x+w*.5+65)*scale)))]
  red=sum(c[0]>180 and c[0]-c[1]>50 and c[0]-c[2]>30 for c in colors)
  assert red>8,'Failed metadata must display the danger-colored failure label, not keep saying loading'
  r['failed_card_error_label_pixels']=red

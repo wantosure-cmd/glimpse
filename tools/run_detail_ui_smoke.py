@@ -2,7 +2,9 @@
 from pathlib import Path
 import argparse,hashlib,json,shutil,struct,subprocess,uuid,zlib
 ROOT=Path(__file__).resolve().parents[1]
-p=argparse.ArgumentParser();p.add_argument('--exe',type=Path,required=True);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--exe',type=Path,required=True);p.add_argument('--prefix',default='v0449-detail-ui');a=p.parse_args()
+assert a.prefix.replace('-','').isalnum()
+out=ROOT/'artifacts'/(a.prefix+'-raw.json');assert not out.exists(),'Keep previous evidence; use a new prefix'
 task=ROOT/'target'/('detail-ui-owned-'+uuid.uuid4().hex)
 media=task/'media';work=task/'work';media.mkdir(parents=True);work.mkdir()
 def chunk(kind,data):return struct.pack('>I',len(data))+kind+data+struct.pack('>I',zlib.crc32(kind+data)&0xffffffff)
@@ -16,7 +18,7 @@ for name,size in [('02-landscape.mov','426x240'),('03-portrait.mov','240x426')]:
     subprocess.run([str(ffmpeg),'-v','error','-f','lavfi','-i',f'testsrc2=size={size}:rate=12',
         '-t','30','-c:v','mpeg4','-q:v','5','-pix_fmt','yuv420p','-an',str(media/name)],check=True,creationflags=subprocess.CREATE_NO_WINDOW)
 def identity():return {str(f.relative_to(media)):hashlib.sha256(f.read_bytes()).hexdigest() for f in media.rglob('*') if f.is_file()}
-before=identity();exe=a.exe.resolve(strict=True);out=ROOT/'artifacts/v0449-detail-ui-raw.json'
+before=identity();exe=a.exe.resolve(strict=True)
 with (task/'stdout.log').open('wb') as stdout,(task/'stderr.log').open('wb') as stderr:
     proc=subprocess.Popen([str(exe),'--detail-ui-smoke',str(out),'--open',str(media),'--data-dir',str(task/'data')],
         cwd=work,stdout=stdout,stderr=stderr)
@@ -57,5 +59,5 @@ result={'checks_pass':True,'exe_sha256':hashlib.sha256(exe.read_bytes()).hexdige
         'arrow_hit_points':[64,88],'corner_clicks_pass':True,'fullscreen_click_escape_f11_pass':True,
         'landscape_and_portrait_aspect_pass':True,'actual_portrait_black_pillars_pass':True,
         'sticky_counts_wide_narrow_ui_scale_200_pass':True,'scope':raw['scope']}
-(ROOT/'artifacts/v0449-detail-ui-verification.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf8')
+(ROOT/'artifacts'/(a.prefix+'-verification.json')).write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf8')
 print(json.dumps(result,ensure_ascii=False,indent=2))

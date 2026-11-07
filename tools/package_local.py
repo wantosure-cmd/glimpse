@@ -53,13 +53,14 @@ def copy(source: Path, target: Path) -> None:
 def write_source_archive(path: Path) -> None:
     # Explicit source allowlist excludes downloaded media, caches and logs.
     source_files = []
-    for folder in ("src", "tools", "tests", "docs", "assets"):
+    for folder in ("src", "tools", "tests", "docs", "assets", ".github"):
         source_files.extend(f for f in (ROOT / folder).rglob("*") if f.is_file()
                             and "__pycache__" not in f.parts and f.suffix not in (".pyc", ".pyo"))
     for name in ("Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "build.rs", "README.md", ".gitignore",
                  "产品需求与技术方案.md", "给开发AI的任务书.md", "AGENTS.md"):
         source_files.append(ROOT / name)
     source_files.extend((ROOT / "vendor").glob("*.json"))
+    source_files.extend(ROOT / name for name in (".gitattributes", "LICENSE", "THIRD_PARTY_NOTICES.md") if (ROOT / name).is_file())
     records = []
     with zipfile.ZipFile(path, "x", zipfile.ZIP_DEFLATED, compresslevel=6) as z:
         for f in sorted(set(source_files)):

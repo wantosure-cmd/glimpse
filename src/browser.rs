@@ -5,6 +5,8 @@ mod animation_smoke;
 mod components;
 #[path = "browser_controls.rs"]
 mod controls;
+#[path = "browser_daily_smoke.rs"]
+mod daily_smoke;
 #[path = "browser_design_smoke.rs"]
 mod design_smoke;
 #[path = "browser_detail_smoke.rs"]
@@ -282,6 +284,7 @@ impl Default for Config {
 }
 
 pub struct Browser {
+    daily_smoke: Option<daily_smoke::DailySmoke>,
     loading: loading_ui::LoadingState,
     loading_smoke: Option<loading_smoke::LoadingSmoke>,
     auto_fold_empty: bool,
@@ -595,6 +598,7 @@ impl Browser {
         crate::startup_trace::mark("browser_workers_started");
         Self {
             features: features::Features::new(&data_dir),
+            daily_smoke: argument("--daily-smoke").map(|p| daily_smoke::DailySmoke::new(PathBuf::from(p), args.iter().any(|s|s=="--daily-restart"), args.iter().any(|s|s=="--daily-scan-exit"))),
             features_smoke: argument("--features-smoke")
                 .map(|p| features_smoke::FeaturesSmoke::new(PathBuf::from(p))),
             language: config.language,
@@ -2604,6 +2608,7 @@ impl eframe::App for Browser {
         if let Some(smoke) = &mut self.features_smoke {
             smoke.inject(raw);
         }
+        if let Some(smoke) = &mut self.daily_smoke {smoke.inject(raw);}
         if let Some(smoke) = &mut self.design_smoke {
             smoke.inject(raw);
         }
@@ -2938,6 +2943,10 @@ impl eframe::App for Browser {
             self.features_smoke = Some(smoke);
         }
         self.smoke(&ctx);
+        if let Some(mut smoke) = self.daily_smoke.take() {
+            smoke.tick(self, &ctx);
+            self.daily_smoke = Some(smoke);
+        }
         if let Some(mut smoke) = self.folder_smoke.take() {
             smoke.tick(self, &ctx);
             self.folder_smoke = Some(smoke);
@@ -3045,7 +3054,9 @@ impl eframe::App for Browser {
             settings: self.settings.clone(),
             target_width: self.target_width,
             pinned: self.pinned,
-            last_root: self.snapshot.as_ref().map(|s| s.root.clone()),
+            // Navigation clears the old snapshot before the new scan completes.
+            // Persist the requested view as well when quitting in that interval.
+            last_root: self.watch_root.clone().or_else(|| self.snapshot.as_ref().map(|s| s.root.clone())),
             volume: self.volume,
             muted: self.muted,
         };

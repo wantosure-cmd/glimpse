@@ -3,7 +3,7 @@ import copy,hashlib,json,subprocess,sys,uuid
 from pathlib import Path
 import ui_catalog as catalog
 ROOT=Path(__file__).resolve().parent.parent
-out=ROOT/'target'/('ui-catalog-tests-'+uuid.uuid4().hex);out.mkdir();(out/'.ui-catalog-owned').write_text('Owned static catalog tests',encoding='ascii')
+out=ROOT/'target'/('ui-catalog-tests-'+uuid.uuid4().hex);out.mkdir(parents=True);(out/'.ui-catalog-owned').write_text('Owned static catalog tests',encoding='ascii')
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def run(args, expected=0):
     p=subprocess.run(list(map(str,args)),cwd=ROOT,capture_output=True,timeout=90)

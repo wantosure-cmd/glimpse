@@ -7,6 +7,8 @@ mod components;
 mod controls;
 #[path = "browser_daily_smoke.rs"]
 mod daily_smoke;
+#[path = "browser_video_switch_smoke.rs"]
+mod video_switch_smoke;
 #[path = "browser_design_smoke.rs"]
 mod design_smoke;
 #[path = "browser_detail_smoke.rs"]
@@ -285,6 +287,7 @@ impl Default for Config {
 
 pub struct Browser {
     daily_smoke: Option<daily_smoke::DailySmoke>,
+    video_switch_smoke: Option<video_switch_smoke::VideoSwitchSmoke>,
     loading: loading_ui::LoadingState,
     loading_smoke: Option<loading_smoke::LoadingSmoke>,
     auto_fold_empty: bool,
@@ -599,6 +602,7 @@ impl Browser {
         Self {
             features: features::Features::new(&data_dir),
             daily_smoke: argument("--daily-smoke").map(|p| daily_smoke::DailySmoke::new(PathBuf::from(p), args.iter().any(|s|s=="--daily-restart"), args.iter().any(|s|s=="--daily-scan-exit"))),
+            video_switch_smoke: argument("--video-switch-smoke").map(|p| video_switch_smoke::VideoSwitchSmoke::new(PathBuf::from(p), argument("--switch-sources").map(PathBuf::from))),
             features_smoke: argument("--features-smoke")
                 .map(|p| features_smoke::FeaturesSmoke::new(PathBuf::from(p))),
             language: config.language,
@@ -2609,6 +2613,7 @@ impl eframe::App for Browser {
             smoke.inject(raw);
         }
         if let Some(smoke) = &mut self.daily_smoke {smoke.inject(raw);}
+        if let Some(smoke) = &mut self.video_switch_smoke {smoke.inject(raw);}
         if let Some(smoke) = &mut self.design_smoke {
             smoke.inject(raw);
         }
@@ -2946,6 +2951,10 @@ impl eframe::App for Browser {
         if let Some(mut smoke) = self.daily_smoke.take() {
             smoke.tick(self, &ctx);
             self.daily_smoke = Some(smoke);
+        }
+        if let Some(mut smoke) = self.video_switch_smoke.take() {
+            smoke.tick(self, &ctx);
+            self.video_switch_smoke = Some(smoke);
         }
         if let Some(mut smoke) = self.folder_smoke.take() {
             smoke.tick(self, &ctx);

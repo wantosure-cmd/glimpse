@@ -1,6 +1,6 @@
 [package]
 name = "media-browser"
-version = "0.4.51"
+version = "0.4.53"
 edition = "2024"
 description = "Glimpse - Offline native media browser for large displays"
 default-run = "media-browser"

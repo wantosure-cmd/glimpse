@@ -24,7 +24,7 @@ jobs:
           python-version: '3.12'
       - name: Install pinned Rust toolchain
         run: |
-          $channel = (Select-String rust-toolchain.toml '^channel\s*=\s*"([^"]+)"').Matches[0].Groups[1].Value
+          $channel = (Select-String -LiteralPath rust-toolchain.toml -Pattern '^channel\s*=\s*"([^"]+)"').Matches[0].Groups[1].Value
           rustup toolchain install $channel --profile minimal --no-self-update
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Check source and pinned license bytes

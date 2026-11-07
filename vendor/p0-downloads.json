@@ -4,7 +4,14 @@
     "filename": "libmpv-v0.41.0-dev-ga2cd83c56-38817383469-x86_64-w64-mingw32-gpl.zip",
     "source": "https://github.com/mpv-player/mpv/releases/download/git-release/libmpv-v0.41.0-dev-ga2cd83c56-38817383469-x86_64-w64-mingw32-gpl.zip",
     "sha256": "57dce66365f0f84986ad556a59e1276c303b83c86f9268ff9eded3397638f9b7",
-    "bytes": 64908877
+    "bytes": 64908877,
+    "official_artifact": {
+      "repository": "mpv-player/mpv",
+      "run_id": 38817383469,
+      "artifact_id": 12013725885,
+      "build_commit": "a2cd83c56de859ced3fc8e6055e5878e50f45286",
+      "note": "Same ZIP SHA256 and size as the original release asset; no runtime version change. GitHub artifact access may require authentication and has upstream retention limits."
+    }
   },
   {
     "component": "pillow-heif wheel inspection only",

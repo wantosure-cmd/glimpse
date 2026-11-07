@@ -1,0 +1,9 @@
+{
+  "ffmpeg_archive": {
+    "source": "https://github.com/GyanD/codexffmpeg/releases/download/8.1.1/ffmpeg-8.1.1-full_build.zip",
+    "filename": "ffmpeg-8.1.1-full_build.zip",
+    "sha256": "49b28c5f16addd40239a66949973458769b7056fb7752c30ac0d53389d09a552",
+    "pin_source": "https://github.com/microsoft/winget-pkgs/blob/master/manifests/g/Gyan/FFmpeg/8.1.1/Gyan.FFmpeg.installer.yaml",
+    "scope": "CI/test preparation only. Extracted ffmpeg and ffprobe must match existing vendor/media-tools.json; no product native dependency versions are changed."
+  }
+}

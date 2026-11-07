@@ -477,6 +477,32 @@ mod tests {
         std::fs::create_dir_all(&path).unwrap();
         (id, path)
     }
+    fn dacl_is_only_user(sddl: &str, sid: &str) -> bool {
+        // SDDL serializes the local Administrator SID as LA on hosted Windows.
+        // Compare actual binary SIDs, not a display string or a broad alias list.
+        unsafe {
+            let text = wide(std::ffi::OsStr::new(sddl));
+            let mut descriptor = PSECURITY_DESCRIPTOR::default();
+            ConvertStringSecurityDescriptorToSecurityDescriptorW(PCWSTR(text.as_ptr()), 1, &mut descriptor, None).unwrap();
+            let descriptor = Descriptor(descriptor);
+            let mut present = windows::core::BOOL::default();
+            let mut defaulted = windows::core::BOOL::default();
+            let mut acl = std::ptr::null_mut();
+            GetSecurityDescriptorDacl(descriptor.0, &mut present, &mut acl, &mut defaulted).unwrap();
+            if !present.as_bool() || acl.is_null() || (*acl).AceCount != 1 {return false;}
+            let mut raw = std::ptr::null_mut();
+            GetAce(acl, 0, &mut raw).unwrap();
+            let ace = &*raw.cast::<ACCESS_ALLOWED_ACE>();
+            if ace.Header.AceType != 0 {return false;}
+            let actual = PSID((&ace.SidStart as *const u32).cast_mut().cast());
+            let text = wide(std::ffi::OsStr::new(sid));
+            let mut expected = PSID::default();
+            ConvertStringSidToSidW(PCWSTR(text.as_ptr()), &mut expected).unwrap();
+            let same = EqualSid(actual, expected).is_ok();
+            LocalFree(Some(HLOCAL(expected.0)));
+            same
+        }
+    }
     #[test]
     fn protocol_rejects_versions_lengths_nul_and_roundtrips_utf16() {
         let path = PathBuf::from(std::ffi::OsString::from_wide(&[
@@ -503,12 +529,14 @@ mod tests {
             panic!("Expected primary")
         };
         let (sid, _) = identity().unwrap();
+        assert!(!dacl_is_only_user("D:P(A;;GA;;;WD)", &sid));
+        assert!(!dacl_is_only_user("D:P(A;;GA;;;BA)", &sid));
         for dacl in [
             &primary.pipe_dacl,
             &actual_dacl(primary._mutex.raw()).unwrap(),
         ] {
             assert_eq!(dacl.matches("(A;").count(), 1, "{dacl}");
-            assert!(dacl.contains(&sid), "{dacl}");
+            assert!(dacl_is_only_user(dacl, &sid), "{dacl}");
             assert!(
                 !dacl.contains(";;;WD)") && !dacl.contains(";;;BA)"),
                 "{dacl}"

@@ -1,4 +1,4 @@
-param([string]$Output='', [switch]$CheckCargoCache)
+param([string]$Output='', [switch]$CheckCargoCache, [string]$DeliveryDirectory='')
 $ErrorActionPreference='Stop'
 $taskRoot=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 if(-not $Output){$Output=Join-Path $taskRoot ('artifacts/handoff-preflight-'+[guid]::NewGuid().ToString('N')+'.json')}
@@ -9,11 +9,17 @@ if(-not (Test-Path -LiteralPath $taskParent)){New-Item -ItemType Directory -Path
 $taskCargo=Get-Content -LiteralPath (Join-Path $taskRoot 'Cargo.toml') -Raw -Encoding utf8
 $taskVersion=[regex]::Match($taskCargo,'(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
 $taskPin=[regex]::Match((Get-Content -LiteralPath (Join-Path $taskRoot 'rust-toolchain.toml') -Raw -Encoding utf8),'channel\s*=\s*"([^"]+)"').Groups[1].Value
-$taskDelivery=@(Get-ChildItem -LiteralPath (Join-Path $taskRoot 'dist') -Directory | Where-Object {
+if($DeliveryDirectory){
+    $taskDelivery=@(Get-Item -LiteralPath $DeliveryDirectory)
+    $taskCandidate=Join-Path $taskDelivery[0].FullName 'delivery.json'
+    if(-not (Test-Path -LiteralPath $taskCandidate) -or ((Get-Content -LiteralPath $taskCandidate -Raw -Encoding utf8 | ConvertFrom-Json).application_version -ne $taskVersion)){throw 'Explicit delivery must match Cargo.toml version'}
+} else {
+$taskDelivery=@(Get-ChildItem -LiteralPath (Join-Path $taskRoot 'dist') -Directory -ErrorAction SilentlyContinue | Where-Object {
     $taskCandidate=Join-Path $_.FullName 'delivery.json'
     (Test-Path -LiteralPath $taskCandidate) -and ((Get-Content -LiteralPath $taskCandidate -Raw -Encoding utf8 | ConvertFrom-Json).application_version -eq $taskVersion)
 })
-if($taskDelivery.Count -ne 1){throw 'Expected exactly one delivery matching Cargo.toml'}
+}
+if($taskDelivery.Count -ne 1){throw 'Expected exactly one delivery matching Cargo.toml; use -DeliveryDirectory for a separate checkout and delivery'}
 $taskPortable=Join-Path $taskDelivery[0].FullName 'media-browser-portable'
 $taskPackage=Get-Content -LiteralPath (Join-Path $taskPortable 'package-files.json') -Raw -Encoding utf8 | ConvertFrom-Json
 $taskPayloadFailures=[Collections.Generic.List[string]]::new()

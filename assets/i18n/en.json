@@ -8092,6 +8092,42 @@
         "\"{count} items will be recycled in {seconds} seconds\""
       ],
       "format_template": true
+    },
+    "video_player_start_hint": {
+      "text": "The video player could not start. Check that the application is fully installed, then retry.",
+      "source": "视频播放器未能启动。请确认软件安装完整后重试。",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_play_failed_hint": {
+      "text": "This video could not be played. Retry or view the error details.",
+      "source": "暂时无法播放此视频。可以重试，或查看错误详情。",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_error_details": {
+      "text": "Error details",
+      "source": "错误详情",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
     }
   },
   "managed_technical_sources": [

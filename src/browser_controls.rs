@@ -110,6 +110,15 @@ impl Browser {
         if self.trash_releasing() || self.trash_blocks_media(record.id) {
             return Err(media_browser::ui_text!(msg_21e9b02cc82e).into());
         }
+        let result = self.activate_video_inner(record, detail);
+        if let Err(error) = &result {
+            // Initialization can fail before player_media exists. Keep the error
+            // with its requested source/version instead of only transient status.
+            self.playback_errors.insert(record.id, (record.file.fingerprint.clone(), error.clone()));
+        }
+        result
+    }
+    fn activate_video_inner(&mut self, record: &MediaRecord, detail: bool) -> Result<(), String> {
         if self.player_media != Some(record.id) {
             self.remember_position();
         }

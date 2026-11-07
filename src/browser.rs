@@ -5,6 +5,10 @@ mod animation_smoke;
 mod components;
 #[path = "browser_controls.rs"]
 mod controls;
+#[path = "browser_daily_smoke.rs"]
+mod daily_smoke;
+#[path = "browser_video_switch_smoke.rs"]
+mod video_switch_smoke;
 #[path = "browser_design_smoke.rs"]
 mod design_smoke;
 #[path = "browser_detail_smoke.rs"]
@@ -282,6 +286,8 @@ impl Default for Config {
 }
 
 pub struct Browser {
+    daily_smoke: Option<daily_smoke::DailySmoke>,
+    video_switch_smoke: Option<video_switch_smoke::VideoSwitchSmoke>,
     loading: loading_ui::LoadingState,
     loading_smoke: Option<loading_smoke::LoadingSmoke>,
     auto_fold_empty: bool,
@@ -383,6 +389,7 @@ pub struct Browser {
     preview_idle: Option<Instant>,
     hovered_video: Option<MediaId>,
     video_region: Option<(MediaId, Rect)>,
+    video_retry_button: Option<(MediaId, Rect)>,
     image_region: Option<Rect>,
     video_exclusion: Option<Rect>,
     routed_zoom: f32,
@@ -595,6 +602,8 @@ impl Browser {
         crate::startup_trace::mark("browser_workers_started");
         Self {
             features: features::Features::new(&data_dir),
+            daily_smoke: argument("--daily-smoke").map(|p| daily_smoke::DailySmoke::new(PathBuf::from(p), args.iter().any(|s|s=="--daily-restart"), args.iter().any(|s|s=="--daily-scan-exit"))),
+            video_switch_smoke: argument("--video-switch-smoke").map(|p| video_switch_smoke::VideoSwitchSmoke::new(PathBuf::from(p), argument("--switch-sources").map(PathBuf::from))),
             features_smoke: argument("--features-smoke")
                 .map(|p| features_smoke::FeaturesSmoke::new(PathBuf::from(p))),
             language: config.language,
@@ -709,6 +718,7 @@ impl Browser {
             preview_idle: None,
             hovered_video: None,
             video_region: None,
+            video_retry_button: None,
             image_region: None,
             video_exclusion: None,
             routed_zoom: 0.,
@@ -1660,18 +1670,40 @@ impl Browser {
         }
     }
     fn paint_video(&mut self, ui: &mut egui::Ui, rect: Rect) {
-        if let Some((_, error)) = self
-            .player_media
-            .and_then(|id| self.playback_errors.get(&id))
-        {
+        let displayed_id = self.video_region.map(|(id, _)| id).or(self.player_media);
+        let error = displayed_id.and_then(|id| self.playback_errors.get(&id)
+            .map(|(_, error)| (id, error.clone())));
+        if let Some((id, error)) = error {
             ui.painter().rect_filled(rect, 0., Color32::BLACK);
-            ui.painter().text(
-                rect.center(),
-                egui::Align2::CENTER_CENTER,
-                error,
-                egui::FontId::proportional(16.),
-                modern_ui::DANGER,
-            );
+            let width = (rect.width() - 32.).clamp(40., 560.);
+            let panel = Rect::from_min_size(egui::pos2(rect.center().x - width * 0.5,
+                (rect.center().y - 66.).max(rect.top())), egui::vec2(width, 260.));
+            let mut error_ui = ui.new_child(egui::UiBuilder::new().id_salt(("video-error", id))
+                .max_rect(panel).layout(egui::Layout::top_down(egui::Align::Center)));
+            error_ui.set_clip_rect(rect.intersect(ui.clip_rect()));
+            error_ui.spacing_mut().item_spacing.y = 10.;
+            error_ui.label(egui::RichText::new(media_browser::ui_text!(msg_981ed5de50ac))
+                .size(20.).color(modern_ui::DANGER));
+            let hint = if self.player.is_none() { media_browser::ui_text!(video_player_start_hint) }
+                else { media_browser::ui_text!(video_play_failed_hint) };
+            error_ui.add(egui::Label::new(egui::RichText::new(hint).color(modern_ui::MUTED)).wrap());
+            let retry = error_ui.add_sized(egui::vec2(112., 28.),
+                egui::Button::new(media_browser::ui_text!(msg_b8784c8dd563)));
+            error_ui.collapsing(media_browser::ui_text!(video_error_details), |ui| {
+                ui.add(egui::Label::new(egui::RichText::new(error).small().color(modern_ui::MUTED)).wrap());
+            });
+            self.control_regions.push(error_ui.min_rect().intersect(rect));
+            self.control_regions.push(retry.rect);
+            self.control_focused |= retry.has_focus();
+            self.video_retry_button = Some((id, retry.rect));
+            if retry.clicked() {
+                let record = self.prepared.as_ref().and_then(|p|p.lookup.get(&id)
+                    .map(|index|p.snapshot.files[*index].clone()));
+                if let Some(record) = record {
+                    let detail = self.detail.as_ref().is_some_and(|v|v.id == id);
+                    if let Err(error) = self.activate_video(&record, detail) { self.status = error; }
+                }
+            }
             return;
         }
         if let Some(player) = self.player.clone() {
@@ -2604,6 +2636,8 @@ impl eframe::App for Browser {
         if let Some(smoke) = &mut self.features_smoke {
             smoke.inject(raw);
         }
+        if let Some(smoke) = &mut self.daily_smoke {smoke.inject(raw);}
+        if let Some(smoke) = &mut self.video_switch_smoke {smoke.inject(raw);}
         if let Some(smoke) = &mut self.design_smoke {
             smoke.inject(raw);
         }
@@ -2672,6 +2706,7 @@ impl eframe::App for Browser {
         self.animation.tick(&ctx);
         self.control_focused = false;
         self.control_regions.clear();
+        self.video_retry_button = None;
         self.hovered_video = None;
         self.video_region = None;
         self.video_exclusion = None;
@@ -2938,6 +2973,14 @@ impl eframe::App for Browser {
             self.features_smoke = Some(smoke);
         }
         self.smoke(&ctx);
+        if let Some(mut smoke) = self.daily_smoke.take() {
+            smoke.tick(self, &ctx);
+            self.daily_smoke = Some(smoke);
+        }
+        if let Some(mut smoke) = self.video_switch_smoke.take() {
+            smoke.tick(self, &ctx);
+            self.video_switch_smoke = Some(smoke);
+        }
         if let Some(mut smoke) = self.folder_smoke.take() {
             smoke.tick(self, &ctx);
             self.folder_smoke = Some(smoke);
@@ -3045,7 +3088,9 @@ impl eframe::App for Browser {
             settings: self.settings.clone(),
             target_width: self.target_width,
             pinned: self.pinned,
-            last_root: self.snapshot.as_ref().map(|s| s.root.clone()),
+            // Navigation clears the old snapshot before the new scan completes.
+            // Persist the requested view as well when quitting in that interval.
+            last_root: self.watch_root.clone().or_else(|| self.snapshot.as_ref().map(|s| s.root.clone())),
             volume: self.volume,
             muted: self.muted,
         };

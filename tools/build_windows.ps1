@@ -10,6 +10,7 @@ New-Item -ItemType Directory -Path $taskArtifacts -Force | Out-Null
 $taskStamp=[DateTime]::UtcNow.ToString('yyyyMMddTHHmmssfff')
 $taskOldPath=$env:PATH
 $taskOldToolchain=$env:RUSTUP_TOOLCHAIN
+$taskOldTarget=$env:CARGO_TARGET_DIR
 $taskCargoBin=Join-Path ([Environment]::GetFolderPath('UserProfile')) '.cargo/bin'
 if(Test-Path -LiteralPath $taskCargoBin){$env:PATH=$taskCargoBin+';'+$env:PATH}
 try {
@@ -30,6 +31,10 @@ try {
     if(-not (Test-Path -LiteralPath $taskDevModule)){throw 'Visual Studio developer environment is not ready'}
     Import-Module $taskDevModule
     Enter-VsDevShell -VsInstallPath $VisualStudioPath -SkipAutomaticLocation -DevCmdArguments '-arch=x64 -host_arch=x64'
+    # VS may round-trip inherited variables through the system ANSI code page.
+    # Keep a caller's Unicode Cargo path byte-for-byte, or Cargo can silently
+    # build into a different directory while an old EXE remains at the expected path.
+    $env:CARGO_TARGET_DIR=$taskOldTarget
     $taskChannel=Select-String -LiteralPath (Join-Path $taskRoot 'rust-toolchain.toml') -Pattern '^channel\s*=\s*"([^"]+)"' | Select-Object -First 1
     if(-not $taskChannel){throw 'Missing pinned Rust channel'}
     $taskToolchain=$taskChannel.Matches[0].Groups[1].Value+'-x86_64-pc-windows-msvc'
@@ -56,6 +61,10 @@ try {
                 'setup' {@()}
             }
             $taskLog=Join-Path $taskArtifacts "windows-$Stage-$taskStamp.log"
+            $taskMetadata=(& $taskCargo metadata --locked --offline --no-deps --format-version 1 | ConvertFrom-Json)
+            if($LASTEXITCODE -ne 0){throw 'Cannot resolve actual Cargo output directory'}
+            $taskActualTarget=$taskMetadata.target_directory
+            if($Stage -eq 'setup'){$taskActualTarget=Join-Path $taskRoot 'target/setup-static'}
             $taskCode=0
             try {
                 if($Stage -eq 'setup'){
@@ -64,15 +73,21 @@ try {
                     & $taskCargo @taskArguments 2>&1 | Tee-Object -FilePath $taskLog
                 }
                 $taskCode=$LASTEXITCODE
+                if($taskCode -eq 0 -and $Stage -eq 'app'){
+                    $taskApplication=Get-Item -LiteralPath (Join-Path $taskActualTarget 'release/media-browser.exe') -ErrorAction Stop
+                    $taskSourceVersion=[regex]::Match((Get-Content -LiteralPath 'Cargo.toml' -Raw),'(?m)^version\s*=\s*"([^"]+)"').Groups[1].Value
+                    if($taskApplication.VersionInfo.FileVersion -ne $taskSourceVersion){throw 'Built executable version differs from Cargo.toml'}
+                }
             } catch {
                 $_ | Out-String | Tee-Object -FilePath $taskLog -Append
                 $taskCode=1
             }
-            [pscustomobject]@{stage=$Stage;exit_code=$taskCode;toolchain=$taskToolchain;log=$taskLog;ended_utc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json | Tee-Object -FilePath "$taskLog.result.json"
+            [pscustomobject]@{stage=$Stage;exit_code=$taskCode;toolchain=$taskToolchain;target_directory=$taskActualTarget;log=$taskLog;ended_utc=[DateTime]::UtcNow.ToString('o')} | ConvertTo-Json | Tee-Object -FilePath "$taskLog.result.json"
             if($taskCode -ne 0){throw "Windows build stage failed: $Stage; see $taskLog"}
         }
     } finally {Pop-Location}
 } finally {
     $env:PATH=$taskOldPath
     $env:RUSTUP_TOOLCHAIN=$taskOldToolchain
+    $env:CARGO_TARGET_DIR=$taskOldTarget
 }

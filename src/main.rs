@@ -126,6 +126,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             matches!(
                 s.as_str(),
                 "--features-smoke"
+                    | "--daily-smoke"
+                    | "--video-switch-smoke"
                     | "--loading-smoke"
                     | "--browser-smoke"
                     | "--folder-smoke"

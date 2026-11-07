@@ -577,6 +577,9 @@ macro_rules! ui_text {
     (msg_sticky_jump_next) => { if $crate::ui_text::english() { "Next folder containing images or videos" } else { "下一个有图片或视频的目录" } };
     (msg_sticky_jump_previous) => { if $crate::ui_text::english() { "Previous folder containing images or videos" } else { "上一个有图片或视频的目录" } };
     (status_library_ready) => { if $crate::ui_text::english() { "Library ready" } else { "媒体库已就绪" } };
+    (video_error_details) => { if $crate::ui_text::english() { "Error details" } else { "错误详情" } };
+    (video_play_failed_hint) => { if $crate::ui_text::english() { "This video could not be played. Retry or view the error details." } else { "暂时无法播放此视频。可以重试，或查看错误详情。" } };
+    (video_player_start_hint) => { if $crate::ui_text::english() { "The video player could not start. Check that the application is fully installed, then retry." } else { "视频播放器未能启动。请确认软件安装完整后重试。" } };
     ($unknown:ident) => { compile_error!(concat!("Unknown UI message ID: ", stringify!($unknown))) };
 }
 #[macro_export]
@@ -1152,6 +1155,9 @@ macro_rules! ui_format {
     (msg_sticky_jump_next, $($args:tt)*) => { if $crate::ui_text::english() { format!("Next folder containing images or videos" , $($args)*) } else { format!("下一个有图片或视频的目录" , $($args)*) } };
     (msg_sticky_jump_previous, $($args:tt)*) => { if $crate::ui_text::english() { format!("Previous folder containing images or videos" , $($args)*) } else { format!("上一个有图片或视频的目录" , $($args)*) } };
     (status_library_ready, $($args:tt)*) => { if $crate::ui_text::english() { format!("Library ready" , $($args)*) } else { format!("媒体库已就绪" , $($args)*) } };
+    (video_error_details, $($args:tt)*) => { if $crate::ui_text::english() { format!("Error details" , $($args)*) } else { format!("错误详情" , $($args)*) } };
+    (video_play_failed_hint, $($args:tt)*) => { if $crate::ui_text::english() { format!("This video could not be played. Retry or view the error details." , $($args)*) } else { format!("暂时无法播放此视频。可以重试，或查看错误详情。" , $($args)*) } };
+    (video_player_start_hint, $($args:tt)*) => { if $crate::ui_text::english() { format!("The video player could not start. Check that the application is fully installed, then retry." , $($args)*) } else { format!("视频播放器未能启动。请确认软件安装完整后重试。" , $($args)*) } };
 }
 pub fn variants(id: &str) -> (&'static str, &'static str) { match id {
     "empty_filtered_hint" => ("可切换为全部媒体，或关闭仅看收藏。", "Show all media or turn off favorites only."),
@@ -1725,5 +1731,8 @@ pub fn variants(id: &str) -> (&'static str, &'static str) { match id {
     "msg_sticky_jump_next" => ("下一个有图片或视频的目录", "Next folder containing images or videos"),
     "msg_sticky_jump_previous" => ("上一个有图片或视频的目录", "Previous folder containing images or videos"),
     "status_library_ready" => ("媒体库已就绪", "Library ready"),
+    "video_error_details" => ("错误详情", "Error details"),
+    "video_play_failed_hint" => ("暂时无法播放此视频。可以重试，或查看错误详情。", "This video could not be played. Retry or view the error details."),
+    "video_player_start_hint" => ("视频播放器未能启动。请确认软件安装完整后重试。", "The video player could not start. Check that the application is fully installed, then retry."),
     _ => ("", ""),
 } }

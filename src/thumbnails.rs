@@ -105,6 +105,8 @@ pub struct ThumbnailStats {
     pub video_fast_header_hits: u64,
     pub full_image_workers: usize,
     pub scaled_jpeg_workers: usize,
+    pub metadata_header_workers: usize,
+    pub metadata_header_jobs: u64,
     pub cache_hits: u64,
     pub decodes: u64,
     pub cache_hit_ms: f64,
@@ -168,13 +170,19 @@ impl ThumbnailService {
             .map(|n| (n.get() / 4).clamp(2, 4) - 2)
             .unwrap_or(0);
         let lend_video_workers = std::thread::available_parallelism().is_ok_and(|n| n.get() >= 8);
+        // One header-only lane on >=8 logical CPUs prevents local geometry from
+        // waiting for PNG/HEIC pixel decoding. It never receives pixels, video,
+        // virtual paths or background work; full-image concurrency stays two.
+        let header_workers = usize::from(lend_video_workers);
         let lanes = [0u8, 0, 2, 2]
             .into_iter()
-            .chain(std::iter::repeat_n(1, extra_jpeg));
+            .chain(std::iter::repeat_n(1, extra_jpeg))
+            .chain(std::iter::repeat_n(3, header_workers));
         {
             let mut state = shared.0.lock().unwrap();
             state.stats.full_image_workers = 2;
             state.stats.scaled_jpeg_workers = extra_jpeg;
+            state.stats.metadata_header_workers = header_workers;
         }
         for lane in lanes {
             let shared = shared.clone();
@@ -199,6 +207,10 @@ impl ThumbnailService {
                                 } else {
                                     None
                                 }
+                            } else if lane == 3 {
+                                state.images.iter().position(|job| local_metadata_header_job(job)
+                                    && !state.active.contains_key(&job.id))
+                                    .and_then(|i| state.images.remove(i))
                             } else if lane == 1 {
                                 state
                                     .images
@@ -229,6 +241,7 @@ impl ThumbnailService {
                                     continue;
                                 }
                                 state.inflight.insert(job.key());
+                                if lane == 3 { state.stats.metadata_header_jobs += 1; }
                                 *state.active.entry(job.id).or_default() += 1;
                                 if job.priority < 4 {
                                     state.foreground_active += 1;
@@ -1400,6 +1413,11 @@ fn scaled_jpeg_job(job: &ThumbJob) -> bool {
             .extension()
             .is_some_and(|e| e.eq_ignore_ascii_case("jpg") || e.eq_ignore_ascii_case("jpeg"))
 }
+fn local_metadata_header_job(job: &ThumbJob) -> bool {
+    job.bucket == 0 && job.decode_bucket == 0 && job.region.is_none()
+        && job.priority < 4 && job.file.kind == MediaKind::Image
+        && !media_browser::media_path::virtual_hint(&job.file.path)
+}
 fn prune_cache_cancelled(
     cache: &Path,
     budget: u64,
@@ -1615,8 +1633,21 @@ mod tests {
         let root = fixture();
         let path = root.join("geometry.png");
         image::RgbaImage::new(300, 700).save(&path).unwrap();
-        let mut job = job(path);
+        let mut job = job(std::fs::canonicalize(path).unwrap());
         job.bucket = 0;
+        job.decode_bucket = 0;
+        assert!(local_metadata_header_job(&job));
+        let mut other = job.clone();
+        other.bucket = 256;
+        assert!(!local_metadata_header_job(&other));
+        other = job.clone(); other.priority = 4;
+        assert!(!local_metadata_header_job(&other));
+        other = job.clone(); other.file.kind = MediaKind::Video;
+        assert!(!local_metadata_header_job(&other));
+        #[cfg(windows)] {
+            other = job.clone(); other.file.path = PathBuf::from(r"\\server\share\image.png");
+            assert!(!local_metadata_header_job(&other));
+        }
         let state = Arc::new((Mutex::new(State::default()), Condvar::new()));
         let result = decode_job(&job, &root.join("cache"), &state).unwrap();
         assert_eq!(result.image.as_raw().len(), 0);

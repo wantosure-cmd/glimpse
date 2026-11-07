@@ -54,7 +54,7 @@ pub(super) fn favorite_rect(rect: Rect) -> Rect {
     )
 }
 impl Browser {
-    fn toggle_favorite(&mut self, path: &Path) {
+    pub(super) fn toggle_favorite(&mut self, path: &Path) {
         if self.features.cleanup.as_ref().is_some_and(|c| c.started) {
             return;
         }

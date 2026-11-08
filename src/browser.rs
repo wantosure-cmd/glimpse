@@ -9,6 +9,8 @@ mod controls;
 mod daily_smoke;
 #[path = "browser_video_switch_smoke.rs"]
 mod video_switch_smoke;
+#[path = "browser_transport_smoke.rs"]
+mod transport_smoke;
 #[path = "browser_design_smoke.rs"]
 mod design_smoke;
 #[path = "browser_detail_smoke.rs"]
@@ -262,6 +264,7 @@ struct Config {
     last_root: Option<PathBuf>,
     volume: f32,
     muted: bool,
+    playback_speed: f64,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -281,6 +284,7 @@ impl Default for Config {
             last_root: None,
             volume: 70.,
             muted: false,
+            playback_speed: 1.,
         }
     }
 }
@@ -288,6 +292,7 @@ impl Default for Config {
 pub struct Browser {
     daily_smoke: Option<daily_smoke::DailySmoke>,
     video_switch_smoke: Option<video_switch_smoke::VideoSwitchSmoke>,
+    transport_smoke: Option<transport_smoke::TransportSmoke>,
     loading: loading_ui::LoadingState,
     loading_smoke: Option<loading_smoke::LoadingSmoke>,
     auto_fold_empty: bool,
@@ -384,6 +389,7 @@ pub struct Browser {
     restore_flight: bool,
     volume: f32,
     muted: bool,
+    playback_speed: f64,
     hover_candidate: Option<(MediaId, Instant)>,
     preview_active: Option<MediaId>,
     preview_idle: Option<Instant>,
@@ -604,6 +610,7 @@ impl Browser {
             features: features::Features::new(&data_dir),
             daily_smoke: argument("--daily-smoke").map(|p| daily_smoke::DailySmoke::new(PathBuf::from(p), args.iter().any(|s|s=="--daily-restart"), args.iter().any(|s|s=="--daily-scan-exit"))),
             video_switch_smoke: argument("--video-switch-smoke").map(|p| video_switch_smoke::VideoSwitchSmoke::new(PathBuf::from(p), argument("--switch-sources").map(PathBuf::from))),
+            transport_smoke: argument("--transport-smoke").map(|p| transport_smoke::TransportSmoke::new(PathBuf::from(p),args.iter().any(|a|a=="--transport-restart"))),
             features_smoke: argument("--features-smoke")
                 .map(|p| features_smoke::FeaturesSmoke::new(PathBuf::from(p))),
             language: config.language,
@@ -705,6 +712,7 @@ impl Browser {
                 70.
             },
             muted: config.muted,
+            playback_speed: media_browser::shortcuts::normalized_speed(config.playback_speed),
             video_prefetch: Default::default(),
             subtitles: {
                 let mut s = config.subtitles;
@@ -2638,6 +2646,7 @@ impl eframe::App for Browser {
         }
         if let Some(smoke) = &mut self.daily_smoke {smoke.inject(raw);}
         if let Some(smoke) = &mut self.video_switch_smoke {smoke.inject(raw);}
+        if let Some(smoke) = &mut self.transport_smoke {smoke.inject(raw);}
         if let Some(smoke) = &mut self.design_smoke {
             smoke.inject(raw);
         }
@@ -2981,6 +2990,10 @@ impl eframe::App for Browser {
             smoke.tick(self, &ctx);
             self.video_switch_smoke = Some(smoke);
         }
+        if let Some(mut smoke) = self.transport_smoke.take() {
+            smoke.tick(self, &ctx);
+            self.transport_smoke = Some(smoke);
+        }
         if let Some(mut smoke) = self.folder_smoke.take() {
             smoke.tick(self, &ctx);
             self.folder_smoke = Some(smoke);
@@ -3093,6 +3106,7 @@ impl eframe::App for Browser {
             last_root: self.watch_root.clone().or_else(|| self.snapshot.as_ref().map(|s| s.root.clone())),
             volume: self.volume,
             muted: self.muted,
+            playback_speed: self.playback_speed,
         };
         if let Ok(data) = serde_json::to_vec_pretty(&config) {
             let _ = std::fs::create_dir_all(&self.data_dir);

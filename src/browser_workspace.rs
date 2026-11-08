@@ -751,6 +751,13 @@ impl Browser {
                             media_browser::ui_text!(msg_f8cfd254b8e4),
                         ),
                         (media_browser::ui_text!(msg_22ea3f47fee8), "F11"),
+                        (media_browser::ui_text!(video_speed_keys), "Ctrl+↑ / Ctrl+↓"),
+                        (media_browser::ui_text!(video_seek_keys), "← / →"),
+                        (media_browser::ui_text!(video_volume_keys), "↑ / ↓"),
+                        (media_browser::ui_text!(photo_navigation_keys), "← / →"),
+                        (media_browser::ui_text!(video_mute_key), "M"),
+                        (media_browser::ui_text!(video_reset_speed_key), "R"),
+                        (media_browser::ui_text!(video_restart_key), "Home"),
                         (
                             media_browser::ui_text!(msg_15de0ec4dcfb),
                             media_browser::ui_text!(msg_a6d0103345ea),
@@ -1059,16 +1066,20 @@ mod tests {
         let old = Config::default();
         let mut json = serde_json::to_value(&old).unwrap();
         json.as_object_mut().unwrap().remove("appearance");
+        json.as_object_mut().unwrap().remove("playback_speed");
         json["volume"] = serde_json::json!(42.0);
         json["pinned"] = serde_json::json!(true);
         let mut config: Config = serde_json::from_value(json).unwrap();
         assert!(!config.appearance.compact);
         assert_eq!(config.volume, 42.);
+        assert_eq!(config.playback_speed, 1.);
         assert!(config.pinned);
         config.appearance.accent_index = 2;
+        config.playback_speed = 1.75;
         let restored: Config =
             serde_json::from_slice(&serde_json::to_vec(&config).unwrap()).unwrap();
         assert_eq!(restored.volume, 42.);
+        assert_eq!(restored.playback_speed, 1.75);
         assert_eq!(restored.appearance.accent_index, 2);
         assert!(restored.pinned);
         let old: Config = serde_json::from_str("{}").unwrap();

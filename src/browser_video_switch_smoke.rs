@@ -83,7 +83,7 @@ impl VideoSwitchSmoke {
                 "display_size":p.display_size(), "pause":p.text("pause"), "time":p.number("time-pos"),
                 "first_ready_render_ms":p.first_ready_render_ms})}),
             "viewport":[viewport.x, viewport.y], "pixels_per_point":ctx.pixels_per_point(),
-            "scope":"Injected ArrowRight/Left -> matching source-epoch ready render in native mpv FBO. No physical display/input/audio certification; no PNG readback during timing. Selected-source favorites filter, start positions cleared; source read/hash warms external caches."});
+            "scope":"Injected configured PageDown/PageUp navigation -> matching source-epoch ready render in native mpv FBO. No physical display/input/audio certification; no PNG readback during timing. Selected-source favorites filter, start positions cleared; source read/hash warms external caches."});
         if let Err(error) = std::fs::write(&self.output, serde_json::to_vec_pretty(&report).unwrap()) {
             eprintln!("Unable to write switch evidence: {error}");
         }
@@ -133,6 +133,8 @@ impl VideoSwitchSmoke {
                 b.features.favorites.paths = favorites; b.features.only_favorites = true;
                 b.settings.filter = MediaFilter::Videos; b.settings.sort = SortField::Name; b.settings.descending = false;
                 b.muted = true; b.video_end_action = VideoEndAction::Pause;
+                b.shortcuts.next = media_browser::shortcuts::DetailKey::PageDown;
+                b.shortcuts.previous = media_browser::shortcuts::DetailKey::PageUp;
                 b.prepare_dirty = true; b.prepare_after = Instant::now(); self.phase = 2;
             }
             2 => {
@@ -212,7 +214,7 @@ impl VideoSwitchSmoke {
                 if self.current == 0 { self.forward = true; }
                 self.target = if self.forward {self.current+1} else {self.current-1};
                 b.positions.remove(&self.ids[self.target]); self.sent = None; self.loading_ticks = 0;
-                self.queued = Some(if self.forward {egui::Key::ArrowRight} else {egui::Key::ArrowLeft}); self.phase = 5;
+                self.queued = Some(if self.forward {egui::Key::PageDown} else {egui::Key::PageUp}); self.phase = 5;
             }
             _ => {}
         }

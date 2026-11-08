@@ -576,10 +576,21 @@ macro_rules! ui_text {
     (msg_media_delete_undo) => { if $crate::ui_text::english() { "{count} items will be recycled in {seconds} seconds" } else { "{count} 项将在 {seconds} 秒后移入回收站" } };
     (msg_sticky_jump_next) => { if $crate::ui_text::english() { "Next folder containing images or videos" } else { "下一个有图片或视频的目录" } };
     (msg_sticky_jump_previous) => { if $crate::ui_text::english() { "Previous folder containing images or videos" } else { "上一个有图片或视频的目录" } };
+    (photo_navigation_keys) => { if $crate::ui_text::english() { "Photo previous / next" } else { "照片上一张 / 下一张" } };
     (status_library_ready) => { if $crate::ui_text::english() { "Library ready" } else { "媒体库已就绪" } };
     (video_error_details) => { if $crate::ui_text::english() { "Error details" } else { "错误详情" } };
+    (video_mute_key) => { if $crate::ui_text::english() { "Video mute / unmute" } else { "视频静音 / 取消静音" } };
+    (video_muted_notice) => { if $crate::ui_text::english() { "Muted" } else { "已静音" } };
     (video_play_failed_hint) => { if $crate::ui_text::english() { "This video could not be played. Retry or view the error details." } else { "暂时无法播放此视频。可以重试，或查看错误详情。" } };
     (video_player_start_hint) => { if $crate::ui_text::english() { "The video player could not start. Check that the application is fully installed, then retry." } else { "视频播放器未能启动。请确认软件安装完整后重试。" } };
+    (video_reset_speed_key) => { if $crate::ui_text::english() { "Reset playback speed to 1×" } else { "恢复1倍播放速度" } };
+    (video_restart_key) => { if $crate::ui_text::english() { "Play video from the beginning" } else { "视频从头播放" } };
+    (video_seek_keys) => { if $crate::ui_text::english() { "Video back / forward 5 seconds" } else { "视频后退 / 前进5秒" } };
+    (video_speed_keys) => { if $crate::ui_text::english() { "Video speed (0.25× per step)" } else { "视频调速（每次0.25倍）" } };
+    (video_speed_notice) => { if $crate::ui_text::english() { "Speed: {speed:.2}×" } else { "播放速度：{speed:.2}×" } };
+    (video_unmuted_notice) => { if $crate::ui_text::english() { "Unmuted" } else { "已取消静音" } };
+    (video_volume_keys) => { if $crate::ui_text::english() { "Video volume up / down 5%" } else { "视频增大 / 减小音量5%" } };
+    (video_volume_notice) => { if $crate::ui_text::english() { "Volume: {volume:.0}%" } else { "音量：{volume:.0}%" } };
     ($unknown:ident) => { compile_error!(concat!("Unknown UI message ID: ", stringify!($unknown))) };
 }
 #[macro_export]
@@ -1154,10 +1165,21 @@ macro_rules! ui_format {
     (msg_media_delete_undo, $($args:tt)*) => { if $crate::ui_text::english() { format!("{count} items will be recycled in {seconds} seconds" , $($args)*) } else { format!("{count} 项将在 {seconds} 秒后移入回收站" , $($args)*) } };
     (msg_sticky_jump_next, $($args:tt)*) => { if $crate::ui_text::english() { format!("Next folder containing images or videos" , $($args)*) } else { format!("下一个有图片或视频的目录" , $($args)*) } };
     (msg_sticky_jump_previous, $($args:tt)*) => { if $crate::ui_text::english() { format!("Previous folder containing images or videos" , $($args)*) } else { format!("上一个有图片或视频的目录" , $($args)*) } };
+    (photo_navigation_keys, $($args:tt)*) => { if $crate::ui_text::english() { format!("Photo previous / next" , $($args)*) } else { format!("照片上一张 / 下一张" , $($args)*) } };
     (status_library_ready, $($args:tt)*) => { if $crate::ui_text::english() { format!("Library ready" , $($args)*) } else { format!("媒体库已就绪" , $($args)*) } };
     (video_error_details, $($args:tt)*) => { if $crate::ui_text::english() { format!("Error details" , $($args)*) } else { format!("错误详情" , $($args)*) } };
+    (video_mute_key, $($args:tt)*) => { if $crate::ui_text::english() { format!("Video mute / unmute" , $($args)*) } else { format!("视频静音 / 取消静音" , $($args)*) } };
+    (video_muted_notice, $($args:tt)*) => { if $crate::ui_text::english() { format!("Muted" , $($args)*) } else { format!("已静音" , $($args)*) } };
     (video_play_failed_hint, $($args:tt)*) => { if $crate::ui_text::english() { format!("This video could not be played. Retry or view the error details." , $($args)*) } else { format!("暂时无法播放此视频。可以重试，或查看错误详情。" , $($args)*) } };
     (video_player_start_hint, $($args:tt)*) => { if $crate::ui_text::english() { format!("The video player could not start. Check that the application is fully installed, then retry." , $($args)*) } else { format!("视频播放器未能启动。请确认软件安装完整后重试。" , $($args)*) } };
+    (video_reset_speed_key, $($args:tt)*) => { if $crate::ui_text::english() { format!("Reset playback speed to 1×" , $($args)*) } else { format!("恢复1倍播放速度" , $($args)*) } };
+    (video_restart_key, $($args:tt)*) => { if $crate::ui_text::english() { format!("Play video from the beginning" , $($args)*) } else { format!("视频从头播放" , $($args)*) } };
+    (video_seek_keys, $($args:tt)*) => { if $crate::ui_text::english() { format!("Video back / forward 5 seconds" , $($args)*) } else { format!("视频后退 / 前进5秒" , $($args)*) } };
+    (video_speed_keys, $($args:tt)*) => { if $crate::ui_text::english() { format!("Video speed (0.25× per step)" , $($args)*) } else { format!("视频调速（每次0.25倍）" , $($args)*) } };
+    (video_speed_notice, $($args:tt)*) => { if $crate::ui_text::english() { format!("Speed: {speed:.2}×" , $($args)*) } else { format!("播放速度：{speed:.2}×" , $($args)*) } };
+    (video_unmuted_notice, $($args:tt)*) => { if $crate::ui_text::english() { format!("Unmuted" , $($args)*) } else { format!("已取消静音" , $($args)*) } };
+    (video_volume_keys, $($args:tt)*) => { if $crate::ui_text::english() { format!("Video volume up / down 5%" , $($args)*) } else { format!("视频增大 / 减小音量5%" , $($args)*) } };
+    (video_volume_notice, $($args:tt)*) => { if $crate::ui_text::english() { format!("Volume: {volume:.0}%" , $($args)*) } else { format!("音量：{volume:.0}%" , $($args)*) } };
 }
 pub fn variants(id: &str) -> (&'static str, &'static str) { match id {
     "empty_filtered_hint" => ("可切换为全部媒体，或关闭仅看收藏。", "Show all media or turn off favorites only."),
@@ -1730,9 +1752,20 @@ pub fn variants(id: &str) -> (&'static str, &'static str) { match id {
     "msg_media_delete_undo" => ("{count} 项将在 {seconds} 秒后移入回收站", "{count} items will be recycled in {seconds} seconds"),
     "msg_sticky_jump_next" => ("下一个有图片或视频的目录", "Next folder containing images or videos"),
     "msg_sticky_jump_previous" => ("上一个有图片或视频的目录", "Previous folder containing images or videos"),
+    "photo_navigation_keys" => ("照片上一张 / 下一张", "Photo previous / next"),
     "status_library_ready" => ("媒体库已就绪", "Library ready"),
     "video_error_details" => ("错误详情", "Error details"),
+    "video_mute_key" => ("视频静音 / 取消静音", "Video mute / unmute"),
+    "video_muted_notice" => ("已静音", "Muted"),
     "video_play_failed_hint" => ("暂时无法播放此视频。可以重试，或查看错误详情。", "This video could not be played. Retry or view the error details."),
     "video_player_start_hint" => ("视频播放器未能启动。请确认软件安装完整后重试。", "The video player could not start. Check that the application is fully installed, then retry."),
+    "video_reset_speed_key" => ("恢复1倍播放速度", "Reset playback speed to 1×"),
+    "video_restart_key" => ("视频从头播放", "Play video from the beginning"),
+    "video_seek_keys" => ("视频后退 / 前进5秒", "Video back / forward 5 seconds"),
+    "video_speed_keys" => ("视频调速（每次0.25倍）", "Video speed (0.25× per step)"),
+    "video_speed_notice" => ("播放速度：{speed:.2}×", "Speed: {speed:.2}×"),
+    "video_unmuted_notice" => ("已取消静音", "Unmuted"),
+    "video_volume_keys" => ("视频增大 / 减小音量5%", "Video volume up / down 5%"),
+    "video_volume_notice" => ("音量：{volume:.0}%", "Volume: {volume:.0}%"),
     _ => ("", ""),
 } }

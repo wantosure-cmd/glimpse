@@ -360,6 +360,32 @@ mod tests {
         assert!(files.iter().any(|f| f.parent.ends_with("图集/视频")));
     }
     #[test]
+    fn flv_only_directory_and_nested_uppercase_are_counted_as_video() {
+        let root = fixture("flv-scan");
+        fs::create_dir_all(root.join("child")).unwrap();
+        // Enumeration-only fixtures: playback is verified separately with real FLV codecs.
+        fs::write(root.join("one.flv"), b"FLV\x01\x05\x00\x00\x00\x09").unwrap();
+        fs::write(root.join("child/two.FLV"), b"FLV\x01\x05\x00\x00\x00\x09").unwrap();
+        fs::write(root.join("ignore.flv.txt"), b"not media").unwrap();
+        let rx = start(&root, 12, Arc::new(AtomicU64::new(12)));
+        let mut files = Vec::new();
+        let mut videos = 0;
+        loop {
+            match rx.recv_timeout(Duration::from_secs(5)).unwrap() {
+                ScanEvent::Batch { files: batch, .. } => files.extend(batch),
+                ScanEvent::Directory { counts, complete, .. } => {
+                    assert!(complete); assert_eq!(counts.images, 0); videos += counts.videos;
+                }
+                ScanEvent::Finished { cancelled, .. } => { assert!(!cancelled); break; }
+                ScanEvent::Error { message, .. } => panic!("{message}"),
+            }
+        }
+        assert_eq!(files.len(), 2);
+        assert_eq!(videos, 2);
+        assert!(files.iter().all(|file| file.kind == crate::domain::MediaKind::Video));
+        assert!(files.iter().any(|file| file.parent.ends_with("child")));
+    }
+    #[test]
     fn cancellation_breaks_backpressure_without_receiver_drain() {
         let current = Arc::new(AtomicU64::new(4));
         let (tx, _rx) = std::sync::mpsc::sync_channel(1);

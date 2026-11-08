@@ -128,6 +128,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 "--features-smoke"
                     | "--daily-smoke"
                     | "--video-switch-smoke"
+                    | "--transport-smoke"
                     | "--loading-smoke"
                     | "--browser-smoke"
                     | "--folder-smoke"

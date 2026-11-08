@@ -162,6 +162,7 @@ impl Browser {
         p.set("loop-file", if detail { "no" } else { "inf" })?;
         p.set("mute", if self.muted { "yes" } else { "no" })?;
         p.set("volume", &format!("{:.1}", self.volume))?;
+        p.set("speed", &self.playback_speed.to_string())?;
         if self.resume_pending.is_none() {
             let paused = detail
                 && self.presentation.mode != presentation_ui::Mode::Manual
@@ -211,6 +212,44 @@ impl Browser {
         }
     }
 
+    fn video_shortcut(&mut self, action: media_browser::shortcuts::VideoShortcut) {
+        use media_browser::shortcuts::{VideoShortcut as Key, normalized_speed};
+        let Some(player) = self.player.clone() else { return; };
+        let result: Result<String, String> = (|| {
+            match action {
+                Key::Seek(seconds) => { self.request_seek(seconds, false); return Ok(self.status.clone()); }
+                Key::Restart => {
+                    self.resume_pending = None; self.resume_starting = false; self.restore_flight = false;
+                    self.resume_pause_override = None; self.seek_flight = None; self.seeks.cancel();
+                    if let Some(id) = self.player_media { self.positions.remove(&id); }
+                    self.request_seek(0., true);
+                    player.lock().unwrap().set("pause", "no")?;
+                    return Ok(self.status.clone());
+                }
+                Key::Speed(_) | Key::ResetSpeed => {
+                    let rate = match action { Key::Speed(delta) => normalized_speed(self.playback_speed + delta), _ => 1. };
+                    player.lock().unwrap().set("speed", &rate.to_string())?;
+                    self.playback_speed = rate;
+                    Ok(media_browser::ui_format!(video_speed_notice, speed=rate))
+                }
+                Key::Volume(delta) => {
+                    let volume = (self.volume + delta).clamp(0., 400.);
+                    player.lock().unwrap().set("volume", &volume.to_string())?;
+                    self.volume = volume;
+                    Ok(media_browser::ui_format!(video_volume_notice, volume=volume))
+                }
+                Key::ToggleMute => {
+                    let muted = !self.muted;
+                    player.lock().unwrap().set("mute", if muted { "yes" } else { "no" })?;
+                    self.muted = muted;
+                    Ok(if muted { media_browser::ui_text!(video_muted_notice) } else { media_browser::ui_text!(video_unmuted_notice) }.into())
+                }
+            }
+        })();
+        self.status = result.unwrap_or_else(|error| error);
+        if let Some(id) = self.player_media { self.seek_notice = Some((id, self.status.clone(), Instant::now())); }
+        self.ctx.request_repaint();
+    }
     pub(super) fn playback_tick(&mut self, ctx: &egui::Context) {
         let Some(player) = self.player.clone() else {
             return;
@@ -531,6 +570,16 @@ impl Browser {
                     })
                     .unwrap_or(false)
             });
+            if self.detail.is_some() && !image_detail && !blocked && !self.control_focused {
+                if let egui::Event::Key { key, modifiers, pressed: true, .. } = &event {
+                    if let Some(action) = media_browser::shortcuts::video_shortcut(*key, *modifiers) {
+                        let continuous = matches!(action, media_browser::shortcuts::VideoShortcut::Seek(_)
+                            | media_browser::shortcuts::VideoShortcut::Volume(_) | media_browser::shortcuts::VideoShortcut::Speed(_));
+                        if first_key || continuous { self.video_shortcut(action); }
+                        continue;
+                    }
+                }
+            }
             let hit = if self.detail.is_some()
                 && self
                     .detail_layout
@@ -629,10 +678,10 @@ impl Browser {
                     Some(Input::Previous)
                 }
                 egui::Event::Key {
-                    key, pressed: true, ..
+                    key, modifiers, pressed: true, ..
                 } => match key {
-                    egui::Key::ArrowLeft => Some(Input::Previous),
-                    egui::Key::ArrowRight => Some(Input::Next),
+                    egui::Key::ArrowLeft if !modifiers.any() => Some(Input::Previous),
+                    egui::Key::ArrowRight if !modifiers.any() => Some(Input::Next),
                     egui::Key::Space => Some(Input::TogglePause),
                     egui::Key::F11 => Some(Input::Fullscreen),
                     egui::Key::Escape => Some(Input::Escape),

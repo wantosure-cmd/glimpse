@@ -142,7 +142,7 @@ def main():
                 assert stable/len(list_pixels['samples'])>.6,'Poster/detail spatial orientation disagrees'
                 assert player['ao'] and player['duration']>e['duration_min']
                 normalized=''.join(c for c in player['video'].lower() if c.isalnum())
-                aliases={'h264':['h264'],'hevc':['hevc','h265'],'mjpeg':['mjpeg','motionjpeg'],'mpeg4':['mpeg4'],'h263':['h263'],'vp9':['vp9']}
+                aliases={'h264':['h264'],'hevc':['hevc','h265'],'mjpeg':['mjpeg','motionjpeg'],'mpeg4':['mpeg4'],'h263':['h263'],'vp9':['vp9'],'flv1':['flv1','sorensonspark']}
                 assert any(c in normalized for c in aliases[e['video_codec']]),player
                 actual_audio=player['audio'].lower().replace('_','');assert e['audio_codec'].replace('_','') in actual_audio,(player,e)
                 assert moving['player']['time']>player['time']+.1

@@ -202,13 +202,15 @@ impl DailySmoke {
             }
             33=>{
                 if !Self::ready(b) {return Ok(());}
+                b.shortcuts.next=media_browser::shortcuts::DetailKey::PageDown;
+                b.shortcuts.previous=media_browser::shortcuts::DetailKey::PageUp;
                 b.settings.filter=media_browser::view::MediaFilter::Videos;b.prepare_dirty=true;b.prepare_after=Instant::now();self.go(34);
             }
             34=>{
                 if !Self::ready(b) {return Ok(());}
                 let p=b.prepared.as_ref().unwrap();
                 if p.view.sequence.len()!=2 || p.view.sequence.iter().any(|id|p.snapshot.files[p.lookup[id]].file.kind!=MediaKind::Video) {return Err("Video filter sequence wrong".into());}
-                b.open_detail(Self::id(b,"03.mov")?);self.key(egui::Key::ArrowRight);self.go(35);
+                b.open_detail(Self::id(b,"03.mov")?);self.key(egui::Key::PageDown);self.go(35);
             }
             35=>{
                 if elapsed<Duration::from_millis(350) {return Ok(());}

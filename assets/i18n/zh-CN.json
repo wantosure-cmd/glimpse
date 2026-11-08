@@ -8128,6 +8128,138 @@
       ],
       "original_literals": [],
       "format_template": false
+    },
+    "video_speed_notice": {
+      "text": "播放速度：{speed:.2}×",
+      "source": "播放速度：{speed:.2}×",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": true
+    },
+    "video_volume_notice": {
+      "text": "音量：{volume:.0}%",
+      "source": "音量：{volume:.0}%",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": true
+    },
+    "video_muted_notice": {
+      "text": "已静音",
+      "source": "已静音",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_unmuted_notice": {
+      "text": "已取消静音",
+      "source": "已取消静音",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_speed_keys": {
+      "text": "视频调速（每次0.25倍）",
+      "source": "视频调速（每次0.25倍）",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_seek_keys": {
+      "text": "视频后退 / 前进5秒",
+      "source": "视频后退 / 前进5秒",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_volume_keys": {
+      "text": "视频增大 / 减小音量5%",
+      "source": "视频增大 / 减小音量5%",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "photo_navigation_keys": {
+      "text": "照片上一张 / 下一张",
+      "source": "照片上一张 / 下一张",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_mute_key": {
+      "text": "视频静音 / 取消静音",
+      "source": "视频静音 / 取消静音",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_reset_speed_key": {
+      "text": "恢复1倍播放速度",
+      "source": "恢复1倍播放速度",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_restart_key": {
+      "text": "视频从头播放",
+      "source": "视频从头播放",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
     }
   },
   "managed_technical_sources": [

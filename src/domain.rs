@@ -15,7 +15,7 @@ pub fn media_kind(path: &Path) -> Option<MediaKind> {
     match ext.as_str() {
         "jpg" | "jpeg" | "png" | "apng" | "webp" | "bmp" | "tif" | "tiff" | "gif" | "heic"
         | "heif" => Some(MediaKind::Image),
-        "mp4" | "m4v" | "mov" | "avi" | "3gp" | "3g2" | "mkv" | "webm" => Some(MediaKind::Video),
+        "mp4" | "m4v" | "mov" | "avi" | "3gp" | "3g2" | "mkv" | "webm" | "flv" => Some(MediaKind::Video),
         _ => None,
     }
 }
@@ -233,6 +233,10 @@ mod tests {
     fn classification_excludes_archives() {
         assert_eq!(media_kind(Path::new("照片.HEIC")), Some(MediaKind::Image));
         assert_eq!(media_kind(Path::new("clip.3GP")), Some(MediaKind::Video));
+        for path in ["clip.flv", "clip.FLV", "视频.fLv"] {
+            assert_eq!(media_kind(Path::new(path)), Some(MediaKind::Video));
+        }
+        assert_eq!(media_kind(Path::new("clip.flv.txt")), None);
         assert_eq!(media_kind(Path::new("photos.zip")), None);
     }
     #[cfg(windows)]

@@ -24,6 +24,33 @@ def identity(path):
     return dict(bytes=after.st_size, modified_ns=after.st_mtime_ns, sha256=value)
 
 
+def stage_application(exe, task, omit_mpv=False):
+    # Cargo can use a target outside this checkout. native::runtime_dir deliberately
+    # refuses to load loose DLLs there: stage an explicit adjacent trusted runtime.
+    application = task / 'application'
+    runtime = application / 'runtime'
+    runtime.mkdir(parents=True)
+    runtime_source = exe.parent / 'runtime' if (exe.parent / 'runtime').is_dir() else ROOT / 'vendor/runtime'
+    pins = json.loads((ROOT / 'vendor/runtime-manifest.json').read_text(encoding='utf-8-sig'))
+    pins += [dict(file=p['component']+'.exe', sha256=p['sha256'])
+             for p in json.loads((ROOT / 'vendor/media-tools.json').read_text(encoding='utf-8-sig'))]
+    for pin in pins:
+        source = runtime_source / pin['file']
+        assert digest(source) == pin['sha256'].lower(), 'Native runtime differs from locked identity: ' + pin['file']
+        if omit_mpv and pin['file'] == 'libmpv-2.dll':
+            continue  # intentional omission in this new task-owned application only
+        destination = runtime / pin['file']
+        try:
+            os.link(source, destination)  # read-only runtime; bounded disk use on same volume
+        except OSError:
+            shutil.copyfile(source, destination)
+    staged_exe = application / 'media-browser.exe'
+    shutil.copyfile(exe, staged_exe)
+    assert digest(staged_exe) == digest(exe)
+    shutil.copyfile(runtime / 'vcruntime140.dll', application / 'vcruntime140.dll')
+    return staged_exe, runtime, runtime_source, pins
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--exe', type=Path, required=True)
@@ -39,29 +66,7 @@ def main():
     task = ROOT / 'target' / ('switch-owned-' + uuid.uuid4().hex)
     task.mkdir(parents=True)
     (task / '.switch-owned').write_text('read-only source switch test', encoding='ascii')
-    # Cargo can use a target outside this checkout. native::runtime_dir deliberately
-    # refuses to load loose DLLs there: stage an explicit adjacent trusted runtime.
-    application = task / 'application'
-    runtime = application / 'runtime'
-    runtime.mkdir(parents=True)
-    runtime_source = exe.parent / 'runtime' if (exe.parent / 'runtime').is_dir() else ROOT / 'vendor/runtime'
-    pins = json.loads((ROOT / 'vendor/runtime-manifest.json').read_text(encoding='utf-8-sig'))
-    pins += [dict(file=p['component']+'.exe', sha256=p['sha256'])
-             for p in json.loads((ROOT / 'vendor/media-tools.json').read_text(encoding='utf-8-sig'))]
-    for pin in pins:
-        source = runtime_source / pin['file']
-        assert digest(source) == pin['sha256'].lower(), 'Native runtime differs from locked identity: ' + pin['file']
-        if args.init_recovery and pin['file'] == 'libmpv-2.dll':
-            continue  # intentional omission in this new task-owned application only
-        destination = runtime / pin['file']
-        try:
-            os.link(source, destination)  # read-only runtime; bounded disk use on same volume
-        except OSError:
-            shutil.copyfile(source, destination)
-    staged_exe = application / 'media-browser.exe'
-    shutil.copyfile(exe, staged_exe)
-    assert digest(staged_exe) == digest(exe)
-    shutil.copyfile(runtime / 'vcruntime140.dll', application / 'vcruntime140.dll')
+    staged_exe, runtime, runtime_source, pins = stage_application(exe, task, args.init_recovery)
     local = task / 'local-media'
     local.mkdir()
     generated = task / 'generated-media'

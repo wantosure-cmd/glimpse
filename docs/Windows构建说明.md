@@ -1,6 +1,6 @@
 # Windows x64 构建说明
 
-当前源码版本0.4.56，正在核验；最新已形成的本地测试包0.4.56（dist/0.4.56）。实际版本以Cargo.toml、对应delivery.json与同构建verification为准；完整源码包的生产输入须逐项匹配production_source_sha256。现有工具链/缓存下的离线重建与干净机器离线首次构建分开记录，构建成功也不代表已完成交付。推进状态见[v0.5推进记录](v0.5公开测试版推进.md)。
+当前源码与本地测试应用版本0.4.56；最新已形成的本地测试包0.4.56（dist/0.4.56）。实际版本以Cargo.toml、对应delivery.json与同构建verification为准；完整源码包的生产输入须逐项匹配production_source_sha256。现有工具链/缓存下的离线重建与干净机器离线首次构建分开记录，构建成功也不代表已完成交付。推进状态见[v0.5推进记录](v0.5公开测试版推进.md)。
 
 本项目使用 Rust/eframe/egui/glow 与内嵌 libmpv GPU 视频。源码目录必须完整，不能只复制已跟踪的 Git 文件。以下命令生成本机程序或测试结果；最终便携包、安装包和源码包还需执行独立的版本/载荷/交付校验。
 
@@ -81,3 +81,6 @@ python -X utf8 tools/package_local.py --tag 0.4.56 --application ../target/relea
 ```
 
 此入口仍仅形成local-test-only交付，不选择应用开源许可或上传Release。输出目录已存在或已经交付同版本时拒绝覆盖；新程序须递增版本。仅文档/工具刷新须显式`--refresh-source`，其production输入和程序哈希门禁保持，delivery.json另记录刷新前后source ZIP及不变exe哈希，不冒充新二进制。
+
+
+2026-11-08：程序代码b640807的全新GitHub Windows检出、锁定依赖与运行库恢复、库/应用测试及Release构建通过。最终本地包的安装/载荷及解压源码检查通过，完整边界见同包verification；跨机检查材料见[说明](0.4.56跨机验收准备.md)，不代替第二台干净GPU电脑实测。

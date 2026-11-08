@@ -337,6 +337,7 @@ impl Player {
                 ("sub-codepage", "auto"),
                 ("keep-open", "yes"),
                 ("volume-max", "400"),
+                ("audio-pitch-correction", "yes"),
                 ("idle", "yes"),
                 ("hwdec", "auto-safe"),
                 // The host owns UI pacing. Let mpv schedule frames at their
@@ -365,7 +366,7 @@ impl Player {
             if code < 0 {
                 return Err(media_browser::ui_format!(msg_665e30cdc42e, code = code));
             }
-            for name in ["volume"] {
+            for name in ["volume", "speed"] {
                 let key = CString::new(name).unwrap();
                 observe(handle, 0, key.as_ptr(), 5);
             }
@@ -544,6 +545,7 @@ impl Player {
                 key.as_str(),
                 "mute"
                     | "volume"
+                    | "speed"
                     | "pause"
                     | "loop-file"
                     | "mpv-version"

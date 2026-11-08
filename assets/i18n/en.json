@@ -8092,6 +8092,174 @@
         "\"{count} items will be recycled in {seconds} seconds\""
       ],
       "format_template": true
+    },
+    "video_player_start_hint": {
+      "text": "The video player could not start. Check that the application is fully installed, then retry.",
+      "source": "视频播放器未能启动。请确认软件安装完整后重试。",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_play_failed_hint": {
+      "text": "This video could not be played. Retry or view the error details.",
+      "source": "暂时无法播放此视频。可以重试，或查看错误详情。",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_error_details": {
+      "text": "Error details",
+      "source": "错误详情",
+      "references": [
+        {
+          "file": "src/browser.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_speed_notice": {
+      "text": "Speed: {speed:.2}×",
+      "source": "播放速度：{speed:.2}×",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": true
+    },
+    "video_volume_notice": {
+      "text": "Volume: {volume:.0}%",
+      "source": "音量：{volume:.0}%",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": true
+    },
+    "video_muted_notice": {
+      "text": "Muted",
+      "source": "已静音",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_unmuted_notice": {
+      "text": "Unmuted",
+      "source": "已取消静音",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_speed_keys": {
+      "text": "Video speed (0.25× per step)",
+      "source": "视频调速（每次0.25倍）",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_seek_keys": {
+      "text": "Video back / forward 5 seconds",
+      "source": "视频后退 / 前进5秒",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_volume_keys": {
+      "text": "Video volume up / down 5%",
+      "source": "视频增大 / 减小音量5%",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "photo_navigation_keys": {
+      "text": "Photo previous / next",
+      "source": "照片上一张 / 下一张",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_mute_key": {
+      "text": "Video mute / unmute",
+      "source": "视频静音 / 取消静音",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_reset_speed_key": {
+      "text": "Reset playback speed to 1×",
+      "source": "恢复1倍播放速度",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
+    },
+    "video_restart_key": {
+      "text": "Play video from the beginning",
+      "source": "视频从头播放",
+      "references": [
+        {
+          "file": "src/browser_controls.rs",
+          "original_line": 1
+        }
+      ],
+      "original_literals": [],
+      "format_template": false
     }
   },
   "managed_technical_sources": [

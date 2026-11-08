@@ -656,6 +656,9 @@ impl Browser {
             .file_name()
             .unwrap_or_default()
             .to_string_lossy();
+        let name = if record.file.kind == MediaKind::Video && (self.playback_speed - 1.).abs() > 0.001 {
+            format!("{name} · {:.2}×", self.playback_speed)
+        } else { name.into_owned() };
         let folder = record
             .file
             .parent
@@ -710,7 +713,7 @@ impl Browser {
                 |ui| {
                     ui.set_min_width(title_width);
                     ui.add(
-                        egui::Label::new(egui::RichText::new(name.as_ref()).size(13.))
+                        egui::Label::new(egui::RichText::new(name.as_str()).size(13.))
                             .halign(egui::Align::Min)
                             .truncate()
                             .sense(egui::Sense::click_and_drag()),
@@ -722,7 +725,7 @@ impl Browser {
             bar.ctx()
                 .send_viewport_cmd(egui::ViewportCommand::StartDrag);
         }
-        title.clone().on_hover_text(name.as_ref());
+        title.clone().on_hover_text(name.as_str());
         title.context_menu(|ui| self.detail_context_menu(ui, record, viewer, next, close));
         {
             let directory = bar
@@ -1238,7 +1241,7 @@ impl Browser {
             }
             ui.close();
         }
-        if ui
+        let delete_action = ui
             .add(
                 modern_ui::MenuAction::new(
                     egui::RichText::new(media_browser::ui_text!(msg_5954acf17787))
@@ -1247,9 +1250,9 @@ impl Browser {
                 .icon(icons::Glyph::Trash)
                 .danger()
                 .key("Delete"),
-            )
-            .clicked()
-        {
+            );
+        if let Some(smoke)=&mut self.daily_smoke {smoke.delete_action=Some(delete_action.rect);}
+        if delete_action.clicked() {
             self.begin_trash();
             ui.close();
         }

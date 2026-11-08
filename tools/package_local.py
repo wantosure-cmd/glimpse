@@ -6,6 +6,7 @@ copied into the source archive. This is not an offline Cargo source vendor bundl
 """
 from __future__ import annotations
 import argparse
+import datetime
 import hashlib
 import json
 import shutil
@@ -53,13 +54,14 @@ def copy(source: Path, target: Path) -> None:
 def write_source_archive(path: Path) -> None:
     # Explicit source allowlist excludes downloaded media, caches and logs.
     source_files = []
-    for folder in ("src", "tools", "tests", "docs", "assets"):
+    for folder in ("src", "tools", "tests", "docs", "assets", ".github"):
         source_files.extend(f for f in (ROOT / folder).rglob("*") if f.is_file()
                             and "__pycache__" not in f.parts and f.suffix not in (".pyc", ".pyo"))
     for name in ("Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "build.rs", "README.md", ".gitignore",
                  "产品需求与技术方案.md", "给开发AI的任务书.md", "AGENTS.md"):
         source_files.append(ROOT / name)
     source_files.extend((ROOT / "vendor").glob("*.json"))
+    source_files.extend(ROOT / name for name in (".gitattributes", "LICENSE", "THIRD_PARTY_NOTICES.md") if (ROOT / name).is_file())
     records = []
     with zipfile.ZipFile(path, "x", zipfile.ZIP_DEFLATED, compresslevel=6) as z:
         for f in sorted(set(source_files)):
@@ -84,9 +86,14 @@ def main() -> None:
     parser.add_argument("--payload-only", action="store_true", help="Stage internal installer verification before final archives")
     parser.add_argument("--refresh-source", action="store_true", help="Update source/docs archive and checksums, preserving already-tested binary packages")
     parser.add_argument("--report",type=Path,help="Also include a build-specific Markdown verification report in portable payload")
+    parser.add_argument("--application", type=Path, default=ROOT / 'target/release/media-browser.exe',
+                        help="Explicit application from the verified Cargo target directory; version/hash checks remain required")
+    parser.add_argument("--setup-stub", type=Path, default=ROOT / 'target/setup-static/release/media-browser-setup.exe',
+                        help="Explicit same-version static-CRT installer stub")
     parser.add_argument("--runtime-directory", type=Path, default=ROOT / "dist/browser-preview/runtime",
                         help="Local runtime staging directory; all existing pin/hash checks still apply")
     args = parser.parse_args()
+    application = args.application.resolve(strict=True)
     if (ROOT / 'assets/i18n/zh-CN.json').exists():
         catalog = subprocess.run([sys.executable, '-X', 'utf8', str(ROOT / 'tools/ui_catalog.py'), 'check'],
                                  cwd=ROOT, capture_output=True)
@@ -100,7 +107,7 @@ def main() -> None:
         for previous in (ROOT / 'dist').glob('*/delivery.json'):
             if (old_version := json.loads(previous.read_text(encoding='utf8')).get('application_version')) and tuple(map(int, application_version.split('.'))) <= tuple(map(int, old_version.split('.'))):
                 raise RuntimeError('This application version was already packaged; bump Cargo.toml and rebuild the application and installer first')
-        for executable in (ROOT/'target/release/media-browser.exe', ROOT/'target/setup-static/release/media-browser-setup.exe'):
+        for executable in (application, args.setup_stub.resolve(strict=True)):
             environment = dict(__import__('os').environ, GLIMPSE_VERIFY_EXE=str(executable))
             file_version = subprocess.check_output(['powershell.exe','-NoProfile','-NonInteractive','-Command',
                 "(Get-Item -LiteralPath $env:GLIMPSE_VERIFY_EXE -ErrorAction Stop).VersionInfo.FileVersion"],
@@ -111,7 +118,7 @@ def main() -> None:
         summary = json.loads((out / "delivery.json").read_text(encoding="utf-8"))
         if summary.get("product") != PRODUCT:
             raise RuntimeError("Not an owned local delivery")
-        if sha(ROOT / 'target/release/media-browser.exe') != summary['exe_sha256']:
+        if sha(application) != summary['exe_sha256']:
             raise RuntimeError('Source-only refresh cannot switch the application build; create a new delivery tag')
         baseline = summary.get('production_source_sha256')
         if baseline is None:
@@ -120,9 +127,17 @@ def main() -> None:
         if production_inputs() != baseline:
             raise RuntimeError('Production inputs changed; rebuild and create a new delivery instead of refreshing source only')
         source = out / "media-browser-source.zip"
+        previous_source_sha256 = sha(source)
         partial = out / "media-browser-source.zip.partial"
         write_source_archive(partial)
         partial.replace(source)
+        summary.setdefault('source_archive_refreshes', []).append({
+            'refreshed_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'previous_source_sha256': previous_source_sha256,
+            'source_sha256': sha(source),
+            'unchanged_exe_sha256': summary['exe_sha256'],
+            'scope': 'Source/docs/tools refresh only; production inputs, portable and installer binaries unchanged',
+        })
         summary["files"] = [dict(file=e["file"], bytes=(out / e["file"]).stat().st_size,
                                  sha256=sha(out / e["file"])) for e in summary["files"]]
         write_json(out / "delivery.json", summary)
@@ -132,7 +147,7 @@ def main() -> None:
     out.mkdir(exist_ok=False)
     portable = out / "media-browser-portable"
     portable.mkdir()
-    copy(ROOT / "target/release/media-browser.exe", portable / "media-browser.exe")
+    copy(application, portable / "media-browser.exe")
     copy(ROOT / "tools/measure_user_load.ps1", portable / "measure-load.ps1")
     copy(ROOT / "vendor/runtime/vcruntime140.dll", portable / "vcruntime140.dll")
     app_imports = imports(portable / "media-browser.exe")
@@ -232,7 +247,7 @@ def main() -> None:
     write_json(portable / "package-files.json", files)
     files.append(dict(path="package-files.json", bytes=(portable / "package-files.json").stat().st_size,
                       sha256=sha(portable / "package-files.json")))
-    stub = ROOT / "target/setup-static/release/media-browser-setup.exe"
+    stub = args.setup_stub.resolve(strict=True)
     setup_imports = imports(stub)
     if any(n.lower().startswith(("vcruntime", "msvcp", "concrt")) for n in setup_imports):
         raise RuntimeError("Installer still imports a dynamic MSVC CRT; run tools/build_setup.ps1")

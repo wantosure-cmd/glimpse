@@ -93,6 +93,8 @@ def main():
     base = ['-f','lavfi','-i','testsrc2=size=640x360:rate=15:duration=65',
             '-f','lavfi','-i','sine=frequency=440:sample_rate=48000:duration=65']
     variants = [
+        ('h264-aac-flv','flv',['-c:v','libx264','-preset','ultrafast','-pix_fmt','yuv420p','-c:a','aac','-f','flv'],'h264','aac',640,360),
+        ('flv1-mp3-flv','FLV',['-c:v','flv','-q:v','5','-pix_fmt','yuv420p','-c:a','libmp3lame','-f','flv'],'flv1','mp3',640,360),
         ('h264-mp4','mp4',['-c:v','libx264','-preset','ultrafast','-pix_fmt','yuv420p','-c:a','aac'],'h264','aac',640,360),
         ('h264-mov','mov',['-c:v','libx264','-preset','ultrafast','-pix_fmt','yuv420p','-c:a','aac'],'h264','aac',640,360),
         ('h264-m4v','m4v',['-c:v','libx264','-preset','ultrafast','-pix_fmt','yuv420p','-c:a','aac','-f','mp4'],'h264','aac',640,360),

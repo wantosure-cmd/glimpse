@@ -1,6 +1,34 @@
 //! Application-local detail shortcuts; no system-wide keyboard hook.
-use eframe::egui::Key;
+use eframe::egui::{Key, Modifiers};
 use serde::{Deserialize, Serialize};
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum VideoShortcut {
+    Seek(f64), Volume(f32), Speed(f64), ResetSpeed, ToggleMute, Restart,
+}
+pub fn video_shortcut(key: Key, modifiers: Modifiers) -> Option<VideoShortcut> {
+    if modifiers.alt || modifiers.shift || modifiers.mac_cmd { return None; }
+    if modifiers.ctrl || modifiers.command {
+        return match key {
+            Key::ArrowUp => Some(VideoShortcut::Speed(0.25)),
+            Key::ArrowDown => Some(VideoShortcut::Speed(-0.25)),
+            _ => None,
+        };
+    }
+    match key {
+        Key::ArrowLeft => Some(VideoShortcut::Seek(-5.)),
+        Key::ArrowRight => Some(VideoShortcut::Seek(5.)),
+        Key::ArrowUp => Some(VideoShortcut::Volume(5.)),
+        Key::ArrowDown => Some(VideoShortcut::Volume(-5.)),
+        Key::M => Some(VideoShortcut::ToggleMute),
+        Key::R => Some(VideoShortcut::ResetSpeed),
+        Key::Home => Some(VideoShortcut::Restart),
+        _ => None,
+    }
+}
+pub fn normalized_speed(speed: f64) -> f64 {
+    if speed.is_finite() { speed.clamp(0.25, 4.) } else { 1. }
+}
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum DetailKey {
     Numpad0,
@@ -104,6 +132,26 @@ pub fn numpad_down(_digit: u8) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn video_keys_distinguish_speed_seek_volume_and_modifiers() {
+        assert_eq!(video_shortcut(Key::ArrowUp, Modifiers::CTRL), Some(VideoShortcut::Speed(0.25)));
+        assert_eq!(video_shortcut(Key::ArrowDown, Modifiers::CTRL), Some(VideoShortcut::Speed(-0.25)));
+        assert_eq!(video_shortcut(Key::ArrowUp, Modifiers::NONE), Some(VideoShortcut::Volume(5.)));
+        assert_eq!(video_shortcut(Key::ArrowDown, Modifiers::NONE), Some(VideoShortcut::Volume(-5.)));
+        assert_eq!(video_shortcut(Key::ArrowLeft, Modifiers::NONE), Some(VideoShortcut::Seek(-5.)));
+        assert_eq!(video_shortcut(Key::ArrowRight, Modifiers::NONE), Some(VideoShortcut::Seek(5.)));
+        assert_eq!(video_shortcut(Key::M, Modifiers::NONE), Some(VideoShortcut::ToggleMute));
+        assert_eq!(video_shortcut(Key::R, Modifiers::NONE), Some(VideoShortcut::ResetSpeed));
+        assert_eq!(video_shortcut(Key::Home, Modifiers::NONE), Some(VideoShortcut::Restart));
+        for key in [Key::ArrowLeft, Key::ArrowRight, Key::M, Key::R, Key::Home] {
+            assert_eq!(video_shortcut(key, Modifiers::CTRL), None);
+        }
+        assert_eq!(video_shortcut(Key::ArrowUp, Modifiers::ALT), None);
+        assert_eq!(video_shortcut(Key::ArrowRight, Modifiers::SHIFT), None);
+        assert_eq!(normalized_speed(-1.), 0.25);
+        assert_eq!(normalized_speed(9.), 4.);
+        assert_eq!(normalized_speed(f64::NAN), 1.);
+    }
     #[test]
     fn distinguishes_top_row_and_roundtrips_settings() {
         let keys = DetailShortcuts::default();

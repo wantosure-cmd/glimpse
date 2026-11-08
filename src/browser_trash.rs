@@ -48,7 +48,7 @@ impl Browser {
     }
     pub(super) fn trash_diagnostic_for_smoke(&self) -> serde_json::Value {
         serde_json::json!({
-            "pending":self.pending_trash.as_ref().map(|p|serde_json::json!({"requests":p.requests.len(),"remaining_ms":p.deadline.saturating_duration_since(Instant::now()).as_millis(),"age_ms":p.created.elapsed().as_millis()})),
+            "pending":self.pending_trash.as_ref().map(|p|serde_json::json!({"requests":p.requests.len(),"paths":p.requests.iter().map(|r|&r.path).collect::<Vec<_>>(),"root":p.prepared.snapshot.root,"remaining_ms":p.deadline.saturating_duration_since(Instant::now()).as_millis(),"age_ms":p.created.elapsed().as_millis()})),
             "operation":self.trash_operation.as_ref().map(|op|serde_json::json!({
                 "batch":op.batch,"submitted":op.submitted,"requests":op.requests.len(),
                 "results":op.results.len(),"age_ms":op.started.elapsed().as_millis(),

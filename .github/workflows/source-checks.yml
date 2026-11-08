@@ -1,0 +1,48 @@
+name: Source checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  windows-source:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
+        with:
+          python-version: '3.12'
+      - name: Install pinned Rust toolchain
+        run: |
+          $channel = (Select-String -LiteralPath rust-toolchain.toml -Pattern '^channel\s*=\s*"([^"]+)"').Matches[0].Groups[1].Value
+          rustup toolchain install $channel --profile minimal --no-self-update
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Check source and pinned license bytes
+        run: python -X utf8 tools/check_source.py
+      - name: Fetch locked Cargo dependencies
+        run: cargo fetch --locked
+      - name: Check generated translations
+        run: python -X utf8 tools/verify_ui_catalog.py
+      - name: Library tests (generated fixtures only)
+        run: ./tools/build_windows.ps1 -Stage lib-tests
+      - name: Restore exact native test runtime and generate codec fixtures
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -X utf8 tools/prepare_ci_runtime.py
+      - name: Application tests
+        run: ./tools/build_windows.ps1 -Stage app-tests
+      - name: Build release application
+        run: ./tools/build_windows.ps1 -Stage app
+      # No binary distribution: runtime/native desktop/second-machine acceptance
+      # and license approval are separate release requirements.

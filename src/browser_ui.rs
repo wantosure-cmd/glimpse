@@ -853,7 +853,7 @@ impl Browser {
             ui.close();
         }
         ui.separator();
-        if ui
+        let delete_action = ui
             .add(
                 modern_ui::MenuAction::new(
                     egui::RichText::new(if self.detail.is_some() {
@@ -866,9 +866,9 @@ impl Browser {
                 .icon(icons::Glyph::Trash)
                 .danger()
                 .key("Delete"),
-            )
-            .clicked()
-        {
+            );
+        if let Some(smoke)=&mut self.daily_smoke {smoke.delete_action=Some(delete_action.rect);}
+        if delete_action.clicked() {
             self.begin_trash();
             ui.close();
         }
